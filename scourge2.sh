@@ -11,7 +11,7 @@ CP=bin:out/artifacts/scourge2/scourge2.jar
 for jar in lib/*.jar; do
 	CP=$CP:$jar
 done
-for jar in lib/lib/lwjgl/*.jar; do
+for jar in lib/lwjgl/*.jar; do
 	CP=$CP:$jar
 done
 $JAVA -cp $CP -Djava.library.path=./lib/lwjgl/native/$PLATFORM org.scourge.Main
