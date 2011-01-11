@@ -1,0 +1,393 @@
+AC3Db
+MATERIAL "ac3dmat0" rgb 0 0 0  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 128  trans 0
+MATERIAL "ac3dmat1" rgb 1 1 1  amb 0.2 0.2 0.2  emis 0 0 0  spec 0.2 0.2 0.2  shi 128  trans 0
+OBJECT world
+kids 7
+OBJECT poly
+name "poly"
+loc 10.927 0 -37.7161
+texture "/Users/gabor/scourge/trunk/scourge_data/objects/houses/h1_roof.png"
+crease 45.000000
+numvert 4
+-18.927 8 29.7161
+-2.92696 8 29.7161
+7.07304 0 19.7161
+-28.927 0 19.7161
+numsurf 1
+SURF 0x30
+mat 1
+refs 4
+3 0 0
+2 5.86638 0
+1 4.23683 1.98001
+0 1.62955 1.98001
+kids 0
+OBJECT poly
+name "poly"
+loc 21.0818 0 -12.2893
+texture "/Users/gabor/scourge/trunk/scourge_data/objects/houses/h1_roof.png"
+crease 45.000000
+numvert 4
+-3.0818 0 30.2893
+-39.0818 0 30.2893
+-29.0818 8 20.2893
+-13.0818 8 20.2893
+numsurf 1
+SURF 0x30
+mat 1
+refs 4
+0 5.86638 0
+1 0 0
+2 1.62955 1.98001
+3 4.23683 1.98001
+kids 0
+OBJECT poly
+name "poly"
+loc -5.71382 0 5.07808
+texture "/Users/gabor/scourge/trunk/scourge_data/objects/houses/h1_roof.png"
+crease 45.000000
+numvert 4
+-12.2862 0 12.9219
+-12.2862 0 -23.0781
+-2.28618 8 -13.0781
+-2.28618 8 2.92192
+numsurf 1
+SURF 0x30
+mat 1
+refs 4
+0 5.3555 0
+1 0 0
+2 1.48764 1.97135
+3 3.86786 1.97135
+kids 0
+OBJECT poly
+name "poly"
+loc 19.713 0 -5.07676
+texture "/Users/gabor/scourge/trunk/scourge_data/objects/houses/h1_roof.png"
+crease 45.000000
+numvert 4
+-11.713 8 -2.92324
+-11.713 8 13.0768
+-1.71299 0 23.0768
+-1.71299 0 -12.9232
+numsurf 1
+SURF 0x30
+mat 1
+refs 4
+3 0 0
+2 5.3555 0
+1 3.86786 1.97135
+0 1.48764 1.97135
+kids 0
+OBJECT poly
+name "rect"
+texture "/Users/gabor/scourge/trunk/scourge_data/objects/houses/h1_roof.png"
+crease 45.000000
+numvert 4
+-8 8 -8
+8 8 -8
+8 8 8
+-8 8 8
+numsurf 1
+SURF 0x30
+mat 1
+refs 4
+3 0 0
+2 2.50516 0
+1 2.50516 1.98875
+0 0 1.98875
+kids 0
+OBJECT poly
+name "box"
+loc -10.4528 5.46992 -6.50663
+texture "/Users/gabor/scourge/trunk/scourge_data/objects/houses/h1_chim.png"
+crease 45.000000
+numvert 28
+-0.247244 -1.36992 3.20663
+4.25276 -1.36992 3.20663
+4.25276 -1.36992 0.706629
+-0.247244 -1.36992 0.706629
+-0.247244 3.53008 3.20663
+-0.147244 3.53008 3.20663
+-0.147244 3.53008 3.20663
+-0.147244 3.53008 3.20663
+4.05276 3.53008 0.706629
+4.05276 3.53008 0.706629
+-0.147244 3.53008 3.20663
+4.25276 3.53008 0.706629
+4.05276 3.53008 0.706629
+-0.247244 3.53008 3.20663
+-0.147244 3.53008 3.20663
+4.25276 3.53008 0.706629
+-0.247244 3.53008 0.706629
+-0.247244 3.53008 3.20663
+4.25276 3.53008 3.20663
+4.25276 3.53008 0.806629
+-0.547244 3.53008 3.50663
+-0.547244 -3.46992 3.50663
+-0.547244 -3.46992 0.506629
+-0.547244 3.53008 0.506629
+4.45276 3.53008 0.506629
+4.45276 -3.46992 0.506629
+4.45276 -3.46992 3.50663
+4.45276 3.53008 3.50663
+numsurf 30
+SURF 0x30
+mat 0
+refs 4
+0 0 1
+1 1 1
+2 1 0
+3 0 0
+SURF 0x30
+mat 1
+refs 3
+5 0 0
+20 0 0
+7 0 0
+SURF 0x30
+mat 1
+refs 3
+13 0 0
+20 0 0
+4 0 0
+SURF 0x30
+mat 1
+refs 3
+20 0 0
+6 0 0
+4 0 0
+SURF 0x30
+mat 1
+refs 3
+6 0 0
+20 0 0
+5 0 0
+SURF 0x30
+mat 1
+refs 3
+7 0 0
+20 0 0
+10 0 0
+SURF 0x30
+mat 1
+refs 3
+24 0 0
+9 0 0
+11 0 0
+SURF 0x30
+mat 1
+refs 3
+8 0 0
+24 0 0
+12 0 0
+SURF 0x30
+mat 1
+refs 3
+9 0 0
+24 0 0
+8 0 0
+SURF 0x30
+mat 1
+refs 3
+10 0 0
+20 0 0
+14 0 0
+SURF 0x30
+mat 1
+refs 3
+15 0 0
+24 0 0
+11 0 0
+SURF 0x30
+mat 1
+refs 3
+12 0 0
+24 0 0
+16 0 0
+SURF 0x30
+mat 1
+refs 3
+17 0 0
+20 0 0
+13 0 0
+SURF 0x30
+mat 1
+refs 3
+14 0 0
+20 0 0
+18 0 0
+SURF 0x30
+mat 1
+refs 3
+19 0 0
+24 0 0
+15 0 0
+SURF 0x30
+mat 1
+refs 3
+24 0 0
+23 0 0
+16 0 0
+SURF 0x30
+mat 1
+refs 3
+20 0 0
+16 0 0
+23 0 0
+SURF 0x30
+mat 1
+refs 3
+20 0 0
+17 0 0
+16 0 0
+SURF 0x30
+mat 1
+refs 3
+20 0 0
+27 0 0
+18 0 0
+SURF 0x30
+mat 1
+refs 3
+24 0 0
+18 0 0
+27 0 0
+SURF 0x30
+mat 1
+refs 3
+24 0 0
+19 0 0
+18 0 0
+SURF 0x30
+mat 1
+refs 4
+22 0 0
+25 1 0
+26 1 1
+21 0 1
+SURF 0x30
+mat 1
+refs 4
+20 0 1
+21 0 0
+26 0.714286 0
+27 0.714286 1
+SURF 0x30
+mat 1
+refs 4
+24 0.714286 1
+25 0.714286 0
+22 0 0
+23 0 1
+SURF 0x30
+mat 1
+refs 4
+23 0 1
+22 0 0
+21 0.428571 0
+20 0.428571 1
+SURF 0x30
+mat 1
+refs 4
+27 0.428571 1
+26 0.428571 0
+25 0 0
+24 0 1
+SURF 0x30
+mat 0
+refs 10
+6 0 0
+5 0 0
+7 0 0
+10 0 0
+14 0 0
+18 0 0
+1 0 0
+0 0 0
+13 0 0
+4 0 0
+SURF 0x30
+mat 0
+refs 8
+3 0 0
+2 0 0
+15 0 0
+11 0 0
+9 0 0
+8 0 0
+12 0 0
+16 0 0
+SURF 0x30
+mat 0
+refs 5
+3 0 0
+16 0 0
+17 0 0
+13 0 0
+0 0 0
+SURF 0x30
+mat 0
+refs 5
+18 0 0
+19 0 0
+15 0 0
+2 0 0
+1 0 0
+kids 0
+OBJECT poly
+name "box"
+crease 45.000000
+numvert 8
+-10.7858 7.31051 -5.85175
+-6.10988 7.31051 -5.85175
+-6.10988 7.31051 -3.18052
+-10.7858 7.31051 -3.18052
+-10.7858 8.10682 -3.18052
+-6.10988 8.10682 -3.18052
+-6.10988 8.10682 -5.85175
+-10.7858 8.10682 -5.85175
+numsurf 6
+SURF 0x30
+mat 0
+refs 4
+5 0 0
+2 1 0
+1 1 1
+6 0 1
+SURF 0x30
+mat 0
+refs 4
+7 0 0
+0 1 0
+3 1 1
+4 0 1
+SURF 0x30
+mat 0
+refs 4
+6 0 0
+1 1 0
+0 1 1
+7 0 1
+SURF 0x30
+mat 0
+refs 4
+4 0 0
+3 1 0
+2 1 1
+5 0 1
+SURF 0x30
+mat 0
+refs 4
+7 0 0
+4 1 0
+5 1 1
+6 0 1
+SURF 0x30
+mat 0
+refs 4
+0 0 0
+1 1 0
+2 1 1
+3 0 1
+kids 0

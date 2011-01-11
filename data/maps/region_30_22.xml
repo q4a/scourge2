@@ -1,0 +1,27 @@
+<region region_x="30" region_y="22">
+   <block coordinates="617.450">
+      <block x="617" y="450">
+         <data key="generate.monster">shade</data>
+      </block>
+   </block>
+   <block coordinates="619.452">
+      <block x="619" y="452">
+         <data key="generate.altar">fountain</data>
+      </block>
+   </block>
+   <block coordinates="612.451">
+      <block x="612" y="451">
+         <data key="generate.monster">shade</data>
+      </block>
+   </block>
+   <block coordinates="600.443">
+      <block x="600" y="443">
+         <data key="down_location">632,436</data>
+      </block>
+   </block>
+   <block coordinates="613.442">
+      <block x="613" y="442">
+         <data key="up_location">627,462</data>
+      </block>
+   </block>
+</region>

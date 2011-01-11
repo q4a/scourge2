@@ -1,0 +1,18 @@
+<region region_x="31" region_y="21">
+   <block coordinates="632.436">
+      <block x="632" y="436">
+         <data key="up_location">600,443</data>
+      </block>
+   </block>
+   <block coordinates="639.433">
+      <block x="639" y="433">
+         <data key="label2">Ravenous</data>
+         <data key="label">Entering dungeon</data>
+      </block>
+   </block>
+   <block coordinates="634.430">
+      <block x="634" y="430">
+         <data key="generate.monster">shade</data>
+      </block>
+   </block>
+</region>
