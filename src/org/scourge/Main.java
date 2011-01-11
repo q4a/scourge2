@@ -1,13 +1,3 @@
-/**
- * Copyright (c) 2008-2010 Ardor Labs, Inc.
- *
- * This file is part of Ardor3D.
- *
- * Ardor3D is free software: you can redistribute it and/or modify it
- * under the terms of its license which may be found in the accompanying
- * LICENSE file or at <http://www.ardor3d.com/LICENSE>.
- */
-
 package org.scourge;
 
 import com.ardor3d.example.ExampleBase;
@@ -16,7 +6,6 @@ import com.ardor3d.framework.DisplaySettings;
 import com.ardor3d.image.Texture;
 import com.ardor3d.input.GrabbedState;
 import com.ardor3d.input.MouseState;
-import com.ardor3d.input.control.FirstPersonControl;
 import com.ardor3d.input.logical.LogicalLayer;
 import com.ardor3d.light.DirectionalLight;
 import com.ardor3d.math.*;
@@ -26,20 +15,16 @@ import com.ardor3d.renderer.pass.BasicPassManager;
 import com.ardor3d.renderer.pass.RenderPass;
 import com.ardor3d.renderer.state.CullState;
 import com.ardor3d.renderer.state.FogState;
-import com.ardor3d.renderer.state.FogState.DensityFunction;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.extension.CameraNode;
 import com.ardor3d.scenegraph.extension.Skybox;
-import com.ardor3d.scenegraph.hint.CullHint;
 import com.ardor3d.scenegraph.shape.Quad;
 import com.ardor3d.ui.text.BasicText;
 import com.ardor3d.util.GameTaskQueueManager;
 import com.ardor3d.util.ReadOnlyTimer;
 import com.ardor3d.util.TextureManager;
 import com.ardor3d.util.resource.ResourceLocatorTool;
-import org.lwjgl.util.vector.Vector3f;
-import org.scourge.config.Items;
 import org.scourge.editor.MapSymbol;
 import org.scourge.io.BlockData;
 import org.scourge.model.Creature;
@@ -47,7 +32,6 @@ import org.scourge.terrain.Model;
 import org.scourge.terrain.Terrain;
 import org.scourge.terrain.Tile;
 import org.scourge.ui.MiniMap;
-import org.scourge.ui.ProgressListener;
 import org.scourge.ui.component.DragSource;
 import org.scourge.ui.component.Dragable;
 import org.scourge.ui.component.WinUtil;
@@ -56,8 +40,6 @@ import org.scourge.ui.component.Window;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Main extends ExampleBase implements Scourge {
     private Random random = new Random(17L);

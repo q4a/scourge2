@@ -1,0 +1,23 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_collada.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_effects.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-io-1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/stax-1.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_awt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_swt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_terrain.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_ui.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/simple-xml-2.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_jogl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-net-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_animation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ardor3d_extras.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
