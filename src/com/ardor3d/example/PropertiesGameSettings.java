@@ -69,7 +69,7 @@ public class PropertiesGameSettings {
     static boolean DEFAULT_VERTICAL_SYNC = true;
     static int DEFAULT_DEPTH_BITS = 8;
     static int DEFAULT_ALPHA_BITS = 0;
-    static int DEFAULT_STENCIL_BITS = 0;
+    static int DEFAULT_STENCIL_BITS = 4;
     static int DEFAULT_SAMPLES = 0;
     static boolean DEFAULT_MUSIC = true;
     static boolean DEFAULT_SFX = true;
