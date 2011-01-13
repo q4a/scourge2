@@ -2,6 +2,7 @@ package org.scourge;
 
 import com.ardor3d.example.ExampleBase;
 import com.ardor3d.extension.effect.water.WaterNode;
+import com.ardor3d.framework.Canvas;
 import com.ardor3d.framework.DisplaySettings;
 import com.ardor3d.image.Texture;
 import com.ardor3d.input.GrabbedState;
@@ -247,8 +248,8 @@ public class Main extends ExampleBase implements Scourge {
         playerControl = new PlayerControl(this);
         playerControl.setupTriggers();
 
-        dropSelection = new Selection(_root);
-        dragSelection = new Selection(_root);
+        dropSelection = new Selection(_root, this);
+        dragSelection = new Selection(_root, this);
 
         final Node reflectedNode = new Node("reflectNode");
         reflectedNode.attachChild(terrain.getNode());
@@ -443,24 +444,23 @@ public class Main extends ExampleBase implements Scourge {
      */
     public boolean drag() {
         if(dragSelection.testUnderMouse()) {
-            for(Spatial spatial : dragSelection.getSpatials()) {
-                while(spatial.getParent() != null) {
+            Spatial spatial = dragSelection.getSpatial();
+            while(spatial.getParent() != null) {
 
-                    // check for items
-                    Dragable dragable = dragables.remove(spatial.getName());
-                    if(dragable != null) {
-                        _root.detachChild(spatial);
-                        setDragging(dragable, new DragSource() {
-                            @Override
-                            public void returnDragable(Dragable dragable) {
-                                // it still has the world position
-                                _root.attachChild(dragable.getModel());
-                            }
-                        });
-                        return true;
-                    }
-                    spatial = spatial.getParent();
+                // check for items
+                Dragable dragable = dragables.remove(spatial.getName());
+                if(dragable != null) {
+                    _root.detachChild(spatial);
+                    setDragging(dragable, new DragSource() {
+                        @Override
+                        public void returnDragable(Dragable dragable) {
+                            // it still has the world position
+                            _root.attachChild(dragable.getModel());
+                        }
+                    });
+                    return true;
                 }
+                spatial = spatial.getParent();
             }
         }
 
@@ -489,13 +489,12 @@ public class Main extends ExampleBase implements Scourge {
 
     private Spatial findInteractiveSpatialClicked() {
         if(dragSelection.testUnderMouse()) {
-            for(Spatial spatial : dragSelection.getSpatials()) {
-                while(spatial.getParent() != null) {
-                    if(getUserData(spatial, Tile.MODEL) != null && getUserData(spatial, Tile.BLOCK_DATA) != null) {
-                        return spatial;
-                    }
-                    spatial = spatial.getParent();
+            Spatial spatial = dragSelection.getSpatial();
+            while(spatial.getParent() != null) {
+                if(getUserData(spatial, Tile.MODEL) != null && getUserData(spatial, Tile.BLOCK_DATA) != null) {
+                    return spatial;
                 }
+                spatial = spatial.getParent();
             }
         }
         return null;
@@ -683,5 +682,13 @@ public class Main extends ExampleBase implements Scourge {
         if (_mouseManager.isSetGrabbedSupported()) {
             _mouseManager.setGrabbed(grabbed ? GrabbedState.GRABBED : GrabbedState.NOT_GRABBED);
         }
+    }
+
+    public PlayerControl getPlayerControl() {
+        return playerControl;
+    }
+
+    public Canvas getCanvas() {
+        return _canvas;
     }
 }

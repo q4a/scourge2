@@ -24,6 +24,7 @@ public class PlayerControl {
     // Test boolean to allow us to ignore first mouse event. First event can wildly vary based on platform.
     private boolean firstPing = true;
     private MouseButton buttonDown;
+    private TwoInputStates lastInputState;
 
 
     public PlayerControl(Main main) {
@@ -111,6 +112,7 @@ public class PlayerControl {
 
             @Override
             public void perform(Canvas canvas, TwoInputStates inputStates, double tpf) {
+                lastInputState = inputStates;
                 mouseAction(inputStates, tpf);
             }
         };
@@ -244,5 +246,9 @@ public class PlayerControl {
             main.getTerrain().loadRegion();
 //            main.checkRoof();
         }
+    }
+
+    public TwoInputStates getLastInputState() {
+        return lastInputState;
     }
 }
