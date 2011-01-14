@@ -46,7 +46,7 @@ public class AltarGenerator extends Generator {
     }
 
     @Override
-    public void update(float tpf) {
+    public void update(double tpf) {
         if(first) {
             first = false;
             // todo: fountain is not on the ground

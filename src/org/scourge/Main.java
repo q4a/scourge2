@@ -37,6 +37,7 @@ import org.scourge.ui.component.DragSource;
 import org.scourge.ui.component.Dragable;
 import org.scourge.ui.component.WinUtil;
 import org.scourge.ui.component.Window;
+import org.scourge.util.ShapeUtil;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -113,7 +114,9 @@ public class Main extends ExampleBase implements Scourge {
         camera.setFrustumPerspective( 30.0f, getScreenWidth() / getScreenHeight(), 1, 1000 );
         camera.update();
 
-        terrain.update(timer.getTime());
+        terrain.update(timer.getTimePerFrame());
+
+        ShapeUtil.updateControllers(timer.getTimePerFrame());
 
         // the world vectors aren't computed until the first update :-/
         if(terrain.getCurrentRegion() != null) {

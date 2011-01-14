@@ -728,7 +728,7 @@ public class Region implements NodeGenerator {
 //        return collisionResults.getNumber() > 0;
 //    }
 
-    public void update(float tpf) {
+    public void update(double tpf) {
         for(Generator generator : generators) {
             generator.update(tpf);
         }

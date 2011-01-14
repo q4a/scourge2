@@ -117,16 +117,17 @@ public class Item implements Dragable {
     @Override
     public Spatial getModel() {
         if(spatial == null) {
-            spatial = ShapeUtil.importModel(getTemplate().getModel().getPath(), "./data/textures", getTemplate().getName(), null);
+            spatial = ShapeUtil.importModel(getTemplate().getModel().getPath(), "./data/textures", getTemplate().getName(), null, -90, 0, 0);
 //            if(getTemplate().getModel().getRotate() != null) {
 //                spatial.getLocalRotation().set(new Quaternion().fromAngles(getTemplate().getModel().getRotate()[0] * 90 * FastMath.DEG_TO_RAD,
 //                                                                           getTemplate().getModel().getRotate()[1] * 90 * FastMath.DEG_TO_RAD,
 //                                                                           getTemplate().getModel().getRotate()[2] * 90 * FastMath.DEG_TO_RAD));
 //            }
-            Matrix3 m = new Matrix3();
-            new Quaternion().fromAngleAxis(-90 * MathUtils.DEG_TO_RAD, Vector3.UNIT_X).toRotationMatrix(m);
-            spatial.getRotation().multiply(m, m);
-            spatial.setRotation(m);
+
+//            Matrix3 m = new Matrix3();
+//            new Quaternion().fromAngleAxis(-90 * MathUtils.DEG_TO_RAD, Vector3.UNIT_X).toRotationMatrix(m);
+//            spatial.getRotation().multiply(m, m);
+//            spatial.setRotation(m);
 
             BlendState as = new BlendState();
             as.setBlendEnabled(true);

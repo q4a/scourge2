@@ -1,11 +1,8 @@
 package org.scourge.util;
 
-import com.ardor3d.bounding.BoundingBox;
 import com.ardor3d.extension.model.md2.Md2DataStore;
 import com.ardor3d.extension.model.md2.Md2Importer;
-import com.ardor3d.extension.model.util.KeyframeController;
 import com.ardor3d.image.Texture;
-import com.ardor3d.math.FastMath;
 import com.ardor3d.math.MathUtils;
 import com.ardor3d.math.Quaternion;
 import com.ardor3d.math.Vector3;
@@ -14,19 +11,14 @@ import com.ardor3d.renderer.state.TextureState;
 import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
+import com.ardor3d.scenegraph.controller.SpatialController;
 import com.ardor3d.util.TextureManager;
 import com.ardor3d.util.geom.BufferUtils;
-import com.ardor3d.util.resource.MultiFormatResourceLocator;
-import com.ardor3d.util.resource.ResourceLocatorTool;
 import org.newdawn.ardor3d.loader.max.TDSFile;
 import org.scourge.terrain.Model;
 
 import javax.swing.*;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,7 +38,8 @@ public class ShapeUtil {
     private static Logger logger = Logger.getLogger(ShapeUtil.class.toString());
     private static WeakHashMap<String, Texture> textures = new WeakHashMap<String, Texture>();
     private static WeakHashMap<String, ImageIcon> images = new WeakHashMap<String, ImageIcon>();
-    private static final Map<String, Spatial> prototypes = new HashMap<String, Spatial>();
+    private static final Map<String, Spatial> staticModelPrototypes = new HashMap<String, Spatial>();
+    private static final Map<String, Spatial> animatedModelPrototypes = new HashMap<String, Spatial>();
     private static final Map<String, Md2DataStore> md2prototypes = new HashMap<String, Md2DataStore>();
 
     public static String newShapeName(String prefix) {
@@ -85,7 +78,7 @@ public class ShapeUtil {
                 prototype.updateGeometricState(0);
                 prototype.updateWorldRenderStates(true);
 
-                prototypes.put(key, prototype);
+                animatedModelPrototypes.put(key, prototype);
 
                 if(invertNormals) {
                     CullState cs = new CullState();
@@ -101,7 +94,7 @@ public class ShapeUtil {
 //                    prototype.updateModelBound();
 
             } else {
-                prototype = prototypes.get(key);
+                prototype = animatedModelPrototypes.get(key);
             }
 
 //                // copy the frames
@@ -143,40 +136,49 @@ public class ShapeUtil {
         }
     }
 
-    /**
-	 * Imports a .3ds model from file system.
-	 * @param modelPath the path to the model file.
-	 * Can be relative to the project directory.
-	 * @param textureDir the path to the directory with the model's
-	 *  textures. If null, this will attempt to infer textureDir from
-	 *  modelPath, which assumes that the texture file(s) are in the same
-	 *  directory as the model file.
-	 * @param name_prefix the unique name of the resulting spatial will start with this
-     * @return a Spatial containing the model geometry
-	 * (with provided texture, if any) that can be attached to
-	 *  the scenegraph, or null instead if unable to load geometry.
-	 */
-	public static Spatial importModel(String modelPath, String textureDir, String name_prefix) {
-        return importModel(modelPath, textureDir, name_prefix, null);
+    public static Spatial importModel(String modelPath, String textureDir, String name_prefix, Model model,
+                                      float rotateX, float rotateY, float rotateZ) {
+        return importModel(modelPath, textureDir, name_prefix, model, rotateX, rotateY, rotateZ, null);
     }
 
-    public static Spatial importModel(String modelPath, String textureDir, String name_prefix, Model model) {
-        synchronized(prototypes) {
+    public static Spatial importModel(String modelPath, String textureDir, String name_prefix, Model model,
+                                      float rotateX, float rotateY, float rotateZ,
+                                      Class controllerClass) {
+        synchronized(staticModelPrototypes) {
             try {
                 String key = modelPath + "." + name_prefix;
-                Spatial prototype = prototypes.get(key);
+                Spatial prototype = staticModelPrototypes.get(key);
                 if(prototype == null) {
                     prototype = TDSFile.load3DSModel(modelPath);
+
+                    // todo: why only x? Adding y,z causes trees to show up flat...
+                    if(rotateX != 0) {
+                        Quaternion modelRotation = new Quaternion();
+                        modelRotation.fromEulerAngles(0, 0, rotateX * MathUtils.DEG_TO_RAD);
+
+                        // apply the rotation directly to the data, so Y points "up"
+                        List<Mesh> meshes = ShapeUtil.findMeshes(prototype, new ArrayList<Mesh>());
+                        for(Mesh mesh : meshes) {
+                            mesh.getMeshData().rotatePoints(modelRotation);
+                            mesh.getMeshData().rotateNormals(modelRotation);
+                        }
+                    }
+
                     if(modelPath.endsWith(".md3")) {
                         invertNormals((Node)prototype);
                     }
                     if(model != null) {
                         model.onLoad(prototype);
                     }
+
+                    if(controllerClass != null) {
+                        prototype.addController((SpatialController)controllerClass.newInstance());
+                    }
+
                     prototype.updateGeometricState(0, true);
 //                    System.err.println(">>> " + key + " <<<");
 //                    debugNode(prototype, "");
-                    prototypes.put(key, prototype);
+                    staticModelPrototypes.put(key, prototype);
                 }
                 return copyPrototype(prototype, name_prefix, modelPath);
             } catch (Exception exc) {
@@ -188,7 +190,17 @@ public class ShapeUtil {
 
     private static Spatial copyPrototype(Spatial prototype, String name_prefix, String modelPath) {
         try {
+            // Remove and re-add the controller. This is b/c our controller operates on the shared data,
+            // so there is no need to have multiple copies of it. In fact, multiple copies kills performance.
+            SpatialController sc = null;
+            if(prototype.getControllerCount() > 0) {
+                sc = prototype.getController(0);
+                prototype.removeController(0);
+            }
             Spatial copy = prototype.makeCopy(true);
+            if(sc != null) {
+                prototype.addController(sc);
+            }
             if(modelPath.endsWith(".md3")) {
                 CullState cs = new CullState();
                 cs.setCullFace(CullState.Face.Front);
@@ -270,5 +282,29 @@ public class ShapeUtil {
 
     public static Texture getTexture(String key) {
         return textures.get(key);
+    }
+
+    public static List<Mesh> findMeshes(Spatial node, ArrayList<Mesh> meshes) {
+        if(node instanceof Mesh) {
+            meshes.add((Mesh)node);
+        } else if(node instanceof Node) {
+            for(Spatial child : ((Node)node).getChildren()) {
+                findMeshes(child, meshes);
+            }
+        }
+        return meshes;
+    }
+
+    // Why is this necessary? Because our tree controllers operator on shared vertex data, so the controller is only
+    // assigned to the prototype, not the individual trees. And since the prototype is never on screen, its controller
+    // would never be updated.
+    //
+    // todo: optimization to only update those prototypes' controllers that have instances on screen
+    public static void updateControllers(double time) {
+        synchronized(staticModelPrototypes) {
+            for(Spatial s : staticModelPrototypes.values()) {
+                s.updateControllers(time);
+            }
+        }
     }
 }

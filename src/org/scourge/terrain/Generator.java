@@ -39,7 +39,7 @@ public abstract class Generator {
 
     public abstract void generate();
 
-    public abstract void update(float tpf);
+    public abstract void update(double tpf);
 
     public abstract void unloading();
 

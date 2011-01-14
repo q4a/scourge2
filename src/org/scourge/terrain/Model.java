@@ -7,13 +7,16 @@ import com.ardor3d.extension.effect.particle.ParticleSystem;
 import com.ardor3d.extension.effect.particle.RampEntry;
 import com.ardor3d.image.Texture;
 import com.ardor3d.image.TextureStoreFormat;
-import com.ardor3d.math.*;
+import com.ardor3d.math.ColorRGBA;
+import com.ardor3d.math.MathUtils;
+import com.ardor3d.math.Vector3;
 import com.ardor3d.math.type.ReadOnlyVector3;
 import com.ardor3d.renderer.state.BlendState;
 import com.ardor3d.renderer.state.TextureState;
 import com.ardor3d.renderer.state.ZBufferState;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
+import com.ardor3d.scenegraph.controller.SpatialController;
 import com.ardor3d.util.TextureManager;
 import com.ardor3d.util.export.InputCapsule;
 import com.ardor3d.util.export.OutputCapsule;
@@ -43,90 +46,162 @@ public enum Model implements Savable {
         public Spatial createSpatial() {
             return getAlphaSpatial(5);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     oak("./data/3ds/tree02.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     willow("./data/3ds/tree03.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     birch("./data/3ds/birch.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(4);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     birch2("./data/3ds/tree13.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     redOak("./data/3ds/tree14.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     bigOak("./data/3ds/tree15.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     redLeaf("./data/3ds/tree16.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     bush("./data/3ds/tree17.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(3);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     deadTree("./data/3ds/tree18.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     palm1("./data/3ds/tree19.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     multiColor("./data/3ds/tree20.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     cypress("./data/3ds/tree21.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     bushtree("./data/3ds/bushtree.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(3);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     cactus("./data/3ds/cactus.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(7);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     fern("./data/3ds/fern.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(6);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     palm2("./data/3ds/palm2.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(4);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     bigpalm("./data/3ds/palm.3ds") {
         public Spatial createSpatial() {
             return getAlphaSpatial(4);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     oldoak("./data/md3/oak/oak1.md3") {
@@ -148,6 +223,10 @@ public enum Model implements Savable {
             textures.put("blaetter", "data/md3/oak/oakblaetter.tga");
             assignTextures(spatial, textures);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     oldoak2("./data/md3/oak/oak2.md3") {
         @Override
@@ -167,6 +246,10 @@ public enum Model implements Savable {
             textures.put("bruch", "data/md3/oak/oakstamm2.jpg");
             textures.put("blaetter", "data/md3/oak/oakblaetter2.tga");
             assignTextures(spatial, textures);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     bigfir("./data/md3/jkm_trees/nadelbaum.md3") {
@@ -188,6 +271,10 @@ public enum Model implements Savable {
             textures.put("stumpf2", "data/md3/jkm_trees/stamm.jpg");
             assignTextures(spatial, textures);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     normal_yellow("./data/md3/jkm_trees/tree1.md3") {
         @Override
@@ -207,6 +294,10 @@ public enum Model implements Savable {
             textures.put("aeste", "data/md3/jkm_trees/tree.tga");
             textures.put("stumpf2", "data/md3/jkm_trees/stamm.jpg");
             assignTextures(spatial, textures);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
     normal_green("./data/md3/jkm_trees/tree2.md3") {
@@ -228,6 +319,10 @@ public enum Model implements Savable {
             textures.put("stumpf2", "data/md3/jkm_trees/stamm.jpg");
             assignTextures(spatial, textures);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     normal_red("./data/md3/jkm_trees/tree3.md3") {
         @Override
@@ -248,6 +343,10 @@ public enum Model implements Savable {
             textures.put("stumpf2", "data/md3/jkm_trees/stamm.jpg");
             assignTextures(spatial, textures);
         }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
+        }
     },
     normal_green2("./data/md3/jkm_trees/tree4.md3") {
         @Override
@@ -267,6 +366,10 @@ public enum Model implements Savable {
             textures.put("aeste", "data/md3/jkm_trees/tree4.tga");
             textures.put("stumpf2", "data/md3/jkm_trees/stamm.jpg");
             assignTextures(spatial, textures);
+        }
+
+        protected Class getControllerClass() {
+            return TreeController.class;
         }
     },
 
@@ -564,6 +667,9 @@ public enum Model implements Savable {
         palm2,palm2,palm2,palm2,palm2,palm2,palm2,palm2,
         bigpalm,bigpalm,bigpalm,bigpalm,bigpalm,bigpalm,bigpalm,bigpalm,bigpalm,
     };
+
+    private static Map<String, SpatialController> controllers = new HashMap<String, SpatialController>();
+
     public static Model[] getTropicalTrees() {
         return TROPICAL_TREES;
     }
@@ -605,7 +711,7 @@ public enum Model implements Savable {
     public abstract Spatial createSpatial();
 
     protected Spatial getNoAlphaSpatial() {
-        return ShapeUtil.importModel(getModelPath(), getTexturePath(), namePrefix == null ? name() : namePrefix, this);
+        return ShapeUtil.importModel(getModelPath(), getTexturePath(), namePrefix == null ? name() : namePrefix, this, 0, 0, 0);
     }
 
     protected Spatial getAlphaSpatial(float scale) {
@@ -613,25 +719,11 @@ public enum Model implements Savable {
     }
 
     protected Spatial getAlphaSpatial(float scale, float rotateX, float rotateY, float rotateZ) {
-        Spatial spatial = ShapeUtil.importModel(getModelPath(), getTexturePath(), name(), this);
-        // todo: why only x? Adding y,z causes trees to show up flat...
-        if(rotateX != 0) {
-            Quaternion modelRotation = new Quaternion();
-            modelRotation.fromEulerAngles(0, 0, rotateX * MathUtils.DEG_TO_RAD);
-            spatial.setRotation(modelRotation);
-        }
-
+        Spatial spatial = ShapeUtil.importModel(
+                getModelPath(), getTexturePath(), name(), this,
+                rotateX, rotateY, rotateZ,
+                getControllerClass());
         spatial.setScale(scale);
-
-//        spatial.addController(new SpatialController() {
-//            Quaternion modelRotation = new Quaternion();
-//
-//            @Override
-//            public void update(double time, Spatial caller) {
-//                modelRotation.fromEulerAngles(0, 0, Math.random() * 360.0 * MathUtils.DEG_TO_RAD);
-//                caller.setRotation(modelRotation);
-//            }
-//        });
 
         BlendState as = new BlendState();
         as.setBlendEnabled(true);
@@ -647,6 +739,10 @@ public enum Model implements Savable {
 //        spatial.updateModelBound();
         return spatial;
 
+    }
+
+    protected Class getControllerClass() {
+        return null;
     }
 
     public ReadOnlyVector3 getRotationVector() {
