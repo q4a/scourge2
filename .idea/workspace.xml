@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scourge2.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/scourge2_jar.xml" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/scourge2_jar.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ardorSettings.properties" afterPath="$PROJECT_DIR$/ardorSettings.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scourge2.bat" afterPath="$PROJECT_DIR$/scourge2.bat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scourge2.sh" afterPath="$PROJECT_DIR$/scourge2.sh" />
     </list>
     <ignored path="scourge2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -510,7 +505,7 @@
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added missing files." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added jar file." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -526,6 +521,7 @@
     <MESSAGE value="added idea project" />
     <MESSAGE value="Fixed stencil buffer issue with minimap." />
     <MESSAGE value="Added missing files." />
+    <MESSAGE value="Added jar file." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
