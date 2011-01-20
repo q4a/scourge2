@@ -1,2 +1,4 @@
 glob:bin/
+glob:out/
 re:^ardorSettings.properties$
+glob:\.DS_Store
