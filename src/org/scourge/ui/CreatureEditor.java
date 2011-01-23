@@ -73,7 +73,7 @@ public class CreatureEditor extends Window implements WindowListener {
         PlayerTemplate.Sex sex = getSex();
         creature.setSex(sex.ordinal());
         creature.setPortrait(PlayerTemplate.PORTRAIT[sex.ordinal()][portraitIndex]);
-        creature.setModel(PlayerTemplate.MODEL[sex.ordinal()]);
+        creature.setModel(PlayerTemplate.MODEL[sex.ordinal()].name());
         creature.setSkin(PlayerTemplate.SKIN[sex.ordinal()]);
     }
 

@@ -1,6 +1,7 @@
 package org.scourge.model;
 
-import org.scourge.terrain.Md2Model;
+import org.scourge.config.ModelTemplate;
+import org.scourge.terrain.CreatureModel;
 
 /**
  * User: gabor
@@ -8,28 +9,29 @@ import org.scourge.terrain.Md2Model;
  * Time: 8:21:39 AM
  */
 public enum Monster {
-    shade("./data/models/phantom/tris.md2", "./data/models/phantom/m10.png", 10.0f),
+    shade(ModelTemplate.shade, "./data/models/phantom/m10.png", 10.0f),
     ;
 
-    private String modelPath, skinPath;
+    private ModelTemplate modelTemplate;
+    private String skinPath;
     private float speed;
 
-    Monster(String modelPath, String skinPath, float speed) {
-        this.modelPath = modelPath;
+    Monster(ModelTemplate modelTemplate, String skinPath, float speed) {
+        this.modelTemplate = modelTemplate;
         this.skinPath = skinPath;
         this.speed = speed;
     }
 
-    public String getModelPath() {
-        return modelPath;
+    public ModelTemplate getModelTemplate() {
+        return modelTemplate;
     }
 
     public String getSkinPath() {
         return skinPath;
     }
 
-    public Md2Model createModel() {
-        Md2Model model = new Md2Model(modelPath, skinPath, name());
+    public CreatureModel createModel() {
+        CreatureModel model = new CreatureModel(modelTemplate, skinPath, name());
 //        model.setKeyFrame(Md2Model.Md2Key.stand);
 
         // create world bounds, etc.

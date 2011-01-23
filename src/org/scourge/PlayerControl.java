@@ -8,7 +8,7 @@ import com.ardor3d.math.Quaternion;
 import com.ardor3d.math.Vector3;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-import org.scourge.terrain.Md2Model;
+import org.scourge.terrain.CreatureModel;
 import org.scourge.ui.component.Window;
 
 /**
@@ -77,7 +77,7 @@ public class PlayerControl {
             @Override
             public void perform(Canvas canvas, TwoInputStates twoInputStates, double tpf) {
                 if (playerMoveEnabled) {
-                    main.getPlayer().getCreatureModel().setKeyFrame(Md2Model.Md2Key.run);
+                    main.getPlayer().getCreatureModel().setAnimation(CreatureModel.Animations.run);
                     forward(tpf);
                 }
             }
@@ -86,7 +86,7 @@ public class PlayerControl {
             @Override
             public void perform(Canvas canvas, TwoInputStates twoInputStates, double tpf) {
                 if (playerMoveEnabled) {
-                    main.getPlayer().getCreatureModel().setKeyFrame(Md2Model.Md2Key.stand);
+                    main.getPlayer().getCreatureModel().setAnimation(CreatureModel.Animations.stand);
                 }
             }
         }));

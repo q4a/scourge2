@@ -1,5 +1,11 @@
 package org.scourge.util;
 
+import com.ardor3d.extension.animation.skeletal.AnimationManager;
+import com.ardor3d.extension.animation.skeletal.SkeletonPose;
+import com.ardor3d.extension.animation.skeletal.blendtree.SimpleAnimationApplier;
+import com.ardor3d.extension.model.collada.jdom.ColladaImporter;
+import com.ardor3d.extension.model.collada.jdom.data.ColladaStorage;
+import com.ardor3d.extension.model.collada.jdom.data.SkinData;
 import com.ardor3d.extension.model.md2.Md2DataStore;
 import com.ardor3d.extension.model.md2.Md2Importer;
 import com.ardor3d.image.Texture;

@@ -28,9 +28,9 @@ public class PlayerTemplate {
               "./data/portraits/girl.png" }
     };
 
-    public static final String[] MODEL = {
-            "./data/models/sfod8/tris.md2",
-            "./data/models/alita/tris.md2"
+    public static final ModelTemplate[] MODEL = {
+            ModelTemplate.seymour,
+            ModelTemplate.seymour
     };
 
     public static final String[] SKIN = {
@@ -43,4 +43,5 @@ public class PlayerTemplate {
 
     public static final int HP_PER_LEVEL = 10;
     public static final int MP_PER_LEVEL = 10;
+
 }

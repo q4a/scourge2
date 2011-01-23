@@ -85,7 +85,7 @@ public class FileResourceLocator implements ResourceLocator {
 
         @Override
         public ResourceSource getRelativeSource(String s) {
-            throw new RuntimeException("Implement me");
+            return new FileResourceSource(new File(file.getParentFile(), s));
         }
 
         @Override

@@ -1,6 +1,12 @@
 package org.scourge.terrain;
 
 import com.ardor3d.bounding.BoundingBox;
+import com.ardor3d.extension.animation.skeletal.AnimationManager;
+import com.ardor3d.extension.animation.skeletal.SkeletonPose;
+import com.ardor3d.extension.animation.skeletal.blendtree.SimpleAnimationApplier;
+import com.ardor3d.extension.model.collada.jdom.ColladaImporter;
+import com.ardor3d.extension.model.collada.jdom.data.ColladaStorage;
+import com.ardor3d.extension.model.collada.jdom.data.SkinData;
 import com.ardor3d.extension.model.util.KeyframeController;
 import com.ardor3d.intersection.BoundingCollisionResults;
 import com.ardor3d.intersection.CollisionResults;
@@ -9,11 +15,15 @@ import com.ardor3d.math.Quaternion;
 import com.ardor3d.math.Vector3;
 import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Node;
+import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.controller.SpatialController;
 import com.ardor3d.scenegraph.shape.Box;
+import org.scourge.Main;
+import org.scourge.config.ModelTemplate;
 import org.scourge.util.ShapeUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,9 +31,8 @@ import java.util.Map;
  * Date: Feb 9, 2010
  * Time: 9:51:05 AM
  */
-public class Md2Model implements NodeGenerator {
+public class CreatureModel implements NodeGenerator {
     private Node node;
-    private Map<Md2Key, Integer[]> keyframes = new HashMap<Md2Key, Integer[]>();
 //    private final Ray down = new Ray();
 //    private final Ray forward = new Ray();
 //    private TrianglePickResults noDistanceResults;
@@ -33,12 +42,9 @@ public class Md2Model implements NodeGenerator {
     private CollisionResults collisionResults;
     private static final float MD2_SCALE = .2f;
 
-    public enum Md2Key {
-        crpain, death, pain, crstand, run, crdeath, jump, salute, point, stand, crattack, wave, attack, taunt, flip, crwalk, crstnd, crattak
-    }
+    private AnimationManager manager;
 
-
-    public Md2Model(String model, String skin, String namePrefix) {
+    public CreatureModel(ModelTemplate model, String skin, String namePrefix) {
         collisionResults = new BoundingCollisionResults();
 
 //        // point it down
@@ -46,13 +52,31 @@ public class Md2Model implements NodeGenerator {
 //        noDistanceResults = new TrianglePickResults();
 //        noDistanceResults.setCheckDistance(false);
 
-        Map<String, Integer[]> frames = new HashMap<String, Integer[]>();
-        node = ShapeUtil.loadMd2(model, skin, namePrefix, true, frames);
-        node.setScale(MD2_SCALE);
+//        Map<String, Integer[]> frames = new HashMap<String, Integer[]>();
+//        node = ShapeUtil.loadMd2(model, skin, namePrefix, true, frames);
+//        node.setScale(MD2_SCALE);
 
-        for(String s : frames.keySet()) {
-            keyframes.put(Md2Key.valueOf(s), frames.get(s));
+
+
+        final ColladaStorage storage = new ColladaImporter().load(model.getModel());
+        //Node colladaNode = storage.getScene();
+        final List<SkinData> skinDatas = storage.getSkins();
+        node = skinDatas.get(0).getSkinBaseNode();
+//        node.setScale(MD2_SCALE);
+        for(Spatial spatial : node.getChildren()) {
+            model.transform(spatial);
         }
+
+        SkeletonPose pose = skinDatas.get(0).getPose();
+
+        // Make our manager
+        manager = new AnimationManager(Main.getMain().getTimer(), pose);
+
+        // Add our "applier logic".
+        final SimpleAnimationApplier applier = new SimpleAnimationApplier();
+        manager.setApplier(applier);
+
+        setAnimation(Animations.stand);
     }
 
     public void moveTo(Vector3 pos) {
@@ -167,22 +191,8 @@ public class Md2Model implements NodeGenerator {
         return direction;
     }
 //
-    public void setKeyFrame(Md2Key key) {
-        setKeyFrame(key, 10);
-    }
-
-    public void setKeyFrame(Md2Key key, float speed) {
-        Mesh mesh = (Mesh)node.getChild(0);
-        KeyframeController<Mesh> c = (KeyframeController<Mesh>)mesh.getController(0);
-
-        c.setSpeed(speed);
-        c.setActive(true);
-//        c.setRepeatType(SpatialController.RT_WRAP);
-        Integer[] times = keyframes.get(key);
-        if(times != null) {
-            c.setMinTime(times[0]);
-            c.setMaxTime(times[1] - 1);
-        }
+    public void setAnimation(Animations animation) {
+        manager.getBaseAnimationLayer().setCurrentState(animation.name(), true);
     }
 
     public int getX() {
@@ -191,5 +201,9 @@ public class Md2Model implements NodeGenerator {
         
     public int getZ() {
         return (int)Math.round(getNode().getTranslation().getZ() / ShapeUtil.WALL_WIDTH);
+    }
+
+    public enum Animations {
+        stand, run
     }
 }

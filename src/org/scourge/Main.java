@@ -20,11 +20,11 @@ import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.extension.CameraNode;
 import com.ardor3d.scenegraph.extension.Skybox;
+import com.ardor3d.scenegraph.hint.CullHint;
 import com.ardor3d.scenegraph.shape.Quad;
 import com.ardor3d.ui.text.BasicText;
-import com.ardor3d.util.GameTaskQueueManager;
-import com.ardor3d.util.ReadOnlyTimer;
-import com.ardor3d.util.TextureManager;
+import com.ardor3d.util.*;
+import com.ardor3d.util.Timer;
 import com.ardor3d.util.resource.ResourceLocatorTool;
 import org.scourge.editor.MapSymbol;
 import org.scourge.io.BlockData;
@@ -215,13 +215,6 @@ public class Main extends ExampleBase implements Scourge {
         cs.setCullFace(CullState.Face.Back);
         _root.setRenderState(cs);
 
-//        FogState fogState = new FogState();
-//        fogState.setStart(farPlane / 2.0f);
-//        fogState.setEnd(farPlane);
-//        fogState.setColor(new ColorRGBA(0.96f, 0.97f, 1.0f, 1.0f));
-//        fogState.setDensityFunction(DensityFunction.Linear);
-//        _root.setRenderState(fogState);
-
         fogState = new FogState();
         fogState.setDensity(1.0f);
         fogState.setEnabled(true);
@@ -296,8 +289,7 @@ public class Main extends ExampleBase implements Scourge {
         _root.attachChild(waterNode);
 
         _passManager = new BasicPassManager();
-//        pManager.add(waterEffectRenderPass);
-//
+
         RenderPass rootPass = new RenderPass();
         rootPass.add(_root);
         _passManager.add(rootPass);
@@ -307,7 +299,7 @@ public class Main extends ExampleBase implements Scourge {
         mapPass.add(miniMap.getNode());
         _passManager.add(mapPass);
 
-//        _root.setCullHint(CullHint.Dynamic);
+        _root.getSceneHints().setCullHint(CullHint.Dynamic);
 //        rootNode.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
 
         setFogOnWater(true);
@@ -535,7 +527,7 @@ public class Main extends ExampleBase implements Scourge {
     }
 
     public void showWindow(Window win) {
-        _root.attachChild(win.getNode());
+        _root.attachChildAt(win.getNode(), 0);
     }
 
     public void hideWindow(Window win) {
@@ -587,8 +579,8 @@ public class Main extends ExampleBase implements Scourge {
         } else {
             Camera camera = _canvas.getCanvasRenderer().getCamera();
             camNode = new CameraNode("camera node", camera);
-            camNode.setTranslation(new Vector3(-380, 350, 0));
-//            camNode.setTranslation(new Vector3(-100, 80, 0));
+//            camNode.setTranslation(new Vector3(-380, 350, 0));
+            camNode.setTranslation(new Vector3(-100, 80, 0));
             Quaternion q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 90.0f, Vector3.UNIT_Y);
             q.multiplyLocal(new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 35.0f, Vector3.UNIT_X));
             camNode.setRotation(q);
@@ -693,5 +685,9 @@ public class Main extends ExampleBase implements Scourge {
 
     public Canvas getCanvas() {
         return _canvas;
+    }
+
+    public Timer getTimer() {
+        return _timer;
     }
 }

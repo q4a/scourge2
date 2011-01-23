@@ -11,7 +11,7 @@ import com.ardor3d.renderer.state.StencilState;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.shape.Quad;
 import org.scourge.Main;
-import org.scourge.terrain.Md2Model;
+import org.scourge.terrain.CreatureModel;
 import org.scourge.terrain.Region;
 import org.scourge.ui.component.WinUtil;
 
@@ -125,7 +125,7 @@ public class MiniMap {
 
     public void update(boolean terrainChanged) {
         // move to player position
-        Md2Model pm = Main.getMain().getPlayer().getCreatureModel();
+        CreatureModel pm = Main.getMain().getPlayer().getCreatureModel();
         float px = -pm.getX() / MINIMAP_TILE_SIZE * MINIMAP_TILE_TEX_SIZE;
         float py = pm.getZ() / MINIMAP_TILE_SIZE * MINIMAP_TILE_TEX_SIZE;
         map.setTranslation(px, py, 0);

@@ -1,8 +1,9 @@
 package org.scourge.model;
 
 import com.ardor3d.math.Vector3;
+import org.scourge.config.ModelTemplate;
 import org.scourge.config.PlayerTemplate;
-import org.scourge.terrain.Md2Model;
+import org.scourge.terrain.CreatureModel;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -57,7 +58,7 @@ public class Creature implements ItemList, HasModel {
 
 
     // not saved
-    private Md2Model creatureModel;
+    private CreatureModel creatureModel;
 
     public static Creature newPlayer() {
         Creature c = new Creature();
@@ -68,8 +69,8 @@ public class Creature implements ItemList, HasModel {
         //c.position = new float[] { 651, 9, 413 };
         c.position = new float[] { 644, 9, 433 };
         c.name = "zorro";
-        c.model = "./data/models/sfod8/tris.md2";
-        c.skin = "./data/models/sfod8/Rieger.png";
+        c.model = "";
+        c.skin = "";
         c.level = 1;
         c.experience = 0;
         c.hp = PlayerTemplate.HP_PER_LEVEL;
@@ -96,7 +97,7 @@ public class Creature implements ItemList, HasModel {
 
     public void afterLoad() {
         // init the model
-        creatureModel = new Md2Model(model, skin, "pc");
+        creatureModel = new CreatureModel(ModelTemplate.valueOf(model), skin, "pc");
 //        creatureModel.setKeyFrame(Md2Model.Md2Key.stand);
         creatureModel.moveTo(new Vector3(position[0], position[1], position[2]));
         for(Item item : inventory) {
@@ -144,11 +145,11 @@ public class Creature implements ItemList, HasModel {
         this.position = position;
     }
 
-    public Md2Model getCreatureModel() {
+    public CreatureModel getCreatureModel() {
         return creatureModel;
     }
 
-    public void setCreatureModel(Md2Model creatureModel) {
+    public void setCreatureModel(CreatureModel creatureModel) {
         this.creatureModel = creatureModel;
     }
 

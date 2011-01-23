@@ -1,6 +1,6 @@
 package org.scourge.model;
 
-import org.scourge.terrain.Md2Model;
+import org.scourge.terrain.CreatureModel;
 
 /**
  * User: gabor
@@ -8,5 +8,5 @@ import org.scourge.terrain.Md2Model;
  * Time: 9:16:44 AM
  */
 public interface HasModel {
-    public Md2Model getCreatureModel();
+    public CreatureModel getCreatureModel();
 }
