@@ -242,9 +242,8 @@ public class PlayerControl {
         proposedLocation.set(main.getPlayer().getCreatureModel().getNode().getTranslation());
         proposedLocation.addLocal(main.getPlayer().getCreatureModel().getDirection().multiply(PLAYER_SPEED * time, tempVa));
         if(main.getPlayer().getCreatureModel().canMoveTo(proposedLocation)) {
-            //main.getPlayer().getCreatureModel().getNode().getLocalTranslation().set(proposedLocation);
             main.getTerrain().loadRegion();
-//            main.checkRoof();
+            main.checkRoof();
         }
     }
 

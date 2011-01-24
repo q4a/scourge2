@@ -30,6 +30,7 @@ import org.scourge.editor.MapSymbol;
 import org.scourge.io.BlockData;
 import org.scourge.model.Creature;
 import org.scourge.terrain.Model;
+import org.scourge.terrain.Region;
 import org.scourge.terrain.Terrain;
 import org.scourge.terrain.Tile;
 import org.scourge.ui.MiniMap;
@@ -79,6 +80,8 @@ public class Main extends ExampleBase implements Scourge {
     private BasicPassManager _passManager;
     private MouseState mouse;
     private boolean skyboxEnabled = true;
+    private boolean updateRoof;
+    private boolean inUpDown;
 
     public Main() {
         main = this;
@@ -113,6 +116,11 @@ public class Main extends ExampleBase implements Scourge {
 
         _passManager.updatePasses(timer.getTimePerFrame());
 
+        if(updateRoof) {
+            updateRoof = false;
+            terrain.setRoofVisible(!inDungeon);
+            updateFog();
+        }
         terrain.update(timer.getTimePerFrame());
 
         ShapeUtil.updateControllers(timer.getTimePerFrame());
@@ -193,7 +201,7 @@ public class Main extends ExampleBase implements Scourge {
         _canvas.getCanvasRenderer().getCamera().setLocation(new Vector3(0, 100, 0));
         _canvas.getCanvasRenderer().getCamera().lookAt(new Vector3(0, 100, 1), Vector3.UNIT_Y);
 //        _canvas.getCanvasRenderer().getCamera().setFrustumPerspective(65.0, (float) _canvas.getCanvasRenderer().getCamera().getWidth()/ _canvas.getCanvasRenderer().getCamera().getHeight(), 1.0f, farPlane);
-        _canvas.getCanvasRenderer().getCamera().setFrustumPerspective( 30.0f, getScreenWidth() / getScreenHeight(), 1, 1000 );
+        _canvas.getCanvasRenderer().getCamera().setFrustumPerspective(30.0f, getScreenWidth() / getScreenHeight(), 1, 1000);
         _canvas.getCanvasRenderer().getCamera().update();
 
 //        _controlHandle.setMoveSpeed(50);
@@ -689,5 +697,41 @@ public class Main extends ExampleBase implements Scourge {
 
     public Timer getTimer() {
         return _timer;
+    }
+    
+    public void checkRoof() {
+        Tile tile = player.getTile();
+        if(tile != null) {
+            boolean inDungeon = tile.getClimate().isDungeon();
+            if(inDungeon != this.inDungeon) {
+                this.inDungeon = inDungeon;
+                updateRoof();
+            }
+            boolean inUpDown = (tile.getC() == MapSymbol.up.getC() || tile.getC() == MapSymbol.down.getC());
+            if(inUpDown != this.inUpDown) {
+                System.err.println("teleporting...");
+                this.inUpDown = inUpDown;
+
+                // teleport to the location
+                BlockData blockData = tile.getBlockData();
+                System.err.println("\tblockData=" + blockData);
+                if(blockData != null) {
+                    String location = blockData.getData().get(tile.getC() == MapSymbol.up.getC() ? MapSymbol.up.getBlockDataKeys()[0] : MapSymbol.down.getBlockDataKeys()[0]);
+                    System.err.println("\tlocation=" + location);
+                    try {
+                        String[] s = location.trim().split(",");
+                        getPlayer().getCreatureModel().moveTo(new Vector3(Float.parseFloat(s[0]) + Region.EDGE_BUFFER, 1f, Float.parseFloat(s[1]) + Region.EDGE_BUFFER));
+                        getTerrain().teleport();
+                    } catch(RuntimeException exc) {
+                        exc.printStackTrace();
+                    }
+                }
+                System.err.println("\tdone.");
+            }
+        }
+    }
+    
+    public void updateRoof() {
+        updateRoof = true;
     }
 }

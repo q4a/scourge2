@@ -1,9 +1,12 @@
 package org.scourge.model;
 
 import com.ardor3d.math.Vector3;
+import org.scourge.Main;
 import org.scourge.config.ModelTemplate;
 import org.scourge.config.PlayerTemplate;
 import org.scourge.terrain.CreatureModel;
+import org.scourge.terrain.Region;
+import org.scourge.terrain.Tile;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -240,15 +243,15 @@ public class Creature implements ItemList, HasModel {
         inventory.add(item);
     }
 
-//    /**
-//     * Get the tile under this creature.
-//     * @return the tile under this creature.
-//     */
-//    public Tile getTile() {
-//        return Main.getMain().getTerrain().getCurrentRegion() == null ?
-//               null :
-//               Main.getMain().getTerrain().getCurrentRegion().getTile(
-//                getCreatureModel().getX() % Region.REGION_SIZE,
-//                getCreatureModel().getZ() % Region.REGION_SIZE);
-//    }
+    /**
+     * Get the tile under this creature.
+     * @return the tile under this creature.
+     */
+    public Tile getTile() {
+        return Main.getMain().getTerrain().getCurrentRegion() == null ?
+               null :
+               Main.getMain().getTerrain().getCurrentRegion().getTile(
+                getCreatureModel().getX() % Region.REGION_SIZE,
+                getCreatureModel().getZ() % Region.REGION_SIZE);
+    }
 }

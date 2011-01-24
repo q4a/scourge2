@@ -12,6 +12,7 @@ import com.ardor3d.scenegraph.extension.PassNode;
 import com.ardor3d.scenegraph.extension.PassNodeState;
 import com.ardor3d.util.TextureManager;
 import org.scourge.Climate;
+import org.scourge.Main;
 import org.scourge.Scourge;
 import org.scourge.editor.MapSymbol;
 import org.scourge.io.BlockData;
@@ -153,17 +154,19 @@ public class Tile {
         node.attachChild(groundNode);
 
         // add mountains on top of dungeons
-//        if(climate.isDungeon()) {
-//            roof = Model.mountain.createSpatial();
-//            roof.getLocalTranslation().y = (1 - level) * ShapeUtil.WALL_HEIGHT;
-//            roof.setRenderQueueMode(com.jme.renderer.Renderer.QUEUE_OPAQUE);
-//            roof.updateModelBound();
-//            Tile tile = main.getPlayer().getTile();
-//            if(tile != null && !tile.getClimate().isDungeon()) {
-//                node.attachChild(roof);
+        if(climate.isDungeon()) {
+            roof = Model.mountain.createSpatial();
+            Vector3 v = new Vector3(roof.getTranslation());
+            v.setY((1 - level) * ShapeUtil.WALL_HEIGHT);
+            roof.setTranslation(v);
+            roof.getSceneHints().setRenderBucketType(RenderBucketType.Opaque);
+//            roof.updateWorldTransform(true);
+            Tile tile = Main.getMain().getPlayer().getTile();
+            if(tile != null && !tile.getClimate().isDungeon()) {
+                node.attachChild(roof);
 //                node.updateModelBound();
-//            }
-//        }
+            }
+        }
     }
 
     public void setRoofVisible(boolean visible) {
@@ -173,7 +176,7 @@ public class Tile {
             } else if(!visible && roof.getParent() == node) {
                 node.detachChild(roof);
             }
-            //roof.setRenderQueueMode(visible ? com.jme.renderer.Renderer.QUEUE_OPAQUE : com.jme.renderer.Renderer.QUEUE_SKIP);
+            roof.getSceneHints().setRenderBucketType(visible ? RenderBucketType.Opaque : RenderBucketType.Skip);
         }
     }
 

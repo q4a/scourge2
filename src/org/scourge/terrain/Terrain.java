@@ -70,7 +70,7 @@ public class Terrain implements NodeGenerator {
         loadAsynchronously = false;
         loadRegion(scourge.getPlayer().getCreatureModel().getX() / Region.REGION_SIZE, scourge.getPlayer().getCreatureModel().getZ() / Region.REGION_SIZE);
         loadRegion();
-//        main.checkRoof();
+        Main.getMain().checkRoof();
         loadAsynchronously = true;
     }
 
