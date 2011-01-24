@@ -78,6 +78,7 @@ public class Main extends ExampleBase implements Scourge {
     private static Main main;
     private BasicPassManager _passManager;
     private MouseState mouse;
+    private boolean skyboxEnabled = true;
 
     public Main() {
         main = this;
@@ -108,11 +109,9 @@ public class Main extends ExampleBase implements Scourge {
      */
     @Override
     protected void updateExample(final ReadOnlyTimer timer) {
-        _passManager.updatePasses(timer.getTimePerFrame());
-
         final Camera camera = _canvas.getCanvasRenderer().getCamera();
-        camera.setFrustumPerspective( 30.0f, getScreenWidth() / getScreenHeight(), 1, 1000 );
-        camera.update();
+
+        _passManager.updatePasses(timer.getTimePerFrame());
 
         terrain.update(timer.getTimePerFrame());
 
@@ -134,15 +133,15 @@ public class Main extends ExampleBase implements Scourge {
         }
         firsts.clear();
 
-
-//        skybox.setTranslation(camera.getLocation());
-
         if(draggingIcon != null) {
             draggingIcon.setTranslation(mouse.getX() + dragOffsetX,
                                         mouse.getY() - dragOffsetY,
                                         0);
         }
 
+        if(skyboxEnabled) {
+            skybox.setTranslation(camera.getLocation());
+        }
 
         counter += timer.getTimePerFrame();
         frames++;
@@ -153,8 +152,7 @@ public class Main extends ExampleBase implements Scourge {
             System.out.printf("%7.1f FPS\n", fps);
         }
 
-        final Vector3 transVec = new Vector3(camera.getLocation().getX(), waterNode.getWaterHeight(), camera
-                .getLocation().getZ());
+        final Vector3 transVec = new Vector3(camera.getLocation().getX(), waterNode.getWaterHeight(), camera.getLocation().getZ());
 
         setTextureCoords(0, transVec.getX(), -transVec.getZ(), textureScale);
 
@@ -193,10 +191,9 @@ public class Main extends ExampleBase implements Scourge {
         _canvas.setTitle("Scourge II");
         _canvas.getCanvasRenderer().getCamera().setLocation(new Vector3(0, 100, 0));
         _canvas.getCanvasRenderer().getCamera().lookAt(new Vector3(0, 100, 1), Vector3.UNIT_Y);
-        _canvas.getCanvasRenderer().getCamera().setFrustumPerspective(
-                65.0,
-                (float) _canvas.getCanvasRenderer().getCamera().getWidth()
-                        / _canvas.getCanvasRenderer().getCamera().getHeight(), 1.0f, farPlane);
+//        _canvas.getCanvasRenderer().getCamera().setFrustumPerspective(65.0, (float) _canvas.getCanvasRenderer().getCamera().getWidth()/ _canvas.getCanvasRenderer().getCamera().getHeight(), 1.0f, farPlane);
+        _canvas.getCanvasRenderer().getCamera().setFrustumPerspective( 30.0f, getScreenWidth() / getScreenHeight(), 1, 1000 );
+        _canvas.getCanvasRenderer().getCamera().update();
 
 //        _controlHandle.setMoveSpeed(50);
 
@@ -570,6 +567,7 @@ public class Main extends ExampleBase implements Scourge {
 
     public void toggleCameraAttached() {
         if(camNode != null) {
+            skyboxEnabled = true;
 //            input = firstPersonHandler;
 //            playerControl.removeTriggers();
 //            _controlHandle = FirstPersonControl.setupTriggers(_logicalLayer, _worldUp, true);
@@ -577,6 +575,7 @@ public class Main extends ExampleBase implements Scourge {
             camNode.setCamera(null);
             camNode = null;
         } else {
+            skyboxEnabled = false;
             Camera camera = _canvas.getCanvasRenderer().getCamera();
             camNode = new CameraNode("camera node", camera);
 //            camNode.setTranslation(new Vector3(-380, 350, 0));

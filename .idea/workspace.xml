@@ -7,9 +7,7 @@
     <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scourge2.jar" afterPath="$PROJECT_DIR$/scourge2.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/ChunkerClass.java" afterPath="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/ChunkerClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/MaterialBlock.java" afterPath="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/MaterialBlock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/util/ShapeUtil.java" afterPath="$PROJECT_DIR$/src/org/scourge/util/ShapeUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/Main.java" afterPath="$PROJECT_DIR$/src/org/scourge/Main.java" />
     </list>
     <ignored path="scourge2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,67 +66,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Tile.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Tile.java">
+      <file leaf-file-name="CreatureModel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="291" column="31" selection-start="10681" selection-end="10681" vertical-scroll-proportion="0.0">
+            <state line="86" column="24" selection-start="3179" selection-end="3179" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Model.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Model.java">
+      <file leaf-file-name="Terrain.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="800" column="40" selection-start="26846" selection-end="26846" vertical-scroll-proportion="-21.846153">
+            <state line="299" column="37" selection-start="10636" selection-end="10636" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShapeUtil.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/scourge/util/ShapeUtil.java">
+      <file leaf-file-name="Main.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="269" column="0" selection-start="12064" selection-end="12064" vertical-scroll-proportion="0.0">
+            <state line="195" column="48" selection-start="6787" selection-end="6787" vertical-scroll-proportion="0.46355686">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Item.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/scourge/model/Item.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="100" column="35" selection-start="2963" selection-end="2963" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TileType.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TileType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="197" column="36" selection-start="5957" selection-end="5957" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MaterialBlock.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/MaterialBlock.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="108" column="78" selection-start="4163" selection-end="4163" vertical-scroll-proportion="0.4052478">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChunkerClass.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/ChunkerClass.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="30" selection-start="1990" selection-end="1995" vertical-scroll-proportion="-6.923077">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -147,22 +109,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/org/scourge/terrain/TreeController.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/PlayerControl.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/FileResourceLocator.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/config/PlayerTemplate.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/model/Creature.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/ui/CreatureEditor.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/model/Monster.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/config/ModelTemplate.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/Main.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" />
         <option value="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/ChunkerClass.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Model.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/model/Item.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/util/ShapeUtil.java" />
         <option value="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/MaterialBlock.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/Main.java" />
       </list>
     </option>
   </component>
@@ -588,7 +550,7 @@
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="switching to collada models (from md2)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Picking rays for ground/water now work." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -606,6 +568,8 @@
     <MESSAGE value="Added missing files." />
     <MESSAGE value="Added jar file." />
     <MESSAGE value="switching to collada models (from md2)" />
+    <MESSAGE value="ground texture color fix" />
+    <MESSAGE value="Picking rays for ground/water now work." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -615,31 +579,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/model/Monster.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="70" selection-start="749" selection-end="749" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/config/ModelTemplate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="938" selection-end="938" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="300" column="42" selection-start="10704" selection-end="10704" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TileTexType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="54" column="25" selection-start="1748" selection-end="1748" vertical-scroll-proportion="0.0">
@@ -682,13 +621,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TileType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="197" column="36" selection-start="5957" selection-end="5957" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/ChunkerClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="48" column="30" selection-start="1990" selection-end="1995" vertical-scroll-proportion="-6.923077">
@@ -699,13 +631,6 @@
     <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Model.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="800" column="40" selection-start="26846" selection-end="26846" vertical-scroll-proportion="-21.846153">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/model/Item.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="35" selection-start="2963" selection-end="2963" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -728,8 +653,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/MaterialBlock.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="78" selection-start="4163" selection-end="4163" vertical-scroll-proportion="0.4052478">
+        <state line="108" column="78" selection-start="4163" selection-end="4163" vertical-scroll-proportion="0.2662835">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TileType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="197" column="36" selection-start="5957" selection-end="5957" vertical-scroll-proportion="0.22988506">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/model/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="100" column="35" selection-start="2963" selection-end="2963" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="299" column="37" selection-start="10636" selection-end="10636" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="24" selection-start="3179" selection-end="3179" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="195" column="48" selection-start="6787" selection-end="6787" vertical-scroll-proportion="0.46355686">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
