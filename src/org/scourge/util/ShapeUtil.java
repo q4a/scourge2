@@ -267,8 +267,8 @@ public class ShapeUtil {
     public static Texture loadTexture(String path, String textureKey, boolean flip) {
         Texture t0 = textures.get(textureKey);
         if (t0 == null) {
-        	//t0 = TextureManager.load(path, Texture.MinificationFilter.Trilinear, Texture.MagnificationFilter.Bilinear, 0, flip);
             t0 = TextureManager.load(path, Texture.MinificationFilter.Trilinear, flip);
+            t0.setMagnificationFilter(Texture.MagnificationFilter.Bilinear);
 	        textures.put(textureKey, t0);
         }
         return t0;

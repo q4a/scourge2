@@ -49,7 +49,7 @@ abstract class ChunkerClass implements MaxChunkIDs{
     static boolean DEBUG_LIGHT=false;
     static boolean DEBUG=false;
     static boolean DEBUG_SEVERE=false;
-    static boolean DISABLE_BUMP_MAPPING = true;
+    static boolean DISABLE_BUMP_MAPPING = false;
 
     public DataInput myIn;
     private ChunkHeader header;

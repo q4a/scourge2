@@ -39,6 +39,9 @@ import java.util.logging.Logger;
 import com.ardor3d.image.Texture;
 import com.ardor3d.image.TextureStoreFormat;
 import com.ardor3d.math.ColorRGBA;
+import com.ardor3d.math.Matrix4;
+import com.ardor3d.math.Transform;
+import com.ardor3d.math.Vector3;
 import com.ardor3d.renderer.state.MaterialState;
 import com.ardor3d.renderer.state.TextureState;
 import com.ardor3d.renderer.state.WireframeState;
@@ -95,16 +98,18 @@ class MaterialBlock extends ChunkerClass {
                 return true;
 
             case MAT_DIF_COLOR:
-                myMatState.setDiffuse(new ColorChunk(myIn,i).getBestColor());
-                myMatState.setColorMaterial(ColorMaterial.Diffuse);
-                myMatState.setEnabled(true);
-                if (DEBUG || DEBUG_LIGHT) logger.info("Diffuse color:" + myMatState.getDiffuse());
+                new PercentChunk(myIn,i);   // ignored: scourge doesn't use it
+//                myMatState.setDiffuse(new ColorChunk(myIn,i).getBestColor());
+//                myMatState.setColorMaterial(ColorMaterial.Diffuse);
+//                myMatState.setEnabled(true);
+//                if (DEBUG || DEBUG_LIGHT) logger.info("Diffuse color:" + myMatState.getDiffuse());
                 return true;
 
             case MAT_SPEC_CLR:
-                myMatState.setSpecular(new ColorChunk(myIn,i).getBestColor());
-                myMatState.setEnabled(true);
-                if (DEBUG || DEBUG_LIGHT) logger.info("Diffuse color:" + myMatState.getSpecular());
+                new PercentChunk(myIn,i);   // ignored: scourge doesn't use it
+//                myMatState.setSpecular(new ColorChunk(myIn,i).getBestColor());
+//                myMatState.setEnabled(true);
+//                if (DEBUG || DEBUG_LIGHT) logger.info("Diffuse color:" + myMatState.getSpecular());
                 return true;
             case MAT_SHINE:
                 myMatState.setShininess(128*new PercentChunk(myIn,i).percent);
@@ -231,12 +236,11 @@ class MaterialBlock extends ChunkerClass {
         myTexState.setTexture(t, 3); // Set as third texture-unit
     }
 
-        private Texture createTexture(TextureChunk tc) {
-                ResourceSource resourceSource = ResourceLocatorTool.locateResource(
-                ResourceLocatorTool.TYPE_TEXTURE, tc.texName);
-                Texture t = TextureManager.load(resourceSource, Texture.MinificationFilter.BilinearNearestMipMap,
-                                TextureStoreFormat.GuessNoCompressedFormat, true);
-        t.setAnisotropicFilterPercent(0.0f);
+    private Texture createTexture(TextureChunk tc) {
+        ResourceSource resourceSource = ResourceLocatorTool.locateResource(ResourceLocatorTool.TYPE_TEXTURE, tc.texName);
+//        Texture t = TextureManager.load(resourceSource, Texture.MinificationFilter.BilinearNearestMipMap, TextureStoreFormat.GuessNoCompressedFormat, true);
+        Texture t = TextureManager.load(resourceSource, Texture.MinificationFilter.Trilinear, TextureStoreFormat.GuessNoCompressedFormat, true);
+//        t.setAnisotropicFilterPercent(0.0f);
         t.setMagnificationFilter(Texture.MagnificationFilter.Bilinear);
 
                 t.setWrap(Texture.WrapMode.Repeat);
@@ -248,7 +252,10 @@ class MaterialBlock extends ChunkerClass {
                 if (vScale == 0) {
                         vScale = 1;
                 }
-                //t.setScale(new Vector3(uScale, vScale, 1));
+                Transform transform = new Transform();
+                transform.setScale(uScale, vScale, 1);
+                t.setTextureMatrix(transform.getHomogeneousMatrix(null));
+//                t.setScale(new Vector3(uScale, vScale, 1));
 
                 myTexState.setEnabled(true);
                 return t;
