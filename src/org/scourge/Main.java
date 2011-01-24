@@ -169,6 +169,7 @@ public class Main extends ExampleBase implements Scourge {
 
     /**
      * Initialize pssm pass and scene.
+     * Testing hg.
      */
     @Override
     protected void initExample() {
