@@ -1,6 +1,8 @@
 package org.scourge.terrain;
 
 import com.ardor3d.bounding.BoundingBox;
+import com.ardor3d.bounding.BoundingSphere;
+import com.ardor3d.bounding.BoundingVolume;
 import com.ardor3d.extension.animation.skeletal.AnimationManager;
 import com.ardor3d.extension.animation.skeletal.SkeletonPose;
 import com.ardor3d.extension.animation.skeletal.blendtree.SimpleAnimationApplier;
@@ -10,9 +12,9 @@ import com.ardor3d.extension.model.collada.jdom.data.SkinData;
 import com.ardor3d.extension.model.util.KeyframeController;
 import com.ardor3d.intersection.BoundingCollisionResults;
 import com.ardor3d.intersection.CollisionResults;
-import com.ardor3d.math.MathUtils;
-import com.ardor3d.math.Quaternion;
-import com.ardor3d.math.Vector3;
+import com.ardor3d.intersection.PickingUtil;
+import com.ardor3d.intersection.PrimitivePickResults;
+import com.ardor3d.math.*;
 import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
@@ -33,37 +35,29 @@ import java.util.Map;
  */
 public class CreatureModel implements NodeGenerator {
     private Node node;
-//    private final Ray down = new Ray();
-//    private final Ray forward = new Ray();
-//    private TrianglePickResults noDistanceResults;
+    private final Ray3 down = new Ray3();
+    private final Ray3 forward = new Ray3();
+    private PrimitivePickResults  noDistanceResults = new PrimitivePickResults();
     private Quaternion q = new Quaternion();
     private Quaternion p = new Quaternion();
     private Vector3 direction = new Vector3();
     private CollisionResults collisionResults;
-    private static final float MD2_SCALE = .2f;
 
     private AnimationManager manager;
 
     public CreatureModel(ModelTemplate model, String skin, String namePrefix) {
         collisionResults = new BoundingCollisionResults();
 
-//        // point it down
-//        down.getDirection().set(new Vector3(0, -1, 0));
-//        noDistanceResults = new TrianglePickResults();
-//        noDistanceResults.setCheckDistance(false);
-
-//        Map<String, Integer[]> frames = new HashMap<String, Integer[]>();
-//        node = ShapeUtil.loadMd2(model, skin, namePrefix, true, frames);
-//        node.setScale(MD2_SCALE);
-
-
+        // point it down
+        down.setDirection(new Vector3(0, -1, 0));
+        noDistanceResults.setCheckDistance(false);
 
         final ColladaStorage storage = new ColladaImporter().load(model.getModel());
         //Node colladaNode = storage.getScene();
         final List<SkinData> skinDatas = storage.getSkins();
         node = skinDatas.get(0).getSkinBaseNode();
-//        node.setScale(MD2_SCALE);
         for(Spatial spatial : node.getChildren()) {
+            ((Mesh)spatial).setModelBound(new BoundingBox());
             model.transform(spatial);
         }
 
@@ -95,16 +89,46 @@ public class CreatureModel implements NodeGenerator {
     }
 
     private Vector3 backupLocation = new Vector3();
-//    private double backupScaleY;
+    private Vector3 backupScale = new Vector3();
     public boolean canMoveTo(Vector3 proposedLocation) {
         boolean retValue = false;
 
-        // collisions are sooo simple in jme...
         backupLocation.set(node.getTranslation());
-        node.setTranslation(proposedLocation);
-//        backupScaleY = node.getScale().getY();
 
-        return true;
+        // Make the player 2 units tall. This "lifts" him off the floor so we can walk over floor irregularities, ramps, bridges, etc.
+        // Also this makes him shorter so we can fit thru the dungeon entrance. Yes this is a hack
+        backupScale.set(node.getScale());
+        double y = (2.0f / ((BoundingBox)node.getWorldBound()).getYExtent()) * node.getScale().getY();
+        node.setScale(backupScale.getX(), y, backupScale.getZ());
+        node.updateGeometricState(0, false); // make geometry changes take effect now!
+
+        Vector3 v = Vector3.fetchTempInstance();
+        v.set(getNode().getTranslation());
+        v.addLocal(getDirection().normalizeLocal().multiplyLocal(2.0f));
+        v.addLocal(0, 8, 0);
+        down.setOrigin(v);
+        Vector3.releaseTempInstance(v);
+        noDistanceResults.clear();
+
+        // if we hit something we're not on water
+        PickingUtil.findPick(Main.getMain().getTerrain().getNode(), down, noDistanceResults);
+        for(int i = 0; i < noDistanceResults.getNumber(); i++) {
+            if(noDistanceResults.getPickData(i).getTarget() != null) {
+                retValue = true;
+                break;
+            }
+        }
+
+        node.setScale(backupScale);
+        if(retValue) {
+            node.setTranslation(proposedLocation);
+        } else {
+            node.setTranslation(backupLocation);
+        }
+//        node.updateGeometricState(0, false); // make geometry changes take effect now!
+
+        return retValue;
+
 
 //        // Make the player 2 units tall. This "lifts" him off the floor so we can walk over floor irregularities, ramps, bridges, etc.
 //        // Also this makes him shorter so we can fit thru the dungeon entrance. Yes this is a hack

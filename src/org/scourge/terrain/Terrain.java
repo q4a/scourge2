@@ -1,7 +1,13 @@
 package org.scourge.terrain;
 
 
+import com.ardor3d.bounding.BoundingBox;
+import com.ardor3d.intersection.PickData;
+import com.ardor3d.intersection.PickingUtil;
+import com.ardor3d.intersection.PrimitivePickResults;
+import com.ardor3d.math.Ray3;
 import com.ardor3d.math.Vector3;
+import com.ardor3d.math.type.ReadOnlyVector3;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
 import org.scourge.Main;
@@ -282,38 +288,35 @@ public class Terrain implements NodeGenerator {
         return loadedRegions;
     }
 
-//    private static TrianglePickResults results = new TrianglePickResults();
-//    private static final Ray down = new Ray();
-//
-//    static {
-//        down.getDirection().set(new Vector3(0, -1, 0));
-//        results.setCheckDistance(true);
-//    }
-//
+    private static final Ray3 down = new Ray3();
+    private static PrimitivePickResults results = new PrimitivePickResults();
+//    private static Vector3 topOfTerrain = new Vector3();
 
-    private static Vector3 topOfTerrain = new Vector3();
+    static {
+        down.setDirection(new Vector3(0, -1, 0));
+        results.setCheckDistance(true);
+    }
 
     public static boolean moveOnTopOfTerrain(Spatial spatial) {
         boolean ret = false;
-        topOfTerrain.set(spatial.getTranslation());
-        topOfTerrain.setY(8);
-        spatial.setTranslation(topOfTerrain);
-        ret = true;
-//        spatial.setIsCollidable(false);
-//        down.getOrigin().set(spatial.getWorldBound().getCenter());
-//        results.clear();
-//        Main.getMain().getTerrain().getNode().findPick(down, results);
-//        if (results.getNumber() > 0) {
-//            float dist = results.getPickData(0).getDistance();
-//            if(!Float.isInfinite(dist) && !Float.isNaN(dist)) {
-//                // put it a hair above the ground so we don't get stopped by the tops of edge sections
-//                spatial.getLocalTranslation().y -= dist - ((BoundingBox)spatial.getWorldBound()).yExtent;
-//                ret = true;
-//            }
-//        }
-//        spatial.setIsCollidable(true);
-//        spatial.updateModelBound();
-//        spatial.updateWorldBound();
+        down.setOrigin(spatial.getWorldBound().getCenter());
+        results.clear();
+        PickingUtil.findPick(Main.getMain().getTerrain().getNode(), down, results);
+        for(int i = 0; i < results.getNumber(); i++) {
+            if(spatial != results.getPickData(i).getTarget()) {
+                PickData pickData = results.getPickData(i);
+                ReadOnlyVector3 v = spatial.getTranslation();
+                spatial.setTranslation(v.getX(),
+                                       v.getY() -
+                                       (pickData.getIntersectionRecord().getClosestDistance() -
+                                        ((BoundingBox)spatial.getWorldBound()).getYExtent()),
+                                       v.getZ());
+                ret = true;
+                break;
+            }
+        }
+        spatial.updateGeometricState(0);
+        spatial.updateWorldTransform(true);
         return ret;
     }
 
