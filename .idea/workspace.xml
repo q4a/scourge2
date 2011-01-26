@@ -4,22 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/src/org/scourge/terrain/TreeController.java" line="29" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/3ds/edge-g.3ds" afterPath="$PROJECT_DIR$/data/3ds/edge-g.3ds" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scourge2.jar" afterPath="$PROJECT_DIR$/scourge2.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/TDSFile.java" afterPath="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/TDSFile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/Main.java" afterPath="$PROJECT_DIR$/src/org/scourge/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/config/PlayerTemplate.java" afterPath="$PROJECT_DIR$/src/org/scourge/config/PlayerTemplate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/model/Creature.java" afterPath="$PROJECT_DIR$/src/org/scourge/model/Creature.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/model/Monster.java" afterPath="$PROJECT_DIR$/src/org/scourge/model/Monster.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/Model.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/Model.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/TileType.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/TileType.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/org/scourge/config/ModelTemplate.java" afterPath="$PROJECT_DIR$/src/org/scourge/config/CreatureModelTemplate.java" />
-    </list>
+    <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="" />
     <ignored path="scourge2.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -493,7 +478,7 @@
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="dungeon lighting, mountains over dungeons, dungeon up/down levels" />
+    <option name="LAST_COMMIT_MESSAGE" value="working on collision detection" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -515,6 +500,7 @@
     <MESSAGE value="Picking rays for ground/water now work." />
     <MESSAGE value="skybox/camera/fog updates" />
     <MESSAGE value="dungeon lighting, mountains over dungeons, dungeon up/down levels" />
+    <MESSAGE value="working on collision detection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
