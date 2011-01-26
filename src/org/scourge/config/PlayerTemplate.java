@@ -28,9 +28,9 @@ public class PlayerTemplate {
               "./data/portraits/girl.png" }
     };
 
-    public static final ModelTemplate[] MODEL = {
-            ModelTemplate.seymour,
-            ModelTemplate.seymour
+    public static final CreatureModelTemplate[] MODEL = {
+            CreatureModelTemplate.seymour,
+            CreatureModelTemplate.seymour
     };
 
     public static final String[] SKIN = {

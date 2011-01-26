@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 //import org.newdawn.ardor3d.controller.BumpMapColourController;
 
+import com.ardor3d.bounding.BoundingBox;
 import com.ardor3d.light.Light;
 import com.ardor3d.light.PointLight;
 import com.ardor3d.light.SpotLight;
@@ -473,6 +474,7 @@ public class TDSFile extends ChunkerClass{
                 if (myMaterials.myWireState.isEnabled())
                         mesh.setRenderState(myMaterials.myWireState);
                 parentNode.attachChild(mesh);
+                mesh.setModelBound(new BoundingBox());
                 mesh.updateModelBound();
             }
         }
@@ -490,6 +492,7 @@ public class TDSFile extends ChunkerClass{
             MeshData noMaterialsData = noMaterials.getMeshData();
             noMaterialsData.setVertexBuffer(BufferUtils.createFloatBuffer(whatIAm.vertexes));
             noMaterialsData.setIndexBuffer(BufferUtils.createIntBuffer(noMaterialIndexes));
+            noMaterials.setModelBound(new BoundingBox());
             parentNode.attachChild(noMaterials);
         }
     }

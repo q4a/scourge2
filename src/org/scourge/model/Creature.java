@@ -2,7 +2,7 @@ package org.scourge.model;
 
 import com.ardor3d.math.Vector3;
 import org.scourge.Main;
-import org.scourge.config.ModelTemplate;
+import org.scourge.config.CreatureModelTemplate;
 import org.scourge.config.PlayerTemplate;
 import org.scourge.terrain.CreatureModel;
 import org.scourge.terrain.Region;
@@ -100,7 +100,7 @@ public class Creature implements ItemList, HasModel {
 
     public void afterLoad() {
         // init the model
-        creatureModel = new CreatureModel(ModelTemplate.valueOf(model), skin, "pc");
+        creatureModel = new CreatureModel(CreatureModelTemplate.valueOf(model), skin, "pc");
 //        creatureModel.setKeyFrame(Md2Model.Md2Key.stand);
         creatureModel.moveTo(new Vector3(position[0], position[1], position[2]));
         for(Item item : inventory) {

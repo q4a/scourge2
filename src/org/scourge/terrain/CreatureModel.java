@@ -1,32 +1,34 @@
 package org.scourge.terrain;
 
 import com.ardor3d.bounding.BoundingBox;
-import com.ardor3d.bounding.BoundingSphere;
-import com.ardor3d.bounding.BoundingVolume;
 import com.ardor3d.extension.animation.skeletal.AnimationManager;
-import com.ardor3d.extension.animation.skeletal.SkeletonPose;
+import com.ardor3d.extension.animation.skeletal.blendtree.ClipSource;
 import com.ardor3d.extension.animation.skeletal.blendtree.SimpleAnimationApplier;
+import com.ardor3d.extension.animation.skeletal.clip.AnimationClip;
+import com.ardor3d.extension.animation.skeletal.clip.JointChannel;
+import com.ardor3d.extension.animation.skeletal.state.SteadyState;
 import com.ardor3d.extension.model.collada.jdom.ColladaImporter;
 import com.ardor3d.extension.model.collada.jdom.data.ColladaStorage;
 import com.ardor3d.extension.model.collada.jdom.data.SkinData;
-import com.ardor3d.extension.model.util.KeyframeController;
-import com.ardor3d.intersection.BoundingCollisionResults;
-import com.ardor3d.intersection.CollisionResults;
 import com.ardor3d.intersection.PickingUtil;
 import com.ardor3d.intersection.PrimitivePickResults;
-import com.ardor3d.math.*;
+import com.ardor3d.math.MathUtils;
+import com.ardor3d.math.Quaternion;
+import com.ardor3d.math.Ray3;
+import com.ardor3d.math.Vector3;
+import com.ardor3d.renderer.queue.RenderBucketType;
 import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.controller.SpatialController;
+import com.ardor3d.scenegraph.hint.PickingHint;
 import com.ardor3d.scenegraph.shape.Box;
+import org.omg.CORBA.TypeCodePackage.Bounds;
 import org.scourge.Main;
-import org.scourge.config.ModelTemplate;
+import org.scourge.config.CreatureModelTemplate;
 import org.scourge.util.ShapeUtil;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: gabor
@@ -36,18 +38,19 @@ import java.util.Map;
 public class CreatureModel implements NodeGenerator {
     private Node node;
     private final Ray3 down = new Ray3();
-    private final Ray3 forward = new Ray3();
     private PrimitivePickResults  noDistanceResults = new PrimitivePickResults();
     private Quaternion q = new Quaternion();
     private Quaternion p = new Quaternion();
     private Vector3 direction = new Vector3();
-    private CollisionResults collisionResults;
-
     private AnimationManager manager;
+    private CreatureModelTemplate model;
+    private Box debugNode;
+    private Vector3 debugLocation = new Vector3();
+    private static final double ABOVE_GROUND = 4;
+    private static final boolean DEBUG_ENABLED = false;
 
-    public CreatureModel(ModelTemplate model, String skin, String namePrefix) {
-        collisionResults = new BoundingCollisionResults();
-
+    public CreatureModel(CreatureModelTemplate model, String skin, String namePrefix) {
+        this.model = model;
         // point it down
         down.setDirection(new Vector3(0, -1, 0));
         noDistanceResults.setCheckDistance(false);
@@ -56,21 +59,60 @@ public class CreatureModel implements NodeGenerator {
         //Node colladaNode = storage.getScene();
         final List<SkinData> skinDatas = storage.getSkins();
         node = skinDatas.get(0).getSkinBaseNode();
-        for(Spatial spatial : node.getChildren()) {
-            ((Mesh)spatial).setModelBound(new BoundingBox());
-            model.transform(spatial);
-        }
-
-        SkeletonPose pose = skinDatas.get(0).getPose();
+        model.transform(node);
+        node.updateWorldBound(true);
 
         // Make our manager
-        manager = new AnimationManager(Main.getMain().getTimer(), pose);
+        manager = new AnimationManager(Main.getMain().getTimer(), skinDatas.get(0).getPose());
+
+        final AnimationClip clipA = new AnimationClip("clipA");
+        for (final JointChannel channel : storage.getJointChannels()) {
+            // add it to a clip
+            clipA.addChannel(channel);
+        }
+
+        // Set some clip instance specific data - repeat, time scaling
+        manager.getClipInstance(clipA).setLoopCount(Integer.MAX_VALUE);
 
         // Add our "applier logic".
-        final SimpleAnimationApplier applier = new SimpleAnimationApplier();
-        manager.setApplier(applier);
+        manager.setApplier(new SimpleAnimationApplier());
 
-        setAnimation(Animations.stand);
+        // Add our clip as a state in the default animation layer
+        final SteadyState animState = new SteadyState("anim_state");
+        animState.setSourceTree(new ClipSource(clipA, manager));
+        manager.getBaseAnimationLayer().addSteadyState(animState);
+
+        // Set the current animation state on default layer
+        manager.getBaseAnimationLayer().setCurrentState("anim_state", true);
+
+        // the debug box
+        BoundingBox bb = (BoundingBox)node.getWorldBound();
+        debugNode = new Box("box", new Vector3(0, 0, 0), bb.getXExtent(), bb.getYExtent(), bb.getZExtent());
+        debugNode.getSceneHints().setPickingHint(PickingHint.Collidable, false);
+        debugNode.getSceneHints().setPickingHint(PickingHint.Pickable, false);
+
+        node.addController(new SpatialController() {
+            @Override
+            public void update(double v, Spatial spatial) {
+                manager.update();
+
+                // move the debug box
+                if(DEBUG_ENABLED) {
+                    debugLocation.set(node.getTranslation().getX(),
+                                      node.getTranslation().getY() + ABOVE_GROUND,
+                                      node.getTranslation().getZ());
+                    debugNode.setTranslation(debugLocation);
+    //                debugNode.setRotation(node.getRotation());
+                }
+            }
+        });
+    }
+
+    public void setAnimation(Animations animation) {
+        String ss_name = model.getAnimationName(animation);
+        if(ss_name != null) {
+            manager.getBaseAnimationLayer().setCurrentState(ss_name, true);
+        }
     }
 
     public void moveTo(Vector3 pos) {
@@ -89,142 +131,92 @@ public class CreatureModel implements NodeGenerator {
     }
 
     private Vector3 backupLocation = new Vector3();
+    private Vector3 tmpLocation = new Vector3();
     private Vector3 backupScale = new Vector3();
     public boolean canMoveTo(Vector3 proposedLocation) {
         boolean retValue = false;
 
         backupLocation.set(node.getTranslation());
+        tmpLocation.set(proposedLocation);
+        tmpLocation.setY(tmpLocation.getY() + ABOVE_GROUND);
 
         // Make the player 2 units tall. This "lifts" him off the floor so we can walk over floor irregularities, ramps, bridges, etc.
-        // Also this makes him shorter so we can fit thru the dungeon entrance. Yes this is a hack
+        // Also this makes him shorter so we can fit thru the dungeon entrance. Yes this is a hack.
         backupScale.set(node.getScale());
-        double y = (2.0f / ((BoundingBox)node.getWorldBound()).getYExtent()) * node.getScale().getY();
-        node.setScale(backupScale.getX(), y, backupScale.getZ());
+        BoundingBox bb = (BoundingBox)node.getWorldBound();
+        double bx = (2.0f / bb.getXExtent()) * node.getScale().getX();
+        double by = (1.0f / bb.getYExtent()) * node.getScale().getY();
+        double bz = (2.0f / bb.getZExtent()) * node.getScale().getZ();
+        node.setScale(bx, by, bz);
+
+        node.setTranslation(tmpLocation);
         node.updateGeometricState(0, false); // make geometry changes take effect now!
+        node.updateWorldBound(true);
+        node.updateWorldTransform(true);
 
-        Vector3 v = Vector3.fetchTempInstance();
-        v.set(getNode().getTranslation());
-        v.addLocal(getDirection().normalizeLocal().multiplyLocal(2.0f));
-        v.addLocal(0, 8, 0);
-        down.setOrigin(v);
-        Vector3.releaseTempInstance(v);
-        noDistanceResults.clear();
+        if(DEBUG_ENABLED) {
+            bb = (BoundingBox)node.getWorldBound();
+            debugNode.setData(new Vector3(), bb.getXExtent(), bb.getYExtent(), bb.getZExtent());
+        }
 
-        // if we hit something we're not on water
-        PickingUtil.findPick(Main.getMain().getTerrain().getNode(), down, noDistanceResults);
-        for(int i = 0; i < noDistanceResults.getNumber(); i++) {
-            if(noDistanceResults.getPickData(i).getTarget() != null) {
-                retValue = true;
-                break;
+        boolean hasCollision = PickingUtil.hasCollision(Main.getMain().getTerrain().getNode(), node, true);
+
+        // reset the position
+        node.setTranslation(proposedLocation);
+        node.updateGeometricState(0, false);
+        node.updateWorldBound(true);
+        node.updateWorldTransform(true);
+
+        // check if we're on water
+        if(!hasCollision) {
+            node.getSceneHints().setPickingHint(PickingHint.Collidable, false);
+            node.getSceneHints().setPickingHint(PickingHint.Pickable, false);
+            Vector3 v = Vector3.fetchTempInstance();
+            v.set(node.getTranslation());
+            v.addLocal(getDirection().normalizeLocal().multiplyLocal(2.0f));
+            v.addLocal(0, 8, 0);
+            down.setOrigin(v);
+            Vector3.releaseTempInstance(v);
+
+            // if we hit something we're not on water
+            noDistanceResults.clear();
+            PickingUtil.findPick(Main.getMain().getTerrain().getNode(), down, noDistanceResults);
+            for(int i = 0; i < noDistanceResults.getNumber(); i++) {
+                if(noDistanceResults.getPickData(i).getTarget() != null) {
+                    retValue = true;
+                    break;
+                }
             }
+
+            node.getSceneHints().setPickingHint(PickingHint.Collidable, true);
+            node.getSceneHints().setPickingHint(PickingHint.Pickable, true);
         }
 
         node.setScale(backupScale);
-        if(retValue) {
-            node.setTranslation(proposedLocation);
-        } else {
+        if(!retValue) {
             node.setTranslation(backupLocation);
         }
-//        node.updateGeometricState(0, false); // make geometry changes take effect now!
 
         return retValue;
-
-
-//        // Make the player 2 units tall. This "lifts" him off the floor so we can walk over floor irregularities, ramps, bridges, etc.
-//        // Also this makes him shorter so we can fit thru the dungeon entrance. Yes this is a hack
-//        node.getLocalScale().y = (2.0f / ((BoundingBox)node.getWorldBound()).yExtent) * node.getLocalScale().y;
-//        node.updateGeometricState(0, false); // make geometry changes take effect now!
-//
-////        System.err.println("proposedLocation=" + proposedLocation + " node=" + node.getName() +
-////                           " region=" + ((proposedLocation.x / ShapeUtil.WALL_WIDTH) / Region.REGION_SIZE) + "," + ((proposedLocation.z / ShapeUtil.WALL_WIDTH) / Region.REGION_SIZE) +
-////                           " offset=" + ((proposedLocation.x / ShapeUtil.WALL_WIDTH) % Region.REGION_SIZE) + "," + ((proposedLocation.z / ShapeUtil.WALL_WIDTH) % Region.REGION_SIZE));
-//
-//        // check where the bounding box is
-//        boolean collisions = checkBoundingCollisions(Main.getMain().getTerrain().getNode());
-////        System.err.println("\tbound collisions found anything? " + collisions);
-//
-//        // check for triangles within the bounding box
-//        for(int i = 0; i < collisionResults.getNumber(); i++) {
-//            Geometry g = collisionResults.getCollisionData(i).getTargetMesh();
-//            Node parentNode = g.getParent();
-//            if(parentNode != null) {
-//                collisions = hasTriangleCollision(node, parentNode);
-//                if(collisions) break;
-//            }
-//        }
-////        System.err.println("\ttri collisions ok? " + !collisions);
-//
-//        // check for water below
-//        if(!collisions) {
-//            down.getOrigin().set(getNode().getLocalTranslation());
-//            down.getOrigin().addLocal(getDirection().normalizeLocal().multLocal(2.0f));
-//            noDistanceResults.clear();
-//            Main.getMain().getTerrain().getNode().findPick(down, noDistanceResults);
-//            for(int i = 0; i < noDistanceResults.getNumber(); i++) {
-//                if(noDistanceResults.getPickData(i).getTargetTris().size() > 0) {
-//                    retValue = true;
-//                    break;
-//                }
-//            }
-////            System.err.println("\ton water? " + !retValue);
-//        }
-//
-//        // reset the node's shape and position
-//        node.getLocalScale().y = backupScaleY;
-//        if(!retValue) {
-//            node.getLocalTranslation().set(backupLocation);
-//        }
-//        node.updateModelBound();
-//        node.updateGeometricState(0, false); // make geometry changes take effect now!
-//
-//        return retValue;
     }
 
-
-//    public boolean hasTriangleCollision(Node n1,Node nodeWithSharedNodes) {
-//		List<Spatial> geosN1 = n1.descendantMatches(TriMesh.class);
-//		for (Spatial triN1 : geosN1) {
-//			if (hasTriangleCollision((TriMesh)triN1, nodeWithSharedNodes))
-//				return true;
-//		}
-//		return false;
-//	}
-//
-//	public boolean hasTriangleCollision(TriMesh sp,Node nodeWithSharedNodes) {
-//		List<Spatial> geosN2 = nodeWithSharedNodes.descendantMatches(TriMesh.class);
-//
-//		for (Spatial triN2 : geosN2) {
-//            if (((TriMesh)triN2).hasTriangleCollision(sp)) {
-////                    System.err.println("collision: " + triN2.getName());
-//                return true;
-//            }
-//		}
-//		return false;
-//	}
-//
-//    public boolean checkBoundingCollisions(Node world) {
-//        collisionResults.clear();
-//        node.findCollisions(world, collisionResults);
-//        return collisionResults.getNumber() > 0;
-//    }
-//
     public Vector3 getDirection() {
         q.fromRotationMatrix(node.getRotation());
         q.multiplyLocal(p.fromAngleAxis(MathUtils.DEG_TO_RAD * 90.0f, Vector3.UNIT_Y));
         q.getRotationColumn( 2, direction );
         return direction;
     }
-//
-    public void setAnimation(Animations animation) {
-        manager.getBaseAnimationLayer().setCurrentState(animation.name(), true);
-    }
 
     public int getX() {
-        return (int)Math.round(getNode().getTranslation().getX() / ShapeUtil.WALL_WIDTH);
+        return (int)Math.round(node.getTranslation().getX() / ShapeUtil.WALL_WIDTH);
     }
         
     public int getZ() {
-        return (int)Math.round(getNode().getTranslation().getZ() / ShapeUtil.WALL_WIDTH);
+        return (int)Math.round(node.getTranslation().getZ() / ShapeUtil.WALL_WIDTH);
+    }
+
+    public Spatial getDebugNode() {
+        return DEBUG_ENABLED ? debugNode : null;
     }
 
     public enum Animations {

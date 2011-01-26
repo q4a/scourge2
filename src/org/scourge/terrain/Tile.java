@@ -10,6 +10,7 @@ import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.extension.PassNode;
 import com.ardor3d.scenegraph.extension.PassNodeState;
+import com.ardor3d.scenegraph.hint.PickingHint;
 import com.ardor3d.util.TextureManager;
 import org.scourge.Climate;
 import org.scourge.Main;
@@ -146,11 +147,8 @@ public class Tile {
         node = new Node(ShapeUtil.newShapeName("tile"));
         ground = type.createNode(angle, heights, level, climate, nextToWater);
 
-//        node.setModelBound(new BoundingBox());
-
         // apply texture, except for while in dungeons always use ROCK for the top of cliffs
         Node groundNode = applyTexture(around, climate.isDungeon() && level > 0);
-
         node.attachChild(groundNode);
 
         // add mountains on top of dungeons

@@ -1,6 +1,6 @@
 package org.scourge.model;
 
-import org.scourge.config.ModelTemplate;
+import org.scourge.config.CreatureModelTemplate;
 import org.scourge.terrain.CreatureModel;
 
 /**
@@ -9,20 +9,20 @@ import org.scourge.terrain.CreatureModel;
  * Time: 8:21:39 AM
  */
 public enum Monster {
-    shade(ModelTemplate.shade, "./data/models/phantom/m10.png", 10.0f),
+    shade(CreatureModelTemplate.shade, "./data/models/phantom/m10.png", 10.0f),
     ;
 
-    private ModelTemplate modelTemplate;
+    private CreatureModelTemplate modelTemplate;
     private String skinPath;
     private float speed;
 
-    Monster(ModelTemplate modelTemplate, String skinPath, float speed) {
+    Monster(CreatureModelTemplate modelTemplate, String skinPath, float speed) {
         this.modelTemplate = modelTemplate;
         this.skinPath = skinPath;
         this.speed = speed;
     }
 
-    public ModelTemplate getModelTemplate() {
+    public CreatureModelTemplate getModelTemplate() {
         return modelTemplate;
     }
 

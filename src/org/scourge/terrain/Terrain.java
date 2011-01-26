@@ -14,6 +14,7 @@ import org.scourge.Main;
 import org.scourge.Scourge;
 import org.scourge.io.MapIO;
 import org.scourge.util.ShapeUtil;
+import com.ardor3d.scenegraph.hint.PickingHint;
 
 import java.io.IOException;
 import java.util.*;
@@ -288,9 +289,10 @@ public class Terrain implements NodeGenerator {
         return loadedRegions;
     }
 
+    private static final double ABOVE_GROUND = 2;
     private static final Ray3 down = new Ray3();
     private static PrimitivePickResults results = new PrimitivePickResults();
-//    private static Vector3 topOfTerrain = new Vector3();
+    private static Vector3 tmpVector = new Vector3();
 
     static {
         down.setDirection(new Vector3(0, -1, 0));
@@ -299,7 +301,10 @@ public class Terrain implements NodeGenerator {
 
     public static boolean moveOnTopOfTerrain(Spatial spatial) {
         boolean ret = false;
-        down.setOrigin(spatial.getWorldBound().getCenter());
+        spatial.getSceneHints().setPickingHint(PickingHint.Pickable, false);
+        tmpVector.set(spatial.getWorldBound().getCenter());
+        tmpVector.setY(tmpVector.getY() + ABOVE_GROUND);
+        down.setOrigin(tmpVector);
         results.clear();
         PickingUtil.findPick(Main.getMain().getTerrain().getNode(), down, results);
         for(int i = 0; i < results.getNumber(); i++) {
@@ -308,7 +313,7 @@ public class Terrain implements NodeGenerator {
                 ReadOnlyVector3 v = spatial.getTranslation();
                 spatial.setTranslation(v.getX(),
                                        v.getY() -
-                                       (pickData.getIntersectionRecord().getClosestDistance() -
+                                       ((pickData.getIntersectionRecord().getClosestDistance() - ABOVE_GROUND) -
                                         ((BoundingBox)spatial.getWorldBound()).getYExtent()),
                                        v.getZ());
                 ret = true;
@@ -317,6 +322,7 @@ public class Terrain implements NodeGenerator {
         }
         spatial.updateGeometricState(0);
         spatial.updateWorldTransform(true);
+        spatial.getSceneHints().setPickingHint(PickingHint.Pickable, true);
         return ret;
     }
 

@@ -14,6 +14,7 @@ import com.ardor3d.renderer.Camera;
 import com.ardor3d.renderer.Renderer;
 import com.ardor3d.renderer.pass.BasicPassManager;
 import com.ardor3d.renderer.pass.RenderPass;
+import com.ardor3d.renderer.queue.RenderBucketType;
 import com.ardor3d.renderer.state.CullState;
 import com.ardor3d.renderer.state.FogState;
 import com.ardor3d.scenegraph.Node;
@@ -553,6 +554,10 @@ public class Main extends ExampleBase implements Scourge {
         player.getCreatureModel().getNode().attachChild(cameraHolder);
 
         // todo: this is not the right place for this
+        Spatial sp = player.getCreatureModel().getDebugNode();
+        if(sp != null) {
+            _root.attachChild(sp);
+        }
         _root.attachChild(player.getCreatureModel().getNode());
         player.getCreatureModel().getNode().updateWorldBound(true);
 //        player.getCreatureModel().getNode().updateRenderState();
@@ -577,9 +582,6 @@ public class Main extends ExampleBase implements Scourge {
     public void toggleCameraAttached() {
         if(camNode != null) {
             skyboxEnabled = true;
-//            input = firstPersonHandler;
-//            playerControl.removeTriggers();
-//            _controlHandle = FirstPersonControl.setupTriggers(_logicalLayer, _worldUp, true);
             cameraHolder.detachChild(camNode);
             camNode.setCamera(null);
             camNode = null;
@@ -587,15 +589,11 @@ public class Main extends ExampleBase implements Scourge {
             skyboxEnabled = false;
             Camera camera = _canvas.getCanvasRenderer().getCamera();
             camNode = new CameraNode("camera node", camera);
-//            camNode.setTranslation(new Vector3(-380, 350, 0));
-            camNode.setTranslation(new Vector3(-100, 80, 0));
+            camNode.setTranslation(new Vector3(-100, 80, 0)); //            camNode.setTranslation(new Vector3(-380, 350, 0));
             Quaternion q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 90.0f, Vector3.UNIT_Y);
             q.multiplyLocal(new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 35.0f, Vector3.UNIT_X));
             camNode.setRotation(q);
             cameraHolder.attachChild(camNode);
-//            playerControl.setupTriggers();
-//            FirstPersonControl.removeTriggers(_logicalLayer, _controlHandle);
-
         }
     }
 

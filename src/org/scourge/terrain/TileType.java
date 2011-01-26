@@ -6,9 +6,11 @@ import com.ardor3d.math.MathUtils;
 import com.ardor3d.math.Matrix3;
 import com.ardor3d.math.Quaternion;
 import com.ardor3d.math.Vector3;
+import com.ardor3d.renderer.queue.RenderBucketType;
 import com.ardor3d.renderer.state.TextureState;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
+import com.ardor3d.scenegraph.hint.PickingHint;
 import com.ardor3d.scenegraph.shape.Quad;
 import org.scourge.Climate;
 import org.scourge.util.ShapeUtil;
@@ -252,6 +254,8 @@ enum TileType {
         ground.getMeshData().copyTextureCoordinates(0, 1, 1.0f);
         ground.getMeshData().copyTextureCoordinates(1, 2, 1.0f);
         ground.getMeshData().copyTextureCoordinates(2, 3, 1.0f);
+
+        ground.getSceneHints().setPickingHint(PickingHint.Collidable, false);
 
         return ground;
     }
