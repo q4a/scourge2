@@ -339,7 +339,7 @@ public class Region implements NodeGenerator {
     private void addSign(int x, int y, MapIO.RegionPoint[][] region, RegionData regionData) {
         BlockData blockData = regionData.getBlock(regionX * REGION_SIZE + x - EDGE_BUFFER,
                                                   regionY * REGION_SIZE + y - EDGE_BUFFER);
-        tiles[y][x].addModel(Model.sign, new Vector3(ShapeUtil.WALL_WIDTH / 2, 0, ShapeUtil.WALL_WIDTH / 2), 2, 90, Vector3.UNIT_Z, blockData);
+        tiles[y][x].addModel(Model.sign, new Vector3(ShapeUtil.WALL_WIDTH / 2, 0, ShapeUtil.WALL_WIDTH / 2), 2, 0, Vector3.UNIT_Z, blockData);
     }
 
     private void addDungeonModels() {

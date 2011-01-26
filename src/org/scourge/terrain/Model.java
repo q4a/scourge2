@@ -446,6 +446,11 @@ public enum Model implements Savable {
         public Spatial createSpatial() {
             return getAlphaSpatial(1f);
         }
+
+//        @Override
+//        public ReadOnlyVector3 getRotationVector() {
+//            return Vector3.UNIT_X;
+//        }
     },
     torch("./data/3ds/torch2.3ds", true) {
         @Override
@@ -747,7 +752,7 @@ public enum Model implements Savable {
     }
 
     public ReadOnlyVector3 getRotationVector() {
-        return Vector3.UNIT_Z;
+        return Vector3.UNIT_Y;
     }
 
     public void onLoad(Spatial spatial) {

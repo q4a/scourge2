@@ -154,15 +154,16 @@ public class PlayerControl {
                 // cancel button click, if moved too far
                 if(Window.getWindow() != null && Window.getWindow().onMove(mouse.getDx(), mouse.getDy(), mouse.getX(), mouse.getY())) return;
 
+                boolean mouseMoved = Math.abs(startX - mouse.getX()) > 5 || Math.abs(startY - mouse.getY()) > 5;
                 if(playerMoveEnabled) {
                     if(!dragging && startX >= 0 && startY >= 0) {
-                        if(Math.abs(startX - mouse.getX()) > 5 || Math.abs(startY - mouse.getY()) > 5) {
+                        if(mouseMoved) {
                             dragging = true;
                         }
                     }
 
                     main.setMouseGrabbed(true);
-                    rotate(tpf, mouse.getDx() < 0);
+                    if(mouseMoved) rotate(tpf, mouse.getDx() < 0);
                 }
             } else {
                 firstPing = false;

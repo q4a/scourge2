@@ -193,9 +193,9 @@ public class Tile {
             scale.multiplyLocal(model.scale);
             spatial.setScale(scale);
 
-            Matrix3 m = new Matrix3(spatial.getRotation());
-            m.multiply(new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * model.rotate, model.axis).toRotationMatrix((Matrix3)null), null);
-            spatial.setRotation(m);
+            Quaternion q = new Quaternion().fromRotationMatrix(spatial.getRotation());
+            q.multiplyLocal(new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * model.rotate, model.axis));
+            spatial.setRotation(q);
 
             spatial.getSceneHints().setRenderBucketType(RenderBucketType.Transparent);
 
