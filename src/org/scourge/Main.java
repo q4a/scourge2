@@ -131,7 +131,7 @@ public class Main extends ExampleBase implements Scourge {
             terrain.getCurrentRegion().moveToTopOfTerrain();
 
             if(player != null) {
-                player.getCreatureModel().moveToTopOfTerrain();
+                player.getCreatureModel().moveToTopOfTerrain(_timer.getTimePerFrame());
             }
         }
 
@@ -220,7 +220,7 @@ public class Main extends ExampleBase implements Scourge {
         final CullState cs = new CullState();
         cs.setEnabled(true);
         cs.setCullFace(CullState.Face.Back);
-        _root.setRenderState(cs);
+//        _root.setRenderState(cs);
 
         fogState = new FogState();
         fogState.setDensity(1.0f);
@@ -589,7 +589,8 @@ public class Main extends ExampleBase implements Scourge {
             skyboxEnabled = false;
             Camera camera = _canvas.getCanvasRenderer().getCamera();
             camNode = new CameraNode("camera node", camera);
-            camNode.setTranslation(new Vector3(-100, 80, 0)); //            camNode.setTranslation(new Vector3(-380, 350, 0));
+            camNode.setTranslation(new Vector3(-90, 85, 0));
+            //            camNode.setTranslation(new Vector3(-380, 350, 0));
             Quaternion q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 90.0f, Vector3.UNIT_Y);
             q.multiplyLocal(new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 35.0f, Vector3.UNIT_X));
             camNode.setRotation(q);

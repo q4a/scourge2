@@ -594,6 +594,8 @@ public enum Model implements Savable {
 
         particles.getParticleGeometry().setModelBound(new BoundingBox());
 
+        particles.getSceneHints().setAllPickingHints(false);
+
         return particles;
     }
     

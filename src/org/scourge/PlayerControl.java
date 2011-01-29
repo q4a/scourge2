@@ -25,6 +25,7 @@ public class PlayerControl {
     private boolean firstPing = true;
     private MouseButton buttonDown;
     private TwoInputStates lastInputState;
+    private boolean moving;
 
 
     public PlayerControl(Main main) {
@@ -78,7 +79,7 @@ public class PlayerControl {
             public void perform(Canvas canvas, TwoInputStates twoInputStates, double tpf) {
                 if (playerMoveEnabled) {
                     main.getPlayer().getCreatureModel().setAnimation(CreatureModel.Animations.run);
-                    forward(tpf);
+                    moving = true;
                 }
             }
         }));
@@ -87,6 +88,7 @@ public class PlayerControl {
             public void perform(Canvas canvas, TwoInputStates twoInputStates, double tpf) {
                 if (playerMoveEnabled) {
                     main.getPlayer().getCreatureModel().setAnimation(CreatureModel.Animations.stand);
+                    moving = false;
                 }
             }
         }));
@@ -218,12 +220,10 @@ public class PlayerControl {
 
     // Actual movement code
     public final static float PLAYER_ROTATE_STEP = 150.0f;
-    public final static float PLAYER_SPEED = 50.0f;
     public static boolean fixed_camera = true;
     private Quaternion q = new Quaternion();
     private Quaternion q2 = new Quaternion();
-    private Vector3 tempVa = new Vector3();
-    private Vector3 proposedLocation = new Vector3();
+
 
     protected void rotate(double time, boolean left) {
         q.fromRotationMatrix(main.getPlayer().getCreatureModel().getNode().getRotation());
@@ -239,16 +239,11 @@ public class PlayerControl {
         main.getMiniMap().update(false);
     }
 
-    protected void forward(double time) {
-        proposedLocation.set(main.getPlayer().getCreatureModel().getNode().getTranslation());
-        proposedLocation.addLocal(main.getPlayer().getCreatureModel().getDirection().multiply(PLAYER_SPEED * time, tempVa));
-        if(main.getPlayer().getCreatureModel().canMoveTo(proposedLocation)) {
-            main.getTerrain().loadRegion();
-            main.checkRoof();
-        }
-    }
-
     public TwoInputStates getLastInputState() {
         return lastInputState;
+    }
+
+    public boolean isMoving() {
+        return moving;
     }
 }

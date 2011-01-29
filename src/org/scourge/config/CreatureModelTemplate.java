@@ -21,7 +21,8 @@ public enum CreatureModelTemplate {
             for(Spatial spatial : node.getChildren()) {
                 ((Mesh)spatial).setModelBound(new BoundingBox());
                 spatial.setRotation(new Quaternion().fromAngleAxis(MathUtils.HALF_PI, Vector3.UNIT_Y));
-                spatial.setScale(0.8);
+                spatial.setScale(0.75);
+
             }
         }
 
@@ -35,7 +36,9 @@ public enum CreatureModelTemplate {
         public void transform(Node node) {
             for(Spatial spatial : node.getChildren()) {
                 ((Mesh)spatial).setModelBound(new BoundingBox());
-                spatial.setRotation(new Quaternion().fromAngleAxis(-MathUtils.HALF_PI, Vector3.UNIT_X));
+//                spatial.setRotation(new Quaternion().fromAngleAxis(-MathUtils.HALF_PI, Vector3.UNIT_X));
+                spatial.setRotation(new Quaternion().fromEulerAngles(MathUtils.HALF_PI, 0, -MathUtils.HALF_PI));
+                spatial.setScale(0.5);
             }
         }
 

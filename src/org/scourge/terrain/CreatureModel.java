@@ -1,6 +1,8 @@
 package org.scourge.terrain;
 
 import com.ardor3d.bounding.BoundingBox;
+import com.ardor3d.bounding.CollisionTree;
+import com.ardor3d.bounding.CollisionTreeManager;
 import com.ardor3d.extension.animation.skeletal.AnimationManager;
 import com.ardor3d.extension.animation.skeletal.blendtree.ClipSource;
 import com.ardor3d.extension.animation.skeletal.blendtree.SimpleAnimationApplier;
@@ -10,24 +12,23 @@ import com.ardor3d.extension.animation.skeletal.state.SteadyState;
 import com.ardor3d.extension.model.collada.jdom.ColladaImporter;
 import com.ardor3d.extension.model.collada.jdom.data.ColladaStorage;
 import com.ardor3d.extension.model.collada.jdom.data.SkinData;
-import com.ardor3d.intersection.PickingUtil;
-import com.ardor3d.intersection.PrimitivePickResults;
-import com.ardor3d.math.MathUtils;
-import com.ardor3d.math.Quaternion;
-import com.ardor3d.math.Ray3;
-import com.ardor3d.math.Vector3;
+import com.ardor3d.intersection.*;
+import com.ardor3d.math.*;
+import com.ardor3d.renderer.IndexMode;
 import com.ardor3d.renderer.queue.RenderBucketType;
-import com.ardor3d.scenegraph.Mesh;
+import com.ardor3d.renderer.state.ZBufferState;
+import com.ardor3d.scenegraph.Line;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.controller.SpatialController;
+import com.ardor3d.scenegraph.event.DirtyType;
 import com.ardor3d.scenegraph.hint.PickingHint;
-import com.ardor3d.scenegraph.shape.Box;
-import org.omg.CORBA.TypeCodePackage.Bounds;
+import com.ardor3d.util.geom.BufferUtils;
 import org.scourge.Main;
 import org.scourge.config.CreatureModelTemplate;
 import org.scourge.util.ShapeUtil;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -38,28 +39,59 @@ import java.util.List;
 public class CreatureModel implements NodeGenerator {
     private Node node;
     private final Ray3 down = new Ray3();
+    private final Ray3 forward = new Ray3();
     private PrimitivePickResults  noDistanceResults = new PrimitivePickResults();
+    private PrimitivePickResults  distanceResults = new PrimitivePickResults();
     private Quaternion q = new Quaternion();
     private Quaternion p = new Quaternion();
     private Vector3 direction = new Vector3();
     private AnimationManager manager;
     private CreatureModelTemplate model;
-    private Box debugNode;
-    private Vector3 debugLocation = new Vector3();
     private static final double ABOVE_GROUND = 4;
-    private static final boolean DEBUG_ENABLED = false;
+    private PrimitiveCollisionResults results;
+    private CollisionData oldData;
+    private static final boolean USE_COLLISIONS = false;
+    private double speed, lastDistance;
+    private double[] COLLISION_ANGLES = { -45, -10, 0, 10, 45 };
+    private static boolean DEBUG_ENABLED = false;
+    private Node debugNode = new Node("debug");
+    private Vector3[] lineVertex = new Vector3[2 * COLLISION_ANGLES.length];
+    private final Line lines = new Line("normLine", lineVertex, null, null, null);
+
 
     public CreatureModel(CreatureModelTemplate model, String skin, String namePrefix) {
+
+        CollisionTreeManager.getInstance().setTreeType(CollisionTree.Type.AABB);
+        CollisionTreeManager.getInstance().setDoSort(true);
+
+        results = new PrimitiveCollisionResults();
+
         this.model = model;
         // point it down
         down.setDirection(new Vector3(0, -1, 0));
         noDistanceResults.setCheckDistance(false);
+
+        distanceResults.setCheckDistance(true);
 
         final ColladaStorage storage = new ColladaImporter().load(model.getModel());
         //Node colladaNode = storage.getScene();
         final List<SkinData> skinDatas = storage.getSkins();
         node = skinDatas.get(0).getSkinBaseNode();
         model.transform(node);
+//        node = new Node() {
+//            @Override
+//            public void updateWorldBound(boolean recurse) {
+//                super.updateWorldBound(recurse);
+//
+//                // hack the world bound to exclude some of the creatures legs
+//                BoundingBox bb = (BoundingBox)getWorldBound();
+//                bb.setYExtent(bb.getYExtent() - ABOVE_GROUND);
+//                bb.setCenter(bb.getCenter().getX(), bb.getCenter().getY() + ABOVE_GROUND / 2, bb.getCenter().getZ());
+//                _worldBound = bb;
+//                clearDirty(DirtyType.Bounding);
+//            }
+//        };
+//        node.attachChild(skinNode);
         node.updateWorldBound(true);
 
         // Make our manager
@@ -85,25 +117,23 @@ public class CreatureModel implements NodeGenerator {
         // Set the current animation state on default layer
         manager.getBaseAnimationLayer().setCurrentState("anim_state", true);
 
-        // the debug box
-        BoundingBox bb = (BoundingBox)node.getWorldBound();
-        debugNode = new Box("box", new Vector3(0, 0, 0), bb.getXExtent(), bb.getYExtent(), bb.getZExtent());
-        debugNode.getSceneHints().setPickingHint(PickingHint.Collidable, false);
-        debugNode.getSceneHints().setPickingHint(PickingHint.Pickable, false);
+//        lines.getSceneHints().setRenderBucketType(RenderBucketType.Skip);
+        lines.setRenderState(new ZBufferState());
+        lines.setLineWidth(3.0f);
+        lines.getMeshData().setIndexMode(IndexMode.Lines);
+//        lines.getMeshData().setVertexBuffer(BufferUtils.createVector3Buffer(500));
+//        lines.getMeshData().setColorBuffer(BufferUtils.createColorBuffer(500));
+//        lines.updateWorldRenderStates(false);
+
+        for(int i = 0; i < lineVertex.length; i++) {
+            lineVertex[i] = new Vector3(0, 0, 0);
+        }
+        debugNode.attachChild(lines);
 
         node.addController(new SpatialController() {
             @Override
             public void update(double v, Spatial spatial) {
                 manager.update();
-
-                // move the debug box
-                if(DEBUG_ENABLED) {
-                    debugLocation.set(node.getTranslation().getX(),
-                                      node.getTranslation().getY() + ABOVE_GROUND,
-                                      node.getTranslation().getZ());
-                    debugNode.setTranslation(debugLocation);
-    //                debugNode.setRotation(node.getRotation());
-                }
             }
         });
     }
@@ -126,46 +156,94 @@ public class CreatureModel implements NodeGenerator {
         return node;
     }
 
-    public void moveToTopOfTerrain() {
+    public final static float PLAYER_SPEED = 50.0f;
+
+    private Vector3 tempVa = new Vector3();
+    private Vector3 proposedLocation = new Vector3();
+
+    public void moveToTopOfTerrain(double tpf) {
         Terrain.moveOnTopOfTerrain(node);
+
+        // move forward
+        Main main = Main.getMain();
+        if(main.getPlayerControl().isMoving()) {
+            speed = PLAYER_SPEED * tpf;
+            proposedLocation.set(node.getTranslation());
+            // don't move more than the last sensed distance (ie. don't move into the wall)
+            proposedLocation.addLocal(getDirection().multiply(lastDistance > 0 && lastDistance < speed ? lastDistance : speed, tempVa));
+            if(canMoveTo(proposedLocation)) {
+                main.getTerrain().loadRegion();
+                main.checkRoof();
+            }
+        }
+
+        if(DEBUG_ENABLED) {
+            // show debug
+            debugNode.setTranslation(node.getTranslation());
+            for(int i = 0; i < lineVertex.length / 2; i++) {
+                lineVertex[i * 2].set(0, 0, 0);
+                lineVertex[i * 2].setY(lineVertex[i * 2].getY() + 8);
+                lineVertex[i * 2 + 1].set(getDirection(COLLISION_ANGLES[i]).multiplyLocal(10));
+                lineVertex[i * 2 + 1].setY(lineVertex[i * 2 + 1].getY() + 8);
+            }
+            lines.getMeshData().setVertexBuffer(BufferUtils.createFloatBuffer(lineVertex));
+            debugNode.updateGeometricState(0);
+            debugNode.updateWorldTransform(true);
+            debugNode.updateWorldBound(true);
+        }
     }
 
     private Vector3 backupLocation = new Vector3();
     private Vector3 tmpLocation = new Vector3();
-    private Vector3 backupScale = new Vector3();
     public boolean canMoveTo(Vector3 proposedLocation) {
         boolean retValue = false;
 
         backupLocation.set(node.getTranslation());
-        tmpLocation.set(proposedLocation);
-        tmpLocation.setY(tmpLocation.getY() + ABOVE_GROUND);
-
-        // Make the player 2 units tall. This "lifts" him off the floor so we can walk over floor irregularities, ramps, bridges, etc.
-        // Also this makes him shorter so we can fit thru the dungeon entrance. Yes this is a hack.
-        backupScale.set(node.getScale());
-        BoundingBox bb = (BoundingBox)node.getWorldBound();
-        double bx = (2.0f / bb.getXExtent()) * node.getScale().getX();
-        double by = (1.0f / bb.getYExtent()) * node.getScale().getY();
-        double bz = (2.0f / bb.getZExtent()) * node.getScale().getZ();
-        node.setScale(bx, by, bz);
-
-        node.setTranslation(tmpLocation);
+        node.setTranslation(proposedLocation);
         node.updateGeometricState(0, false); // make geometry changes take effect now!
         node.updateWorldBound(true);
         node.updateWorldTransform(true);
 
-        if(DEBUG_ENABLED) {
-            bb = (BoundingBox)node.getWorldBound();
-            debugNode.setData(new Vector3(), bb.getXExtent(), bb.getYExtent(), bb.getZExtent());
+        boolean hasCollision = false;
+        if(USE_COLLISIONS) {
+            results.clear();
+            PickingUtil.findCollisions(node, Main.getMain().getTerrain().getNode(), results);
+
+            if (results.getNumber() > 0) {
+                System.err.println("------------------------------");
+                for(int i = 0; i < results.getNumber(); i++) {
+                    CollisionData cd = results.getCollisionData(i);
+                    System.err.println("source=" + cd.getSourceMesh() + " target=" + cd.getTargetMesh() + " source prim=" + cd.getSourcePrimitives().size() + " target prim=" + cd.getTargetPrimitives().size());
+                    if(cd.getTargetPrimitives().size() > 0) {
+                        hasCollision = true;
+                        oldData = results.getCollisionData(0);
+                        break;
+                    }
+                }
+                System.err.println("------------------------------");
+            }
+//        boolean hasCollision = PickingUtil.hasCollision(Main.getMain().getTerrain().getNode(), node, true);
+        } else {
+            tmpLocation.set(proposedLocation);
+            tmpLocation.setY(proposedLocation.getY() + 8);
+            forward.setOrigin(tmpLocation);
+            lastDistance = 0;
+            for(double angle : COLLISION_ANGLES) {
+                forward.setDirection(getDirection(angle));
+                distanceResults.clear();
+                PickingUtil.findPick(Main.getMain().getTerrain().getNode(), forward, distanceResults);
+                for(int t = 0; t < distanceResults.getNumber(); t++) {
+                    if(distanceResults.getPickData(t).getTarget() != null &&
+                       distanceResults.getPickData(t).getIntersectionRecord() != null &&
+                       distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance() <= 4) {
+                        lastDistance = distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance();
+                        hasCollision = true;
+                        break;
+                    }
+                }
+            }
         }
 
-        boolean hasCollision = PickingUtil.hasCollision(Main.getMain().getTerrain().getNode(), node, true);
-
-        // reset the position
-        node.setTranslation(proposedLocation);
-        node.updateGeometricState(0, false);
-        node.updateWorldBound(true);
-        node.updateWorldTransform(true);
 
         // check if we're on water
         if(!hasCollision) {
@@ -192,7 +270,6 @@ public class CreatureModel implements NodeGenerator {
             node.getSceneHints().setPickingHint(PickingHint.Pickable, true);
         }
 
-        node.setScale(backupScale);
         if(!retValue) {
             node.setTranslation(backupLocation);
         }
@@ -201,8 +278,12 @@ public class CreatureModel implements NodeGenerator {
     }
 
     public Vector3 getDirection() {
+        return getDirection(0);
+    }
+
+    public Vector3 getDirection(double delta) {
         q.fromRotationMatrix(node.getRotation());
-        q.multiplyLocal(p.fromAngleAxis(MathUtils.DEG_TO_RAD * 90.0f, Vector3.UNIT_Y));
+        q.multiplyLocal(p.fromAngleAxis(MathUtils.DEG_TO_RAD * (90.0f + delta), Vector3.UNIT_Y));
         q.getRotationColumn( 2, direction );
         return direction;
     }
