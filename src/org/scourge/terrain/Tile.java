@@ -275,22 +275,18 @@ public class Tile {
 
         if(t1 == null) {
             try {
-//            ImageIcon icon = ShapeUtil.loadImageIcon(path);
-        	t1 = TextureManager.load(path,
-                                     Texture.MinificationFilter.NearestNeighborNearestMipMap,
-                                                    //Trilinear,
-//                                            Texture.MagnificationFilter.Bilinear,
-                                            true);
-            Quaternion q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * stencil.angle, Vector3.UNIT_Z);
-            t1.setTextureMatrix(new Matrix4().set(q));
-	        t1.setWrap(Texture.WrapMode.Repeat);
-            t1.setHasBorder(false);
-	        t1.setApply(Texture.ApplyMode.Combine);
-	        t1.setCombineFuncRGB(Texture.CombinerFunctionRGB.Replace);
-	        t1.setCombineSrc0RGB(Texture.CombinerSource.Previous);
-	        t1.setCombineOp0RGB(Texture.CombinerOperandRGB.SourceColor);
-	        t1.setCombineFuncAlpha(Texture.CombinerFunctionAlpha.Replace);
-	        ShapeUtil.storeTexture(key, t1);
+            	t1 = TextureManager.load(path, Texture.MinificationFilter.NearestNeighborNearestMipMap, true);
+                t1.setMagnificationFilter(Texture.MagnificationFilter.Bilinear);
+                Quaternion q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * stencil.angle, Vector3.UNIT_Z);
+                t1.setTextureMatrix(new Matrix4().set(q));
+                t1.setWrap(Texture.WrapMode.Repeat);
+                t1.setHasBorder(false);
+                t1.setApply(Texture.ApplyMode.Combine);
+                t1.setCombineFuncRGB(Texture.CombinerFunctionRGB.Replace);
+                t1.setCombineSrc0RGB(Texture.CombinerSource.Previous);
+                t1.setCombineOp0RGB(Texture.CombinerOperandRGB.SourceColor);
+                t1.setCombineFuncAlpha(Texture.CombinerFunctionAlpha.Replace);
+                ShapeUtil.storeTexture(key, t1);
             } catch(Exception exc) {
                 exc.printStackTrace();
             }

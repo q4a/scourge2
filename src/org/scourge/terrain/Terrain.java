@@ -226,6 +226,8 @@ public class Terrain implements NodeGenerator {
                         terrain.updateGeometricState(0);
                         terrain.updateWorldTransform(true);
                         terrain.updateWorldRenderStates(true);
+
+
                     }
                 }
             }
@@ -320,8 +322,8 @@ public class Terrain implements NodeGenerator {
                 break;
             }
         }
-        spatial.updateGeometricState(0);
-        spatial.updateWorldTransform(true);
+//        spatial.updateGeometricState(0);
+//        spatial.updateWorldTransform(true);
         spatial.getSceneHints().setPickingHint(PickingHint.Pickable, true);
         return ret;
     }

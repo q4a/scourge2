@@ -7,12 +7,10 @@
     <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scourge2.jar" afterPath="$PROJECT_DIR$/scourge2.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/ardor3d/example/ExampleBase.java" afterPath="$PROJECT_DIR$/src/com/ardor3d/example/ExampleBase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/Main.java" afterPath="$PROJECT_DIR$/src/org/scourge/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/PlayerControl.java" afterPath="$PROJECT_DIR$/src/org/scourge/PlayerControl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/config/CreatureModelTemplate.java" afterPath="$PROJECT_DIR$/src/org/scourge/config/CreatureModelTemplate.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/Model.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/Model.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/TileType.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/TileType.java" />
     </list>
     <ignored path="scourge2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -71,21 +69,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CreatureModel.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CreatureModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="109" column="20" selection-start="4606" selection-end="4606" vertical-scroll-proportion="1.0145773">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="226" column="20" selection-start="9481" selection-end="9481" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayerControl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/scourge/PlayerControl.java">
+      <file leaf-file-name="Region.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Region.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="231" column="69" selection-start="8826" selection-end="9121" vertical-scroll-proportion="-18.307692">
+            <state line="0" column="8" selection-start="8" selection-end="8" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TreeController.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TreeController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="18" column="13" selection-start="421" selection-end="421" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -103,16 +108,34 @@
       <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="32" selection-start="1735" selection-end="1735" vertical-scroll-proportion="0.0">
+            <state line="136" column="96" selection-start="4280" selection-end="4280" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Tile.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Tile.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Tile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="147" column="29" selection-start="4363" selection-end="4363" vertical-scroll-proportion="0.0">
+            <state line="279" column="16" selection-start="9965" selection-end="9965" vertical-scroll-proportion="0.49189985">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Terrain.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="221" column="66" selection-start="8078" selection-end="8078" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Model.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Model.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="679" column="119" selection-start="22969" selection-end="22969" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -121,7 +144,7 @@
       <file leaf-file-name="TileType.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TileType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="163" column="69" selection-start="4622" selection-end="4628" vertical-scroll-proportion="0.0">
+            <state line="246" column="0" selection-start="8419" selection-end="8419" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -146,17 +169,17 @@
         <option value="$PROJECT_DIR$/src/org/scourge/config/ModelTemplate.java" />
         <option value="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/TDSFile.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/util/SmallBoundingBox.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/terrain/TileType.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/terrain/Region.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Model.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/config/CreatureBoundingBox.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/config/CreatureModelTemplate.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/PlayerControl.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/Main.java" />
         <option value="$PROJECT_DIR$/src/com/ardor3d/example/ExampleBase.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/Region.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/TileType.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" />
       </list>
     </option>
   </component>
@@ -336,9 +359,9 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -437,7 +460,11 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="Scourge2" />
       <envs />
+      <RunnerSettings RunnerId="Profile ">
+        <option name="myExternalizedOptions" />
+      </RunnerSettings>
       <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Profile " />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
@@ -513,7 +540,7 @@
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed model orientation&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="collision detection now uses rays" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -537,6 +564,7 @@
     <MESSAGE value="dungeon lighting, mountains over dungeons, dungeon up/down levels" />
     <MESSAGE value="working on collision detection" />
     <MESSAGE value="fixed model orientation&#10;" />
+    <MESSAGE value="collision detection now uses rays" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -546,31 +574,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/model/Creature.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="150" column="26" selection-start="3631" selection-end="3631" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/Climate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="161" column="17" selection-start="6771" selection-end="6771" vertical-scroll-proportion="2.728863" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/util/ShapeUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="149" column="26" selection-start="7127" selection-end="7127" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Region.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="341" column="112" selection-start="18227" selection-end="18227" vertical-scroll-proportion="0.011494253" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Model.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="596" column="60" selection-start="19316" selection-end="19316" vertical-scroll-proportion="0.017492712">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/lib/ardor3d_core.jar!/com/ardor3d/scenegraph/hint/PickingHint.class">
@@ -580,16 +586,7 @@
     </entry>
     <entry file="jar://$PROJECT_DIR$/lib/ardor3d_core.jar!/com/ardor3d/math/Quaternion.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="39" selection-start="2012" selection-end="2012" vertical-scroll-proportion="0.34493193">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="301" column="26" selection-start="10726" selection-end="10726" vertical-scroll-proportion="0.33333334">
-          <folding />
-        </state>
+        <state line="52" column="39" selection-start="2012" selection-end="2012" vertical-scroll-proportion="0.34493193" />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/lib/ardor3d_core.jar!/com/ardor3d/util/geom/Debugger.class">
@@ -599,52 +596,79 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/ardor3d/example/ExampleBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="292" column="21" selection-start="10718" selection-end="10718" vertical-scroll-proportion="0.19599427">
+        <state line="292" column="21" selection-start="10718" selection-end="10718" vertical-scroll-proportion="0.19599427" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/PlayerControl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="231" column="69" selection-start="8826" selection-end="9121" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/config/CreatureModelTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="106" selection-start="1407" selection-end="1407" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="39" column="106" selection-start="1407" selection-end="1407" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="32" selection-start="1735" selection-end="1735" vertical-scroll-proportion="0.0">
+        <state line="136" column="96" selection-start="4280" selection-end="4280" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TreeController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="13" selection-start="421" selection-end="421" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Tile.java">
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Region.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="147" column="29" selection-start="4363" selection-end="4363" vertical-scroll-proportion="0.0">
+        <state line="0" column="8" selection-start="8" selection-end="8" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TileType.java">
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Model.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="69" selection-start="4622" selection-end="4628" vertical-scroll-proportion="0.0">
+        <state line="679" column="119" selection-start="22969" selection-end="22969" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/PlayerControl.java">
+    <entry file="jar://$PROJECT_DIR$/lib/ardor3d_core.jar!/com/ardor3d/scenegraph/Spatial.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="231" column="69" selection-start="8826" selection-end="9121" vertical-scroll-proportion="-18.307692">
+        <state line="126" column="16" selection-start="6574" selection-end="6574" vertical-scroll-proportion="-8.88">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="20" selection-start="4606" selection-end="4606" vertical-scroll-proportion="1.0145773">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="226" column="20" selection-start="9481" selection-end="9481" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TileType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="246" column="0" selection-start="8419" selection-end="8419" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="221" column="66" selection-start="8078" selection-end="8078" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Tile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="279" column="16" selection-start="9965" selection-end="9965" vertical-scroll-proportion="0.49189985">
+          <folding />
         </state>
       </provider>
     </entry>

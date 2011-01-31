@@ -49,10 +49,9 @@ public class CreatureModel implements NodeGenerator {
     private CreatureModelTemplate model;
     private static final double ABOVE_GROUND = 4;
     private PrimitiveCollisionResults results;
-    private CollisionData oldData;
-    private static final boolean USE_COLLISIONS = false;
     private double speed, lastDistance;
     private double[] COLLISION_ANGLES = { -45, -10, 0, 10, 45 };
+    private double[] POST_COLLISION_ANGLES = { -90, 90 };
     private static boolean DEBUG_ENABLED = false;
     private Node debugNode = new Node("debug");
     private Vector3[] lineVertex = new Vector3[2 * COLLISION_ANGLES.length];
@@ -200,50 +199,57 @@ public class CreatureModel implements NodeGenerator {
 
         backupLocation.set(node.getTranslation());
         node.setTranslation(proposedLocation);
-        node.updateGeometricState(0, false); // make geometry changes take effect now!
-        node.updateWorldBound(true);
-        node.updateWorldTransform(true);
+//        node.updateGeometricState(0, false); // make geometry changes take effect now!
+//        node.updateWorldBound(true);
+//        node.updateWorldTransform(true);
 
         boolean hasCollision = false;
-        if(USE_COLLISIONS) {
-            results.clear();
-            PickingUtil.findCollisions(node, Main.getMain().getTerrain().getNode(), results);
-
-            if (results.getNumber() > 0) {
-                System.err.println("------------------------------");
-                for(int i = 0; i < results.getNumber(); i++) {
-                    CollisionData cd = results.getCollisionData(i);
-                    System.err.println("source=" + cd.getSourceMesh() + " target=" + cd.getTargetMesh() + " source prim=" + cd.getSourcePrimitives().size() + " target prim=" + cd.getTargetPrimitives().size());
-                    if(cd.getTargetPrimitives().size() > 0) {
-                        hasCollision = true;
-                        oldData = results.getCollisionData(0);
-                        break;
-                    }
+        tmpLocation.set(proposedLocation);
+        tmpLocation.setY(proposedLocation.getY() + 8);
+        forward.setOrigin(tmpLocation);
+        lastDistance = 0;
+        for(double angle : COLLISION_ANGLES) {
+            forward.setDirection(getDirection(angle));
+            distanceResults.clear();
+            PickingUtil.findPick(Main.getMain().getTerrain().getNode(), forward, distanceResults);
+            for(int t = 0; t < distanceResults.getNumber(); t++) {
+                if(distanceResults.getPickData(t).getTarget() != null &&
+                   distanceResults.getPickData(t).getIntersectionRecord() != null &&
+                   distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance() <= 4) {
+                    lastDistance = distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance();
+                    hasCollision = true;
+                    break;
                 }
-                System.err.println("------------------------------");
             }
-//        boolean hasCollision = PickingUtil.hasCollision(Main.getMain().getTerrain().getNode(), node, true);
-        } else {
-            tmpLocation.set(proposedLocation);
-            tmpLocation.setY(proposedLocation.getY() + 8);
-            forward.setOrigin(tmpLocation);
-            lastDistance = 0;
-            for(double angle : COLLISION_ANGLES) {
+        }
+
+        // if collision, move sideways at a slower speed
+        if(false && hasCollision) {
+            for(double angle : POST_COLLISION_ANGLES) {
+
+                proposedLocation.set(backupLocation);
+                // don't move more than the last sensed distance (ie. don't move into the wall)
+                proposedLocation.addLocal(getDirection(angle).multiply(speed / 2.0, tempVa));
+
+                node.setTranslation(proposedLocation);
+//                node.updateGeometricState(0, false); // make geometry changes take effect now!
+//                node.updateWorldBound(true);
+//                node.updateWorldTransform(true);
+
                 forward.setDirection(getDirection(angle));
                 distanceResults.clear();
                 PickingUtil.findPick(Main.getMain().getTerrain().getNode(), forward, distanceResults);
                 for(int t = 0; t < distanceResults.getNumber(); t++) {
-                    if(distanceResults.getPickData(t).getTarget() != null &&
-                       distanceResults.getPickData(t).getIntersectionRecord() != null &&
-                       distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance() <= 4) {
+                    if(!(distanceResults.getPickData(t).getTarget() != null &&
+                         distanceResults.getPickData(t).getIntersectionRecord() != null &&
+                         distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance() <= 4)) {
                         lastDistance = distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance();
-                        hasCollision = true;
+                        hasCollision = false;
                         break;
                     }
                 }
             }
         }
-
 
         // check if we're on water
         if(!hasCollision) {

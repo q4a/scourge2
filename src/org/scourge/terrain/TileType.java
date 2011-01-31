@@ -222,41 +222,61 @@ enum TileType {
     }
 
     protected Quad createQuad(float[] heights) {
-        Quad ground = new Quad(ShapeUtil.newShapeName("ground"), ShapeUtil.WALL_WIDTH, ShapeUtil.WALL_WIDTH);
+        Vector3 a = Vector3.fetchTempInstance();
+        Vector3 b = Vector3.fetchTempInstance();
+        Vector3 c = Vector3.fetchTempInstance();
+        Vector3 d = Vector3.fetchTempInstance();
+        Vector3 e1 = Vector3.fetchTempInstance();
+        Vector3 e2 = Vector3.fetchTempInstance();
+        Vector3 normal = Vector3.fetchTempInstance();
 
-        Vector3 a = new Vector3(-ShapeUtil.WALL_WIDTH / 2, heights[0], -ShapeUtil.WALL_WIDTH / 2);
-        Vector3 b = new Vector3(-ShapeUtil.WALL_WIDTH / 2, heights[1], ShapeUtil.WALL_WIDTH / 2);
-        Vector3 c = new Vector3(ShapeUtil.WALL_WIDTH / 2, heights[2], ShapeUtil.WALL_WIDTH / 2);
-        Vector3 d = new Vector3(ShapeUtil.WALL_WIDTH / 2, heights[3], -ShapeUtil.WALL_WIDTH / 2);
+        try {
+            Quad ground = new Quad(ShapeUtil.newShapeName("ground"), ShapeUtil.WALL_WIDTH, ShapeUtil.WALL_WIDTH);
 
-        FloatBuffer vertexBuf = ground.getMeshData().getVertexBuffer();
-        vertexBuf.clear();
-        vertexBuf.put((float)a.getX()).put((float)a.getY()).put((float)a.getZ());
-        vertexBuf.put((float)b.getX()).put((float)b.getY()).put((float)b.getZ());
-        vertexBuf.put((float)c.getX()).put((float)c.getY()).put((float)c.getZ());
-        vertexBuf.put((float)d.getX()).put((float)d.getY()).put((float)d.getZ());
+            a.set(-ShapeUtil.WALL_WIDTH / 2, heights[0], -ShapeUtil.WALL_WIDTH / 2);
+            b.set(-ShapeUtil.WALL_WIDTH / 2, heights[1], ShapeUtil.WALL_WIDTH / 2);
+            c.set(ShapeUtil.WALL_WIDTH / 2, heights[2], ShapeUtil.WALL_WIDTH / 2);
+            d.set(ShapeUtil.WALL_WIDTH / 2, heights[3], -ShapeUtil.WALL_WIDTH / 2);
 
-        Vector3 e1 = b.subtract(a, null);
-        Vector3 e2 = c.subtract(a, null);
-        Vector3 normal = e1.cross(e2, null).normalizeLocal();
+            FloatBuffer vertexBuf = ground.getMeshData().getVertexBuffer();
+            vertexBuf.clear();
+            vertexBuf.put((float)a.getX()).put((float)a.getY()).put((float)a.getZ());
+            vertexBuf.put((float)b.getX()).put((float)b.getY()).put((float)b.getZ());
+            vertexBuf.put((float)c.getX()).put((float)c.getY()).put((float)c.getZ());
+            vertexBuf.put((float)d.getX()).put((float)d.getY()).put((float)d.getZ());
 
-        FloatBuffer normBuf = ground.getMeshData().getNormalBuffer();
-        normBuf.clear();
-        normBuf.put((float)normal.getX()).put((float)normal.getY()).put((float)normal.getZ());
-        normBuf.put(0).put(1).put(0);
-        normBuf.put(0).put(1).put(0);
-        normBuf.put(0).put(1).put(0);
+            // calculate the normals
+            b.subtract(a, e1);
+            c.subtract(a, e2);
+            e1.cross(e2, normal);
+            normal.normalizeLocal();
 
-        ground.setModelBound(new BoundingBox());
-        ground.updateModelBound();
+            FloatBuffer normBuf = ground.getMeshData().getNormalBuffer();
+            normBuf.clear();
+            normBuf.put((float)normal.getX()).put((float)normal.getY()).put((float)normal.getZ());
+            normBuf.put(0).put(1).put(0);
+            normBuf.put(0).put(1).put(0);
+            normBuf.put(0).put(1).put(0);
 
-        // w/o this magic line splat textures (PassNode) won't work.
-        ground.getMeshData().copyTextureCoordinates(0, 1, 1.0f);
-        ground.getMeshData().copyTextureCoordinates(1, 2, 1.0f);
-        ground.getMeshData().copyTextureCoordinates(2, 3, 1.0f);
+            ground.setModelBound(new BoundingBox());
+            ground.updateModelBound();
 
-        ground.getSceneHints().setPickingHint(PickingHint.Collidable, false);
+            // w/o this magic line splat textures (PassNode) won't work.
+            ground.getMeshData().copyTextureCoordinates(0, 1, 1.0f);
+            ground.getMeshData().copyTextureCoordinates(1, 2, 1.0f);
+            ground.getMeshData().copyTextureCoordinates(2, 3, 1.0f);
 
-        return ground;
+            ground.getSceneHints().setPickingHint(PickingHint.Collidable, false);
+
+            return ground;
+        } finally {
+            Vector3.releaseTempInstance(a);
+            Vector3.releaseTempInstance(b);
+            Vector3.releaseTempInstance(c);
+            Vector3.releaseTempInstance(d);
+            Vector3.releaseTempInstance(e1);
+            Vector3.releaseTempInstance(e2);
+            Vector3.releaseTempInstance(normal);
+        }
     }
 }
