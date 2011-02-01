@@ -13,7 +13,6 @@ import com.ardor3d.extension.model.collada.jdom.data.ColladaStorage;
 import com.ardor3d.extension.model.collada.jdom.data.SkinData;
 import com.ardor3d.intersection.*;
 import com.ardor3d.math.*;
-import com.ardor3d.math.type.ReadOnlyVector3;
 import com.ardor3d.renderer.IndexMode;
 import com.ardor3d.renderer.state.ZBufferState;
 import com.ardor3d.scenegraph.Line;
@@ -53,7 +52,7 @@ public class CreatureModel implements NodeGenerator {
     private Node debugNode = new Node("debug");
     private Vector3[] lineVertex = new Vector3[2 * COLLISION_ANGLES.length];
     private final Line lines = new Line("normLine", lineVertex, null, null, null);
-
+    private int lastStep;
 
     public CreatureModel(CreatureModelTemplate model, String skin, String namePrefix) {
 
@@ -205,6 +204,7 @@ public class CreatureModel implements NodeGenerator {
     private Vector3 backupLocation = new Vector3();
     private Vector3 tmpLocation = new Vector3();
     private Vector3 tmpLocation2 = new Vector3();
+    private Vector3 intersection = new Vector3();
     public boolean canMoveTo(Vector3 proposedLocation) {
         boolean retValue = false;
 
@@ -221,37 +221,60 @@ public class CreatureModel implements NodeGenerator {
                     // Hack: instead of messing with normal vectors, simply try the same operation turning to the left and right.
                     // Whichever takes us farther from the wall is the direction we move in.
 
+                    // remember the intersection point
+                    intersection.set(distanceResults.getPickData(0).getIntersectionRecord().getIntersectionPoint(
+                            distanceResults.getPickData(0).getIntersectionRecord().getClosestIntersection()));
+
                     // look to the left
                     proposedLocation.set(backupLocation);
-                    proposedLocation.addLocal(getDirection(90).normalizeLocal().multiplyLocal(speed * .5));
+                    proposedLocation.addLocal(getDirection(90).normalizeLocal().multiplyLocal(speed * .25));
                     tmpLocation2.set(proposedLocation); // remember this 'cause proposedLocation will be reused below
                     node.setTranslation(proposedLocation);
-                    boolean freeA = executePick(angle, proposedLocation, 0);
-                    double distA = freeA && distanceResults.getPickData(0).getIntersectionRecord().getNumberOfIntersections() > 0 ?
+                    boolean contactA = executePick(angle, proposedLocation, 0);
+//                    double distFromOriginalA = intersection.distance(proposedLocation);
+                    double distA = contactA && distanceResults.getPickData(0).getIntersectionRecord().getNumberOfIntersections() > 0 ?
                                    distanceResults.getPickData(0).getIntersectionRecord().getClosestDistance() :
                                    0;
 
                     // look to the right
                     proposedLocation.set(backupLocation);
-                    proposedLocation.addLocal(getDirection(-90).normalizeLocal().multiplyLocal(speed * .5));
+                    proposedLocation.addLocal(getDirection(-90).normalizeLocal().multiplyLocal(speed * .25));
                     node.setTranslation(proposedLocation);
-                    boolean freeB = executePick(angle, proposedLocation, 0);
-                    double distB = freeB && distanceResults.getPickData(0).getIntersectionRecord().getNumberOfIntersections() > 0 ?
+                    boolean contactB = executePick(angle, proposedLocation, 0);
+//                    double distFromOriginalB = intersection.distance(proposedLocation);
+                    double distB = contactB && distanceResults.getPickData(0).getIntersectionRecord().getNumberOfIntersections() > 0 ?
                                    distanceResults.getPickData(0).getIntersectionRecord().getClosestDistance() :
                                    0;
 
 //                    System.err.println("90=>" + distA + "(" + freeA + ") -90=>" + distB + "(" + freeB + ")");
 
+                    // decide which way to go:
+                    // if A or B hits a wall, pick the farther one
+                    // otherwise, try to use the last step's direction
+                    int step = 0;
+                    if(contactB && distA < distB && distB > MIN_DISTANCE) {
+                        step = -90;
+                    } else if(contactA && distA > distB && distA > MIN_DISTANCE) {
+                        step = 90;
+                    } else if(lastStep == -90 && !contactB) {
+                        step = -90;
+                    } else if(lastStep == 90 && !contactA) {
+                        step = -90;
+                    }
+
                     // select the direction that is farther
-                    if(distA < distB && (distB > MIN_DISTANCE || !freeB)) {
+                    if(step == -90) {
+                        lastStep = -90;
                         lastDistance = distB;
                         hasCollision = false;
-                    } else if(distA > distB && (distA > MIN_DISTANCE || !freeA)) {
+                    } else if(step == 90) {
+                        lastStep = 90;
                         lastDistance = distA;
                         hasCollision = false;
                         node.setTranslation(tmpLocation2);
                     } else {
                         // can't move, we're stuck
+                        lastStep = 0;
                         hasCollision = true;
                     }
 
