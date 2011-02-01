@@ -1,6 +1,5 @@
 package org.scourge.terrain;
 
-import com.ardor3d.bounding.BoundingBox;
 import com.ardor3d.bounding.CollisionTree;
 import com.ardor3d.bounding.CollisionTreeManager;
 import com.ardor3d.extension.animation.skeletal.AnimationManager;
@@ -14,21 +13,19 @@ import com.ardor3d.extension.model.collada.jdom.data.ColladaStorage;
 import com.ardor3d.extension.model.collada.jdom.data.SkinData;
 import com.ardor3d.intersection.*;
 import com.ardor3d.math.*;
+import com.ardor3d.math.type.ReadOnlyVector3;
 import com.ardor3d.renderer.IndexMode;
-import com.ardor3d.renderer.queue.RenderBucketType;
 import com.ardor3d.renderer.state.ZBufferState;
 import com.ardor3d.scenegraph.Line;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.controller.SpatialController;
-import com.ardor3d.scenegraph.event.DirtyType;
 import com.ardor3d.scenegraph.hint.PickingHint;
 import com.ardor3d.util.geom.BufferUtils;
 import org.scourge.Main;
 import org.scourge.config.CreatureModelTemplate;
 import org.scourge.util.ShapeUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,7 +44,7 @@ public class CreatureModel implements NodeGenerator {
     private Vector3 direction = new Vector3();
     private AnimationManager manager;
     private CreatureModelTemplate model;
-    private static final double ABOVE_GROUND = 4;
+    private static final double MIN_DISTANCE = 4;
     private PrimitiveCollisionResults results;
     private double speed, lastDistance;
     private double[] COLLISION_ANGLES = { -45, -10, 0, 10, 45 };
@@ -192,61 +189,73 @@ public class CreatureModel implements NodeGenerator {
         }
     }
 
+    private boolean executePick(double angle, Vector3 proposedLocation, double distance) {
+        tmpLocation.set(proposedLocation);
+        tmpLocation.setY(proposedLocation.getY() + 8);
+        forward.setOrigin(tmpLocation);
+        forward.setDirection(getDirection(angle));
+        distanceResults.clear();
+        PickingUtil.findPick(Main.getMain().getTerrain().getNode(), forward, distanceResults);
+
+        return (distanceResults.getNumber() != 0 &&
+                distanceResults.getPickData(0).getTarget() != null &&
+                distanceResults.getPickData(0).getIntersectionRecord() != null);
+    }
+
     private Vector3 backupLocation = new Vector3();
     private Vector3 tmpLocation = new Vector3();
+    private Vector3 tmpLocation2 = new Vector3();
     public boolean canMoveTo(Vector3 proposedLocation) {
         boolean retValue = false;
 
         backupLocation.set(node.getTranslation());
         node.setTranslation(proposedLocation);
-//        node.updateGeometricState(0, false); // make geometry changes take effect now!
-//        node.updateWorldBound(true);
-//        node.updateWorldTransform(true);
 
         boolean hasCollision = false;
-        tmpLocation.set(proposedLocation);
-        tmpLocation.setY(proposedLocation.getY() + 8);
-        forward.setOrigin(tmpLocation);
         lastDistance = 0;
         for(double angle : COLLISION_ANGLES) {
-            forward.setDirection(getDirection(angle));
-            distanceResults.clear();
-            PickingUtil.findPick(Main.getMain().getTerrain().getNode(), forward, distanceResults);
-            for(int t = 0; t < distanceResults.getNumber(); t++) {
-                if(distanceResults.getPickData(t).getTarget() != null &&
-                   distanceResults.getPickData(t).getIntersectionRecord() != null &&
-                   distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance() <= 4) {
-                    lastDistance = distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance();
-                    hasCollision = true;
-                    break;
-                }
-            }
-        }
+            if(executePick(angle, proposedLocation, 4)) {
+                lastDistance = distanceResults.getPickData(0).getIntersectionRecord().getClosestDistance();
+                if(lastDistance <= MIN_DISTANCE) {
+                    // We hit the wall.
+                    // Hack: instead of messing with normal vectors, simply try the same operation turning to the left and right.
+                    // Whichever takes us farther from the wall is the direction we move in.
 
-        // if collision, move sideways at a slower speed
-        if(false && hasCollision) {
-            for(double angle : POST_COLLISION_ANGLES) {
+                    // look to the left
+                    proposedLocation.set(backupLocation);
+                    proposedLocation.addLocal(getDirection(90).normalizeLocal().multiplyLocal(speed * .5));
+                    tmpLocation2.set(proposedLocation); // remember this 'cause proposedLocation will be reused below
+                    node.setTranslation(proposedLocation);
+                    boolean freeA = executePick(angle, proposedLocation, 0);
+                    double distA = freeA && distanceResults.getPickData(0).getIntersectionRecord().getNumberOfIntersections() > 0 ?
+                                   distanceResults.getPickData(0).getIntersectionRecord().getClosestDistance() :
+                                   0;
 
-                proposedLocation.set(backupLocation);
-                // don't move more than the last sensed distance (ie. don't move into the wall)
-                proposedLocation.addLocal(getDirection(angle).multiply(speed / 2.0, tempVa));
+                    // look to the right
+                    proposedLocation.set(backupLocation);
+                    proposedLocation.addLocal(getDirection(-90).normalizeLocal().multiplyLocal(speed * .5));
+                    node.setTranslation(proposedLocation);
+                    boolean freeB = executePick(angle, proposedLocation, 0);
+                    double distB = freeB && distanceResults.getPickData(0).getIntersectionRecord().getNumberOfIntersections() > 0 ?
+                                   distanceResults.getPickData(0).getIntersectionRecord().getClosestDistance() :
+                                   0;
 
-                node.setTranslation(proposedLocation);
-//                node.updateGeometricState(0, false); // make geometry changes take effect now!
-//                node.updateWorldBound(true);
-//                node.updateWorldTransform(true);
+//                    System.err.println("90=>" + distA + "(" + freeA + ") -90=>" + distB + "(" + freeB + ")");
 
-                forward.setDirection(getDirection(angle));
-                distanceResults.clear();
-                PickingUtil.findPick(Main.getMain().getTerrain().getNode(), forward, distanceResults);
-                for(int t = 0; t < distanceResults.getNumber(); t++) {
-                    if(!(distanceResults.getPickData(t).getTarget() != null &&
-                         distanceResults.getPickData(t).getIntersectionRecord() != null &&
-                         distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance() <= 4)) {
-                        lastDistance = distanceResults.getPickData(t).getIntersectionRecord().getClosestDistance();
+                    // select the direction that is farther
+                    if(distA < distB && (distB > MIN_DISTANCE || !freeB)) {
+                        lastDistance = distB;
                         hasCollision = false;
-                        break;
+                    } else if(distA > distB && (distA > MIN_DISTANCE || !freeA)) {
+                        lastDistance = distA;
+                        hasCollision = false;
+                        node.setTranslation(tmpLocation2);
+                    } else {
+                        // can't move, we're stuck
+                        hasCollision = true;
                     }
+
+                    break;
                 }
             }
         }
@@ -281,6 +290,14 @@ public class CreatureModel implements NodeGenerator {
         }
 
         return retValue;
+    }
+
+    private String printVector(Vector3 v) {
+        return "" + round(v.getX()) + "," + round(v.getY()) + "," + round(v.getZ());
+    }
+
+    private String round(double z) {
+        return "" + Math.round(z * 100) / 100.0;
     }
 
     public Vector3 getDirection() {
