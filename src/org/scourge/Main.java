@@ -113,6 +113,7 @@ public class Main extends ExampleBase implements Scourge {
      */
     @Override
     protected void updateExample(final ReadOnlyTimer timer) {
+        if(updating) {
         final Camera camera = _canvas.getCanvasRenderer().getCamera();
 
         _passManager.updatePasses(timer.getTimePerFrame());
@@ -169,6 +170,9 @@ public class Main extends ExampleBase implements Scourge {
         setVertexCoords(transVec.getX(), transVec.getY(), transVec.getZ());
 
         waterNode.update(timer.getTimePerFrame());
+        } else {
+            terrain.update(timer.getTimePerFrame());
+        }
     }
 
     @Override
@@ -229,12 +233,12 @@ public class Main extends ExampleBase implements Scourge {
         fogState.setQuality(FogState.Quality.PerVertex);
         _root.setRenderState(fogState);
 
-        loadingLabel = BasicText.createDefaultTextLabel("Loading...", "", 16);
-        loadingLabel.setScale(.8);
+        loadingLabel = BasicText.createDefaultTextLabel("loading", "Loading...", 16);
 		loadingLabel.setTextColor(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
         loadingLabel.setTranslation((getScreenWidth() - loadingLabel.getWidth()) / 2,
                                     (getScreenHeight() - loadingLabel.getHeight()) / 2,
                                     0);
+        loadingLabel.setVisible(false);
         _root.attachChild(loadingLabel);
 
         miniMap = new MiniMap();
@@ -651,11 +655,16 @@ public class Main extends ExampleBase implements Scourge {
     public void setLoading(boolean loading) {
         if(loading) {
             loadingCounter++;
-            loadingLabel.setVisible(false);
+            if(!loadingLabel.isVisible()) {
+                loadingLabel.setVisible(true);
+                loadingLabel.updateWorldRenderStates(false);
+            }
+            updating = false;
         } else {
             loadingCounter--;
             if(loadingCounter == 0) {
-                loadingLabel.setVisible(true);
+                loadingLabel.setVisible(false);
+                updating = true;
             }
         }
     }

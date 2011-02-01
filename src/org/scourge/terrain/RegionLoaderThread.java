@@ -14,10 +14,10 @@ public class RegionLoaderThread extends Thread {
     private int rx;
     private int ry;
     private Region region;
-    private Terrain terrain;
+    private ThreadedTerrainLoader terrainLoader;
 
-    public RegionLoaderThread(Terrain terrain, int rx, int ry) {
-        this.terrain = terrain;
+    public RegionLoaderThread(ThreadedTerrainLoader terrainLoader, int rx, int ry) {
+        this.terrainLoader = terrainLoader;
         this.rx = rx;
         this.ry = ry;
         setPriority(Thread.MIN_PRIORITY);
@@ -25,16 +25,16 @@ public class RegionLoaderThread extends Thread {
     }
 
     public void run() {
-        String key = Terrain.getRegionKey(rx, ry);
+        String key = ThreadedTerrainLoader.getRegionKey(rx, ry);
         try {
-//            terrain.getMain().setLoading(true);
+            terrainLoader.getTerrain().getScourge().setLoading(true);
             logger.fine("Loading region: " + key);
-            region = new Region(terrain, rx * Region.REGION_SIZE, ry * Region.REGION_SIZE);
-            terrain.setRegionPending();
+            region = new Region(terrainLoader.getTerrain(), rx * Region.REGION_SIZE, ry * Region.REGION_SIZE);
+            terrainLoader.setRegionPending();
         } catch(IOException exc) {
             logger.log(Level.SEVERE, exc.getMessage(), exc);
         } finally {
-//            terrain.getMain().setLoading(false);
+            terrainLoader.getTerrain().getScourge().setLoading(false);
             logger.fine("Loaded region: " + key);
         }
     }

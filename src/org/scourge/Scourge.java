@@ -17,4 +17,5 @@ public interface Scourge {
 
     public Terrain getTerrain();
 
+    void setLoading(boolean b);
 }

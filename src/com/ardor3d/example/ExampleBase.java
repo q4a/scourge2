@@ -137,6 +137,8 @@ public abstract class ExampleBase implements Runnable, Updater, Scene {
     protected static int _minAlphaBits = -1;
     protected static int _minStencilBits = -1;
 
+    protected boolean updating = true;
+
     public void run() {
         try {
             _frameHandler.init();
@@ -233,17 +235,21 @@ public abstract class ExampleBase implements Runnable, Updater, Scene {
             StatCollector.update();
         }
 
-        updateLogicalLayer(timer);
+        if(updating) {
+            updateLogicalLayer(timer);
 
-        // Execute updateQueue item
-        GameTaskQueueManager.getManager(_canvas.getCanvasRenderer().getRenderContext()).getQueue(GameTaskQueue.UPDATE)
-                .execute();
+            // Execute updateQueue item
+            GameTaskQueueManager.getManager(_canvas.getCanvasRenderer().getRenderContext()).getQueue(GameTaskQueue.UPDATE)
+                    .execute();
 
-        /** Call simpleUpdate in any derived classes of ExampleBase. */
-        updateExample(timer);
+            /** Call simpleUpdate in any derived classes of ExampleBase. */
+            updateExample(timer);
 
-        /** Update controllers/render states/transforms/bounds for rootNode. */
-        _root.updateGeometricState(timer.getTimePerFrame(), true);
+            /** Update controllers/render states/transforms/bounds for rootNode. */
+            _root.updateGeometricState(timer.getTimePerFrame(), true);
+        } else {
+            updateExample(timer);
+        }
     }
 
     protected void updateLogicalLayer(final ReadOnlyTimer timer) {
