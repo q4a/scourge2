@@ -14,4 +14,4 @@ done
 for jar in lib/lwjgl/*.jar; do
 	CP=$CP:$jar
 done
-$JAVA -cp $CP -Djava.library.path=./lib/lwjgl/native/$PLATFORM org.scourge.Main
+$JAVA -Xms256m -Xmx512m -dsa -da -cp $CP -Djava.library.path=./lib/lwjgl/native/$PLATFORM org.scourge.Main
