@@ -4,13 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/src/org/scourge/terrain/TreeController.java" line="29" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scourge2.jar" afterPath="$PROJECT_DIR$/scourge2.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/Scourge.java" afterPath="$PROJECT_DIR$/src/org/scourge/Scourge.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" />
-    </list>
+    <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="" />
     <ignored path="scourge2.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -556,7 +550,7 @@
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="more work on collision detection" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed gray world after load bug" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -584,6 +578,7 @@
     <MESSAGE value="performance increase after profiler (yourkit)" />
     <MESSAGE value="working on movement resulting from collision (needs more work but getting there)" />
     <MESSAGE value="more work on collision detection" />
+    <MESSAGE value="fixed gray world after load bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
