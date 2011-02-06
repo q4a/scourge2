@@ -144,6 +144,8 @@ public class CreatureModel implements NodeGenerator {
         node.setTranslation(new Vector3(pos.getX() * ShapeUtil.WALL_WIDTH,
                                         pos.getY() * ShapeUtil.WALL_WIDTH,
                                         pos.getZ() * ShapeUtil.WALL_WIDTH));
+		node.updateWorldTransform(true);
+		node.updateWorldBound(true);
     }
 
     @Override

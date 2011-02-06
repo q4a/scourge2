@@ -2,6 +2,7 @@ package org.scourge;
 
 import org.scourge.model.Creature;
 import org.scourge.terrain.Terrain;
+import org.scourge.ui.MiniMap;
 
 import java.util.Random;
 
@@ -18,4 +19,6 @@ public interface Scourge {
     public Terrain getTerrain();
 
     void setLoading(boolean b);
+
+	MiniMap getMiniMap();
 }
