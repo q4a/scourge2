@@ -4,7 +4,11 @@
     <bookmark url="file://$PROJECT_DIR$/src/org/scourge/terrain/TreeController.java" line="29" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="" />
+    <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scourge2.jar" afterPath="$PROJECT_DIR$/scourge2.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/PlayerControl.java" afterPath="$PROJECT_DIR$/src/org/scourge/PlayerControl.java" />
+    </list>
     <ignored path="scourge2.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -77,10 +81,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Terrain.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Terrain.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="0" selection-start="3365" selection-end="3365" vertical-scroll-proportion="0.5669725">
+            <state line="107" column="96" selection-start="3763" selection-end="3763" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -116,7 +120,7 @@
       <file leaf-file-name="CreatureModel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="147" column="34" selection-start="6230" selection-end="6230" vertical-scroll-proportion="0.0">
+            <state line="334" column="44" selection-start="14403" selection-end="14587" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -140,10 +144,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayerControl.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="PlayerControl.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/PlayerControl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="238" column="40" selection-start="9415" selection-end="9447" vertical-scroll-proportion="0.0">
+            <state line="224" column="0" selection-start="8659" selection-end="8659" vertical-scroll-proportion="1.006993">
               <folding />
             </state>
           </provider>
@@ -166,7 +170,6 @@
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Model.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/config/CreatureBoundingBox.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/config/CreatureModelTemplate.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/PlayerControl.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Region.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/TileType.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" />
@@ -179,6 +182,7 @@
         <option value="$PROJECT_DIR$/src/org/scourge/ui/MiniMap.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/PlayerControl.java" />
       </list>
     </option>
   </component>
@@ -358,9 +362,9 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="options.searchVisible" value="true" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -511,25 +515,25 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="430" y="22" width="1249" height="1023" extended-state="0" />
+    <frame x="805" y="22" width="1107" height="1045" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32779622" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32756758" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32864866" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3986711" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296501" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885087" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32864866" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293461" sideWeight="0.6703499" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2978959" sideWeight="0.99916595" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2972973" sideWeight="0.99916595" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -610,84 +614,66 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/ui/MiniMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="137" column="14" selection-start="4996" selection-end="4996" vertical-scroll-proportion="0.31735536">
-          <folding />
-        </state>
+        <state line="137" column="14" selection-start="4996" selection-end="4996" vertical-scroll-proportion="0.31735536" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/Scourge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="0" selection-start="216" selection-end="216" vertical-scroll-proportion="0.123569794">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/PlayerControl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="238" column="40" selection-start="9415" selection-end="9447" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TerrainLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="0" selection-start="208" selection-end="208" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="13" column="0" selection-start="216" selection-end="216" vertical-scroll-proportion="0.123569794" />
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/lib/ardor3d_core.jar!/com/ardor3d/util/Timer.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="18" selection-start="759" selection-end="759" vertical-scroll-proportion="-10.56">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/ThreadedTerrainLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="16" selection-start="2043" selection-end="2043" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="39" selection-start="4135" selection-end="4135" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="23" column="18" selection-start="759" selection-end="759" vertical-scroll-proportion="-10.56" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/io/SaveGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="26" selection-start="528" selection-end="528" vertical-scroll-proportion="0.33213645">
-          <folding />
-        </state>
+        <state line="25" column="26" selection-start="528" selection-end="528" vertical-scroll-proportion="0.33213645" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/GameState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="174" column="33" selection-start="5771" selection-end="5771" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="174" column="33" selection-start="5771" selection-end="5771" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TerrainLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="0" selection-start="208" selection-end="208" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/ThreadedTerrainLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="16" selection-start="2043" selection-end="2043" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="131" column="39" selection-start="4135" selection-end="4135" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/model/Creature.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="26" selection-start="2771" selection-end="2771" vertical-scroll-proportion="0.0">
+        <state line="104" column="26" selection-start="2771" selection-end="2771" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="107" column="96" selection-start="3763" selection-end="3763" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="147" column="34" selection-start="6230" selection-end="6230" vertical-scroll-proportion="0.0">
+        <state line="334" column="44" selection-start="14403" selection-end="14587" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/PlayerControl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="0" selection-start="3365" selection-end="3365" vertical-scroll-proportion="0.5669725">
+        <state line="224" column="0" selection-start="8659" selection-end="8659" vertical-scroll-proportion="1.006993">
           <folding />
         </state>
       </provider>

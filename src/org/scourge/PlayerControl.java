@@ -11,6 +11,8 @@ import com.google.common.base.Predicates;
 import org.scourge.terrain.CreatureModel;
 import org.scourge.ui.component.Window;
 
+import java.util.Arrays;
+
 /**
  * User: gabor
  * Date: 1/8/11
@@ -165,7 +167,7 @@ public class PlayerControl {
                     }
 
                     main.setMouseGrabbed(true);
-                    if(mouseMoved) rotate(tpf, mouse.getDx() < 0);
+                    if(mouseMoved) rotate(tpf, mouse.getDx(), mouse.getDy());
                 }
             } else {
                 firstPing = false;
@@ -219,24 +221,16 @@ public class PlayerControl {
 
 
     // Actual movement code
-    public final static float PLAYER_ROTATE_STEP = 150.0f;
-    public static boolean fixed_camera = true;
-    private Quaternion q = new Quaternion();
+    private final static double PLAYER_ROTATE_STEP = -20;
+    private Quaternion qX = new Quaternion();
     private Quaternion q2 = new Quaternion();
 
 
-    protected void rotate(double time, boolean left) {
-        q.fromRotationMatrix(main.getPlayer().getCreatureModel().getNode().getRotation());
-        q2.fromAngleAxis(MathUtils.DEG_TO_RAD * (left ? 1.0 : -1.0) * PLAYER_ROTATE_STEP * time, Vector3.UNIT_Y);
-        q.multiplyLocal(q2);
-        main.getPlayer().getCreatureModel().getNode().setRotation(q);
-
-        // rotate the camera the opposite way
-//        if(!fixed_camera) {
-//            q.fromAngleAxis(MathUtils.DEG_TO_RAD * -PlayerController.PLAYER_ROTATE_STEP * event.getTime(), Vector3.UNIT_Y);
-//            main.getCameraHolder().getLocalRotation().multLocal(q);
-//        }
-        main.getMiniMap().update(false);
+    protected void rotate(double time, double amountX, double amountY) {
+        qX.fromRotationMatrix(main.getPlayer().getCreatureModel().getNode().getRotation());
+        q2.fromAngleAxis(MathUtils.DEG_TO_RAD * amountX * PLAYER_ROTATE_STEP * time, Vector3.UNIT_Y);
+        qX.multiplyLocal(q2);
+        main.getPlayer().getCreatureModel().getNode().setRotation(qX);
     }
 
     public TwoInputStates getLastInputState() {
