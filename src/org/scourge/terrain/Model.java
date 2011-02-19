@@ -14,6 +14,7 @@ import com.ardor3d.math.type.ReadOnlyVector3;
 import com.ardor3d.renderer.state.BlendState;
 import com.ardor3d.renderer.state.TextureState;
 import com.ardor3d.renderer.state.ZBufferState;
+import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.controller.SpatialController;
@@ -718,7 +719,7 @@ public enum Model implements Savable {
 
     public abstract Spatial createSpatial();
 
-    protected Spatial getNoAlphaSpatial() {
+	protected Spatial getNoAlphaSpatial() {
         return ShapeUtil.importModel(getModelPath(), getTexturePath(), namePrefix == null ? name() : namePrefix, this, 0, 0, 0);
     }
 

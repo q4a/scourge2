@@ -2,6 +2,7 @@ package org.scourge.terrain;
 
 import org.scourge.Main;
 import org.scourge.Scourge;
+import org.scourge.util.NodeUtil;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -154,15 +155,8 @@ public class ThreadedTerrainLoader implements TerrainLoader {
                         // below this line doesn't need to be synchronized
                         terrain.getNode().attachChild(region.getNode());
 
-                        // not sure which but one of the following is needed...
-                        region.getNode().updateWorldBound(true);
-                        region.getNode().updateGeometricState(0);
-                        region.getNode().updateWorldTransform(true);
-                        region.getNode().updateWorldRenderStates(true);
-                        terrain.getNode().updateWorldBound(true);
-                        terrain.getNode().updateGeometricState(0);
-                        terrain.getNode().updateWorldTransform(true);
-                        terrain.getNode().updateWorldRenderStates(true);
+						// magical updates
+						NodeUtil.nodeAdded(region.getNode(), terrain.getNode());
                     }
                 }
             }

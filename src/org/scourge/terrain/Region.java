@@ -1,16 +1,22 @@
 package org.scourge.terrain;
 
 import com.ardor3d.bounding.BoundingBox;
+import com.ardor3d.bounding.BoundingSphere;
 import com.ardor3d.intersection.BoundingCollisionResults;
 import com.ardor3d.intersection.CollisionResults;
+import com.ardor3d.intersection.PickingUtil;
 import com.ardor3d.math.Vector2;
 import com.ardor3d.math.Vector3;
 import com.ardor3d.scenegraph.Node;
+import com.ardor3d.scenegraph.Spatial;
 import com.ardor3d.scenegraph.shape.Quad;
+import org.scourge.Main;
 import org.scourge.editor.MapSymbol;
 import org.scourge.io.BlockData;
 import org.scourge.io.MapIO;
 import org.scourge.io.RegionData;
+import org.scourge.model.HasModel;
+import org.scourge.util.NodeUtil;
 import org.scourge.util.ShapeUtil;
 
 import java.io.IOException;
@@ -37,8 +43,7 @@ public class Region implements NodeGenerator {
     private boolean first = true;
     private List<Generator> generators = new ArrayList<Generator>();
     private Vector3 proposedLocation = new Vector3();
-    private Vector3 extent = new Vector3();
-    private CollisionResults collisionResults = new BoundingCollisionResults();
+    private Vector3 savedTranslation = new Vector3();
 
     public Region(Terrain terrain, int x, int y) throws IOException {
         this.terrain = terrain;
@@ -684,33 +689,55 @@ public class Region implements NodeGenerator {
         }
 //        region.updateRenderState();
     }
-//
-//    /**
-//     * Find space on this region for this node
-//     * @param x coordinates are within the region (0-REGION_SIZE)
-//     * @param y (0-REGION_SIZE)
-//     * @param model the model to move
-//     * @param location the final location if the return value is true
-//     * @return true if space was found, false if it could not fit
-//     */
-//    public boolean findSpaceAround(int x, int y, HasModel model, ReadOnlyVector3 location) {
-//        ((BoundingBox)model.getCreatureModel().getNode().getWorldBound()).getExtent(extent);
-//        for(int dist = 1; dist < 3; dist++) {
-//            for(int dx = -dist; dx < dist; dx++) {
-//                for(int dy = -dist; dy < dist; dy++) {
-//                    proposedLocation.set((getX() + x + dx) * ShapeUtil.WALL_WIDTH + (ShapeUtil.WALL_WIDTH - extent.x) / 2,
-//                                         4 + extent.getY() / 2,
-//                                         (getY() + y + dy) * ShapeUtil.WALL_WIDTH + (ShapeUtil.WALL_WIDTH - extent.z) / 2);
-//                    if(model.getCreatureModel().canMoveTo(proposedLocation)) {
-//                        location.set(proposedLocation);
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//        return false;
-//    }
-//
+
+    /**
+     * Find space on this region for this node.
+	 * Note: this method is slow.
+	 * If the method returns true, the spatial was successfully moved. If false, it is returned to its original position.
+	 *
+     * @param x coordinates are within the region (0-REGION_SIZE)
+     * @param y (0-REGION_SIZE)
+     * @param spatial the spatial to use for positioning
+     * @param attachee the spatial to attach to the terrain
+	 * @return true if space was found, false if it could not fit
+     */
+    public boolean findSpaceAround(int x, int y, Spatial spatial, Spatial attachee) {
+		boolean ret = false;
+		savedTranslation.set(attachee.getTranslation());
+		double ex, ey, ez;
+		if(spatial.getWorldBound() instanceof BoundingBox) {
+			ex = ((BoundingBox)spatial.getWorldBound()).getXExtent();
+			ey = ((BoundingBox)spatial.getWorldBound()).getYExtent();
+			ez = ((BoundingBox)spatial.getWorldBound()).getZExtent();
+		} else {
+			ex = ey = ez = ((BoundingSphere)spatial.getWorldBound()).getRadius() * 2;
+		}
+		getNode().attachChild(attachee);
+out:
+        for(int dist = 1; dist < 3; dist++) {
+            for(int dx = -dist; dx < dist; dx++) {
+                for(int dy = -dist; dy < dist; dy++) {
+                    attachee.setTranslation((x + dx) * ShapeUtil.WALL_WIDTH + (ShapeUtil.WALL_WIDTH - ex) / 2,
+							4 + ey / 2,
+							(y + dy) * ShapeUtil.WALL_WIDTH + (ShapeUtil.WALL_WIDTH - ez) / 2);
+					attachee.updateWorldBound(true);
+					Terrain.moveOnTopOfTerrain(attachee);
+                    if(!PickingUtil.hasCollision(spatial, Main.getMain().getTerrain().getNode(), true)) {
+                        ret = true;
+						break out;
+                    }
+                }
+            }
+        }
+		if(!ret) {
+			getNode().detachChild(attachee);
+			attachee.setTranslation(savedTranslation);
+		} else {
+			NodeUtil.nodeAdded(attachee, getNode());
+		}
+        return ret;
+    }
+
 //    public boolean findSpaceAround(int x, int y, Spatial spatial, ReadOnlyVector3 location) {
 //        proposedLocation.set((getX() + x) * ShapeUtil.WALL_WIDTH + (ShapeUtil.WALL_WIDTH - extent.x) / 2,
 //                             4 + extent.y / 2,
