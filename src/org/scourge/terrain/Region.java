@@ -2,8 +2,6 @@ package org.scourge.terrain;
 
 import com.ardor3d.bounding.BoundingBox;
 import com.ardor3d.bounding.BoundingSphere;
-import com.ardor3d.intersection.BoundingCollisionResults;
-import com.ardor3d.intersection.CollisionResults;
 import com.ardor3d.intersection.PickingUtil;
 import com.ardor3d.intersection.PrimitivePickResults;
 import com.ardor3d.math.Ray3;
@@ -11,20 +9,23 @@ import com.ardor3d.math.Vector2;
 import com.ardor3d.math.Vector3;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
-import com.ardor3d.scenegraph.hint.PickingHint;
 import com.ardor3d.scenegraph.shape.Quad;
 import org.scourge.Main;
 import org.scourge.editor.MapSymbol;
 import org.scourge.io.BlockData;
 import org.scourge.io.MapIO;
 import org.scourge.io.RegionData;
-import org.scourge.model.HasModel;
 import org.scourge.util.NodeUtil;
 import org.scourge.util.ShapeUtil;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,14 +40,21 @@ public class Region implements NodeGenerator {
     public static final int REGION_SIZE = 20;
     private Tile[][] tiles;
     private int x, y, rows, cols, regionX, regionY;
-//    private List<House> houses = new ArrayList<House>();
+    private List<House> houses = new ArrayList<House>();
     public static final float MIN_HEIGHT = 2;
     private static Logger logger = Logger.getLogger(Region.class.toString());
     public static final int EDGE_BUFFER = 2;
     private boolean first = true;
     private List<Generator> generators = new ArrayList<Generator>();
-    private Vector3 proposedLocation = new Vector3();
     private Vector3 savedTranslation = new Vector3();
+	private static final Ray3 down = new Ray3();
+	private static PrimitivePickResults noDistanceResults = new PrimitivePickResults();
+
+	static {
+		// point it down
+        down.setDirection(new Vector3(0, -1, 0));
+        noDistanceResults.setCheckDistance(false);
+	}
 
     public Region(Terrain terrain, int x, int y) throws IOException {
         this.terrain = terrain;
@@ -340,7 +348,7 @@ public class Region implements NodeGenerator {
             }
         }
 
-//        addHouses(housePoints);
+        addHouses(housePoints);
         addLadders(ladderPos);
     }
 
@@ -461,38 +469,44 @@ public class Region implements NodeGenerator {
         }
     }
 
-//    private void addHouses(List<Set<Vector2>> housePoints) {
-//        for(Set<Vector2> housePoint : housePoints) {
-//            double minx = 10000, miny = 10000, maxx = -1, maxy = -1;
-//            for(Vector2 point : housePoint) {
-//                if(point.getX() < minx) {
-//                    minx = point.getX();
-//                }
-//                if(point.getX() > maxx) {
-//                    maxx = point.getX();
-//                }
-//                if(point.getY() < miny) {
-//                    miny = point.getY();
-//                }
-//                if(point.getY() > maxy) {
-//                    maxy = point.getY();
-//                }
-//            }
-//
-//            if(minx < EDGE_BUFFER || miny < EDGE_BUFFER || maxx >= cols + EDGE_BUFFER || maxy >= rows + EDGE_BUFFER) {
-//                continue;
-//            }
-//
-//            int w = (int)(maxx - minx) + 1;
-//            int h = (int)(maxy - miny) + 1;
-//            float height = tiles[(int)miny][(int)minx].getLevel();
-//
-//            House house = new House(terrain.getMain(), minx + w / 2.0f - 0.5f, height, miny + h / 2.0f + 0.5f, w, h,
-//                                    (int)(terrain.getMain().getRandom().nextFloat() * 2) + 1, terrain.getMain().getRandom());
-//            houses.add(house);
-//            region.attachChild(house.getNode());
-//        }
-//    }
+    private void addHouses(List<Set<Vector2>> housePoints) {
+        for(Set<Vector2> housePoint : housePoints) {
+            double minx = 10000, miny = 10000, maxx = -1, maxy = -1;
+            for(Vector2 point : housePoint) {
+                if(point.getX() < minx) {
+                    minx = point.getX();
+                }
+                if(point.getX() > maxx) {
+                    maxx = point.getX();
+                }
+                if(point.getY() < miny) {
+                    miny = point.getY();
+                }
+                if(point.getY() > maxy) {
+                    maxy = point.getY();
+                }
+            }
+
+            if(minx < EDGE_BUFFER || miny < EDGE_BUFFER || maxx >= cols + EDGE_BUFFER || maxy >= rows + EDGE_BUFFER) {
+                continue;
+            }
+
+            int w = (int)(maxx - minx) + 1;
+            int h = (int)(maxy - miny) + 1;
+            float height = tiles[(int)miny][(int)minx].getLevel();
+
+            House house = new House(Main.getMain(),
+					minx + w / 2.0f - 0.5f,
+					height,
+					miny + h / 2.0f + 0.5f,
+					w,
+					h,
+					(int)(Main.getMain().getRandom().nextDouble() * 2) + 1,
+					Main.getMain().getRandom());
+            houses.add(house);
+            region.attachChild(house.getNode());
+        }
+    }
 
     private void makeForestTile(Tile tile) {
         Model model = tile.getClimate().getRandomTree(terrain.getScourge().getRandom());
@@ -659,9 +673,9 @@ public class Region implements NodeGenerator {
     public void moveToTopOfTerrain() {
         if(first) {
             first = false;
-//            for(House house : houses) {
-//                flatten(house.getNode());
-//            }
+            for(House house : houses) {
+                flatten(house.getNode());
+            }
             for(Generator generator : generators) {
                 generator.generate();
             }
@@ -743,15 +757,6 @@ out:
 		}
         return ret;
     }
-
-	private static final Ray3 down = new Ray3();
-	private static PrimitivePickResults noDistanceResults = new PrimitivePickResults();
-
-	static {
-		// point it down
-        down.setDirection(new Vector3(0, -1, 0));
-        noDistanceResults.setCheckDistance(false);
-	}
 
 	private boolean checkOverGround(Spatial spatial, Node scene) {
 		boolean retValue = false;
