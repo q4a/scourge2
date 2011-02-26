@@ -51,11 +51,22 @@ public class GameState implements WindowListener, ProgressListener {
     }
 
     public void showMainMenu() {
-        Main.getMain().getTerrain().gotoMainMenu();
-        mainMenuWindow.setVisible(true);
-        if(!configInitialized) {
-            initializeConfig();
-        }
+		if(Main.SKIP_MENU) {
+			if(!configInitialized) {
+				initializeConfig(true);
+			}
+			try {
+				startGame();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			Main.getMain().getTerrain().gotoMainMenu();
+			mainMenuWindow.setVisible(true);
+			if(!configInitialized) {
+				initializeConfig(false);
+			}
+		}
     }
 
     @Override
@@ -75,8 +86,8 @@ public class GameState implements WindowListener, ProgressListener {
         progress(0);
     }
 
-    private void initializeConfig() {
-        new Thread() {
+    private void initializeConfig(boolean blocking) {
+        Thread t = new Thread() {
             public void run() {
                 try {
                     logger.info("Loading config...");
@@ -89,8 +100,16 @@ public class GameState implements WindowListener, ProgressListener {
                     System.exit(1);
                 }
             }
-        }.start();
-    }
+        };
+		t.start();
+		if(blocking) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
     @Override
     public void buttonClicked(String name) {

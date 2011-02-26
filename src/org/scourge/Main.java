@@ -83,8 +83,9 @@ public class Main extends ExampleBase implements Scourge {
     private boolean skyboxEnabled = true;
     private boolean updateRoof;
     private boolean inUpDown;
+	public static boolean SKIP_MENU;
 
-    public Main() {
+	public Main() {
         main = this;
     }
 
@@ -99,6 +100,9 @@ public class Main extends ExampleBase implements Scourge {
      *            the arguments
      */
     public static void main(final String[] args) {
+		for(String arg : args) {
+			if("--skip-menu".equals(arg)) SKIP_MENU = true;
+		}
         start(Main.class);
     }
 
@@ -742,4 +746,8 @@ public class Main extends ExampleBase implements Scourge {
     public void updateRoof() {
         updateRoof = true;
     }
+
+	public Node getRoot() {
+		return _root;
+	}
 }

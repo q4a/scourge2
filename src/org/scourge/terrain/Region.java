@@ -5,10 +5,13 @@ import com.ardor3d.bounding.BoundingSphere;
 import com.ardor3d.intersection.BoundingCollisionResults;
 import com.ardor3d.intersection.CollisionResults;
 import com.ardor3d.intersection.PickingUtil;
+import com.ardor3d.intersection.PrimitivePickResults;
+import com.ardor3d.math.Ray3;
 import com.ardor3d.math.Vector2;
 import com.ardor3d.math.Vector3;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
+import com.ardor3d.scenegraph.hint.PickingHint;
 import com.ardor3d.scenegraph.shape.Quad;
 import org.scourge.Main;
 import org.scourge.editor.MapSymbol;
@@ -720,9 +723,12 @@ out:
                     attachee.setTranslation((x + dx) * ShapeUtil.WALL_WIDTH + (ShapeUtil.WALL_WIDTH - ex) / 2,
 							4 + ey / 2,
 							(y + dy) * ShapeUtil.WALL_WIDTH + (ShapeUtil.WALL_WIDTH - ez) / 2);
+					attachee.updateWorldTransform(true);
 					attachee.updateWorldBound(true);
-					Terrain.moveOnTopOfTerrain(attachee);
-                    if(!PickingUtil.hasCollision(spatial, Main.getMain().getTerrain().getNode(), true)) {
+					getNode().updateWorldBound(true);
+//					Terrain.moveOnTopOfTerrain(attachee);
+                    if(!PickingUtil.hasCollision(spatial, Main.getMain().getTerrain().getNode(), true) &&
+							checkOverGround(attachee, Main.getMain().getTerrain().getNode())) {
                         ret = true;
 						break out;
                     }
@@ -737,6 +743,38 @@ out:
 		}
         return ret;
     }
+
+	private static final Ray3 down = new Ray3();
+	private static PrimitivePickResults noDistanceResults = new PrimitivePickResults();
+
+	static {
+		// point it down
+        down.setDirection(new Vector3(0, -1, 0));
+        noDistanceResults.setCheckDistance(false);
+	}
+
+	private boolean checkOverGround(Spatial spatial, Node scene) {
+		boolean retValue = false;
+		spatial.getSceneHints().setAllPickingHints(false);
+		down.setOrigin(spatial.getWorldBound().getCenter());
+		noDistanceResults.clear();
+		PickingUtil.findPick(scene, down, noDistanceResults);
+		if(noDistanceResults.getNumber() > 0) {
+			for(int i = 0; i < noDistanceResults.getNumber(); i++) {
+				if(noDistanceResults.getPickData(i).getTarget() != null &&
+						noDistanceResults.getPickData(i).getTarget().toString().startsWith("ground_")) {
+					retValue = true;
+					break;
+				}
+			}
+		}
+		spatial.getSceneHints().setAllPickingHints(true);
+		return retValue;
+	}
+
+	public boolean findSpaceAround(int x, int y, Spatial spatial) {
+		return findSpaceAround(x, y, spatial, spatial);
+	}
 
 //    public boolean findSpaceAround(int x, int y, Spatial spatial, ReadOnlyVector3 location) {
 //        proposedLocation.set((getX() + x) * ShapeUtil.WALL_WIDTH + (ShapeUtil.WALL_WIDTH - extent.x) / 2,

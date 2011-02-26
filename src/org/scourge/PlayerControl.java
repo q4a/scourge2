@@ -1,24 +1,37 @@
 package org.scourge;
 
 import com.ardor3d.framework.Canvas;
-import com.ardor3d.input.*;
-import com.ardor3d.input.logical.*;
+import com.ardor3d.input.ButtonState;
+import com.ardor3d.input.Key;
+import com.ardor3d.input.KeyEvent;
+import com.ardor3d.input.MouseButton;
+import com.ardor3d.input.MouseState;
+import com.ardor3d.input.logical.AnyKeyCondition;
+import com.ardor3d.input.logical.InputTrigger;
+import com.ardor3d.input.logical.KeyHeldCondition;
+import com.ardor3d.input.logical.KeyPressedCondition;
+import com.ardor3d.input.logical.KeyReleasedCondition;
+import com.ardor3d.input.logical.MouseButtonPressedCondition;
+import com.ardor3d.input.logical.MouseButtonReleasedCondition;
+import com.ardor3d.input.logical.TriggerAction;
+import com.ardor3d.input.logical.TriggerConditions;
+import com.ardor3d.input.logical.TwoInputStates;
+import com.ardor3d.intersection.PickingUtil;
 import com.ardor3d.math.MathUtils;
 import com.ardor3d.math.Quaternion;
 import com.ardor3d.math.Vector3;
+import com.ardor3d.math.type.ReadOnlyVector3;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import org.scourge.terrain.CreatureModel;
 import org.scourge.ui.component.Window;
-
-import java.util.Arrays;
 
 /**
  * User: gabor
  * Date: 1/8/11
  * Time: 8:18 PM
  */
-public class PlayerControl {
+public class PlayerControl implements MovementListener {
     private boolean playerMoveEnabled;
     private boolean dragging;
     private int startX, startY;
@@ -27,8 +40,6 @@ public class PlayerControl {
     private boolean firstPing = true;
     private MouseButton buttonDown;
     private TwoInputStates lastInputState;
-    private boolean moving;
-
 
     public PlayerControl(Main main) {
         this.main = main;
@@ -80,8 +91,9 @@ public class PlayerControl {
             @Override
             public void perform(Canvas canvas, TwoInputStates twoInputStates, double tpf) {
                 if (playerMoveEnabled) {
+					main.getPlayer().getCreatureModel().setMovementListener(PlayerControl.this);
                     main.getPlayer().getCreatureModel().setAnimation(CreatureModel.Animations.run);
-                    moving = true;
+					main.getPlayer().getCreatureModel().setMoving(true);
                 }
             }
         }));
@@ -89,8 +101,9 @@ public class PlayerControl {
             @Override
             public void perform(Canvas canvas, TwoInputStates twoInputStates, double tpf) {
                 if (playerMoveEnabled) {
+					main.getPlayer().getCreatureModel().setMovementListener(PlayerControl.this);
                     main.getPlayer().getCreatureModel().setAnimation(CreatureModel.Animations.stand);
-                    moving = false;
+                    main.getPlayer().getCreatureModel().setMoving(false);
                 }
             }
         }));
@@ -237,7 +250,13 @@ public class PlayerControl {
         return lastInputState;
     }
 
-    public boolean isMoving() {
-        return moving;
-    }
+	@Override
+	public void moved() {
+		main.getTerrain().loadRegion();
+		main.checkRoof();
+	}
+
+	@Override
+	public void stopped() {
+	}
 }

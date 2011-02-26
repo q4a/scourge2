@@ -9,7 +9,7 @@ import org.scourge.terrain.CreatureModel;
  * Time: 8:21:39 AM
  */
 public enum Monster {
-    shade(CreatureModelTemplate.shade, "./data/models/phantom/m10.png", 10.0f),
+    shade(CreatureModelTemplate.shade, "./data/models/phantom/m10.png", 4.0f),
     ;
 
     private CreatureModelTemplate modelTemplate;

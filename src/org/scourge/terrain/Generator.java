@@ -45,7 +45,7 @@ public abstract class Generator {
 
     public static Generator create(BlockData blockData, Region region, int x, int y) {
         String type = blockData.getData().get("generate.monster");
-//        if(type != null) return new MonsterGenerator(region, x, y, type);
+        if(type != null) return new MonsterGenerator(region, x, y, type);
         type = blockData.getData().get("generate.altar");
         if(type != null) return new AltarGenerator(region, x, y, type);
         return null;
