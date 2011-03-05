@@ -59,6 +59,7 @@ public class Main extends ExampleBase implements Scourge {
     private CameraNode camNode;
     private boolean fogOnWater;
     private boolean inDungeon;
+	private boolean inHouse;
     private FogState fogState;
     private GameState gameState;
     private BasicText loadingLabel;
@@ -82,6 +83,7 @@ public class Main extends ExampleBase implements Scourge {
     private MouseState mouse;
     private boolean skyboxEnabled = true;
     private boolean updateRoof;
+    private boolean updateHouseRoof;
     private boolean inUpDown;
 	public static boolean SKIP_MENU;
 
@@ -127,6 +129,10 @@ public class Main extends ExampleBase implements Scourge {
             terrain.setRoofVisible(!inDungeon);
             updateFog();
         }
+		if(updateHouseRoof) {
+			updateHouseRoof = false;
+            terrain.setHouseRoofVisible(!inHouse);
+		}
         terrain.update(timer.getTimePerFrame());
 
         ShapeUtil.updateControllers(timer.getTimePerFrame());
@@ -483,15 +489,42 @@ public class Main extends ExampleBase implements Scourge {
             Model model = (Model)getUserData(spatial, Tile.MODEL);
             BlockData blockData = (BlockData)getUserData(spatial, Tile.BLOCK_DATA);
             if(model == Model.sign) {
-                Window.showMessage(blockData.getData().get(MapSymbol.sign.getBlockDataKeys()[0]),
-                                   blockData.getData().get(MapSymbol.sign.getBlockDataKeys()[1]));
-                return true;
-            }
+                return signClicked(blockData);
+            } else if(model == Model.door) {
+				return doorClicked(spatial, blockData);
+			}
         }
         return false;
     }
 
-    @SuppressWarnings({"unchecked"})
+	// todo: animate door, stop at collision
+	private boolean doorClicked(Spatial spatial, BlockData blockData) {
+		boolean isOpen = "true".equals(blockData.getData().get("open"));
+		Quaternion p = new Quaternion().fromRotationMatrix(spatial.getRotation());
+		Quaternion q;
+		Vector3 v = new Vector3(spatial.getTranslation());
+		if(isOpen) {
+			q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * -125, Vector3.UNIT_Y);
+			v.addLocal(-2, 0, -4);
+			blockData.getData().put("open", "false");
+		} else {
+			q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 125, Vector3.UNIT_Y);
+			v.addLocal(2, 0, 4);
+			blockData.getData().put("open", "true");
+		}
+		p.multiplyLocal(q);
+		spatial.setTranslation(v);
+		spatial.setRotation(p);
+		return true;
+	}
+
+	private boolean signClicked(BlockData blockData) {
+		Window.showMessage(blockData.getData().get(MapSymbol.sign.getBlockDataKeys()[0]),
+						   blockData.getData().get(MapSymbol.sign.getBlockDataKeys()[1]));
+		return true;
+	}
+
+	@SuppressWarnings({"unchecked"})
     public static Object getUserData(Spatial spatial, String key) {
         Map<String, Object> map = (Map<String, Object>)spatial.getUserData();
         return map == null ? null : map.get(key);
@@ -719,6 +752,11 @@ public class Main extends ExampleBase implements Scourge {
                 this.inDungeon = inDungeon;
                 updateRoof();
             }
+			boolean inHouse = tile.getC() == MapSymbol.house.getC();
+			if(inHouse != this.inHouse) {
+				this.inHouse = inHouse;
+				updateHouseRoof();
+			}
             boolean inUpDown = (tile.getC() == MapSymbol.up.getC() || tile.getC() == MapSymbol.down.getC());
             if(inUpDown != this.inUpDown) {
                 System.err.println("teleporting...");
@@ -742,8 +780,12 @@ public class Main extends ExampleBase implements Scourge {
             }
         }
     }
-    
-    public void updateRoof() {
+
+	private void updateHouseRoof() {
+		updateHouseRoof = true;
+	}
+
+	public void updateRoof() {
         updateRoof = true;
     }
 

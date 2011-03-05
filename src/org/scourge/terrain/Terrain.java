@@ -126,6 +126,12 @@ public class Terrain implements NodeGenerator {
         }
     }
 
+	public void setHouseRoofVisible(boolean visible) {
+        for(Region region : terrainLoader.getLoadedRegions().values()) {
+            region.setHouseRoofVisible(visible);
+        }
+    }
+
     public Region getCurrentRegion() {
         return terrainLoader.getCurrentRegion();
     }

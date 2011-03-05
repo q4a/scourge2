@@ -555,7 +555,35 @@ public enum Model implements Savable {
                 }
             }));
             return node;
-        }}
+        }
+	},
+	door("./data/3ds/door.3ds") {
+		@Override
+		public Spatial createSpatial() {
+			return getNoAlphaSpatial();
+		}
+	},
+	wall("./data/3ds/wall.3ds") {
+		@Override
+		public Spatial createSpatial() {
+			return getAlphaSpatial(1, 0, 0, 0);
+		}
+	},
+	window("./data/3ds/win.3ds") {
+		@Override
+		public Spatial createSpatial() {
+			return getAlphaSpatial(1, 0, 0, 0);
+		}
+	},
+	doorFrame("./data/3ds/dframe.3ds") {
+		@Override
+		public Spatial createSpatial() {
+			return getAlphaSpatial(1, 0, 0, 0);
+		}
+	}
+
+
+
     ;
 
     private static Spatial addTorchFlame(FlameTypeConfig config) {

@@ -181,7 +181,8 @@ class MaterialBlock extends ChunkerClass {
                 myIn.readFully(new byte[i.length]);   // unknown
                 return true;
             case MAT_TWO_SIDED:
-                myMatState.setColorMaterialFace(MaterialState.MaterialFace.FrontAndBack);
+				new PercentChunk(myIn,i);
+                //myMatState.setColorMaterialFace(MaterialState.MaterialFace.FrontAndBack);
                 // On by default
                 return true;
             case MAT_FALLOFF:

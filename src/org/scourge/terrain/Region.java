@@ -4,12 +4,20 @@ import com.ardor3d.bounding.BoundingBox;
 import com.ardor3d.bounding.BoundingSphere;
 import com.ardor3d.intersection.PickingUtil;
 import com.ardor3d.intersection.PrimitivePickResults;
+import com.ardor3d.math.ColorRGBA;
 import com.ardor3d.math.Ray3;
 import com.ardor3d.math.Vector2;
 import com.ardor3d.math.Vector3;
+import com.ardor3d.renderer.queue.RenderBucketType;
+import com.ardor3d.renderer.state.BlendState;
+import com.ardor3d.renderer.state.CullState;
+import com.ardor3d.scenegraph.Mesh;
 import com.ardor3d.scenegraph.Node;
 import com.ardor3d.scenegraph.Spatial;
+import com.ardor3d.scenegraph.controller.SpatialController;
+import com.ardor3d.scenegraph.hint.CullHint;
 import com.ardor3d.scenegraph.shape.Quad;
+import com.ardor3d.scenegraph.visitor.Visitor;
 import org.scourge.Main;
 import org.scourge.editor.MapSymbol;
 import org.scourge.io.BlockData;
@@ -705,6 +713,36 @@ public class Region implements NodeGenerator {
             }
         }
 //        region.updateRenderState();
+    }
+
+	public void setHouseRoofVisible(boolean visible) {
+        for(House house : houses) {
+			System.err.println("house=" + house.toString() + " visible=" + visible);
+			for(Spatial level : house.getNode().getChildren()) {
+				final boolean hide = !visible && level.getTranslation().getY() > Main.getMain().getPlayer().getCreatureModel().getNode().getTranslation().getY();
+				System.err.println("\tlevel=" + level.getName() + " y=" + level.getTranslation().getY() + " vs player=" + Main.getMain().getPlayer().getCreatureModel().getNode().getTranslation().getY() + " hide=" + hide);
+
+
+				final ColorRGBA color = hide ? new ColorRGBA(1, 1, 1, 0) : new ColorRGBA(1, 1, 1, 1);
+				level.acceptVisitor(new Visitor() {
+					  @Override
+					  public void visit(Spatial spatial) {
+						  if(spatial instanceof Mesh) {
+							  ((Mesh)spatial).getMeshData().setColorBuffer(null);
+							  ((Mesh)spatial).getMeshData().setColorCoords(null);
+							  ((Mesh)spatial).setDefaultColor(color);
+						  }
+					   }
+					}, true);
+
+				// should happen after transition (fade)
+				level.getSceneHints().setCullHint(hide ? CullHint.Always : CullHint.Dynamic);
+
+				level.updateWorldRenderStates(true);
+				level.updateGeometricState(0);
+				level.updateWorldBound(true);
+			}
+		}
     }
 
     /**
