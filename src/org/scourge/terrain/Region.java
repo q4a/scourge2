@@ -721,26 +721,7 @@ public class Region implements NodeGenerator {
 			for(Spatial level : house.getNode().getChildren()) {
 				final boolean hide = !visible && level.getTranslation().getY() > Main.getMain().getPlayer().getCreatureModel().getNode().getTranslation().getY();
 				System.err.println("\tlevel=" + level.getName() + " y=" + level.getTranslation().getY() + " vs player=" + Main.getMain().getPlayer().getCreatureModel().getNode().getTranslation().getY() + " hide=" + hide);
-
-
-				final ColorRGBA color = hide ? new ColorRGBA(1, 1, 1, 0) : new ColorRGBA(1, 1, 1, 1);
-				level.acceptVisitor(new Visitor() {
-					  @Override
-					  public void visit(Spatial spatial) {
-						  if(spatial instanceof Mesh) {
-							  ((Mesh)spatial).getMeshData().setColorBuffer(null);
-							  ((Mesh)spatial).getMeshData().setColorCoords(null);
-							  ((Mesh)spatial).setDefaultColor(color);
-						  }
-					   }
-					}, true);
-
-				// should happen after transition (fade)
-				level.getSceneHints().setCullHint(hide ? CullHint.Always : CullHint.Dynamic);
-
-				level.updateWorldRenderStates(true);
-				level.updateGeometricState(0);
-				level.updateWorldBound(true);
+				((ShowHideController)level.getController(0)).setHiding(hide);
 			}
 		}
     }

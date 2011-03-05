@@ -245,6 +245,7 @@ public class House implements NodeGenerator {
             roofNode.attachChild(tri);
         }
 
+		roofNode.addController(new ShowHideController());
         house.attachChild(roofNode);
     }
 
@@ -257,6 +258,7 @@ public class House implements NodeGenerator {
         drawWall(house, x - (w / 2),     0, z - (h / 2), Direction.SOUTH, h, 0, door == Direction.SOUTH && has_door, level);
         drawWall(house, x + (w / 2),     0, z - (h / 2 + 1), Direction.NORTH, h, h - 1, door == Direction.NORTH && has_door, level);
         drawFloor(house, x, 0.25, z, w, h, level);
+		level.addController(new ShowHideController());
 		house.attachChild(level);
     }
 
