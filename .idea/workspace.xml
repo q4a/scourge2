@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58e1e136-ea37-49ef-a1c7-215471723208" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/ShowHideController.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/DoorController.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/InAndOutController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scourge2.jar" afterPath="$PROJECT_DIR$/scourge2.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/Main.java" afterPath="$PROJECT_DIR$/src/org/scourge/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/House.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/House.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/Region.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/Region.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/scourge/terrain/ShowHideController.java" afterPath="$PROJECT_DIR$/src/org/scourge/terrain/ShowHideController.java" />
     </list>
     <ignored path="scourge2.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,19 +72,52 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="ShowHideController.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/ShowHideController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="38" column="12" selection-start="1101" selection-end="1101" vertical-scroll-proportion="0.8042328">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DoorController.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/DoorController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="House.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/House.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="260" column="32" selection-start="13304" selection-end="13304" vertical-scroll-proportion="0.0">
+            <state line="361" column="39" selection-start="17028" selection-end="17028" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="505" column="0" selection-start="18104" selection-end="18104" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShowHideController.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/ShowHideController.java">
+      <file leaf-file-name="InAndOutController.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/InAndOutController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="0" selection-start="854" selection-end="854" vertical-scroll-proportion="0.543554">
+            <state line="29" column="51" selection-start="718" selection-end="718" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -92,16 +128,7 @@
       <file leaf-file-name="Region.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Region.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="723" column="66" selection-start="35314" selection-end="35314" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Model.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Model.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="610" column="73" selection-start="19110" selection-end="19247" vertical-scroll-proportion="0.0">
+            <state line="703" column="26" selection-start="34312" selection-end="34312" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -121,22 +148,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/org/scourge/MovementListener.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/model/Creature.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/GameState.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/MonsterGenerator.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/model/Monster.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/model/Door.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/Main.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Tile.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Model.java" />
         <option value="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/TDSFile.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/CreatureModel.java" />
         <option value="$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/MaterialBlock.java" />
-        <option value="$PROJECT_DIR$/src/org/scourge/terrain/House.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/Region.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/House.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/InAndOutController.java" />
         <option value="$PROJECT_DIR$/src/org/scourge/terrain/ShowHideController.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/terrain/DoorController.java" />
+        <option value="$PROJECT_DIR$/src/org/scourge/Main.java" />
       </list>
     </option>
   </component>
@@ -550,7 +577,7 @@
     <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on walking in/out houses; no transitions yet just show/hide levels and open/close doors" />
+    <option name="LAST_COMMIT_MESSAGE" value="fade transition when entering/exiting house" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -581,6 +608,7 @@
     <MESSAGE value="fixed gray world after load bug" />
     <MESSAGE value="village fountain" />
     <MESSAGE value="working on walking in/out houses; no transitions yet just show/hide levels and open/close doors" />
+    <MESSAGE value="fade transition when entering/exiting house" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -590,26 +618,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/lib/ardor3d_core.jar!/com/ardor3d/scenegraph/Spatial.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="150" column="50" selection-start="8076" selection-end="8076" vertical-scroll-proportion="-8.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Terrain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="124" column="29" selection-start="4490" selection-end="4490" vertical-scroll-proportion="0.60833335" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="128" column="29" selection-start="3984" selection-end="3984" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/ui/GameUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="89" column="40" selection-start="3512" selection-end="3519" vertical-scroll-proportion="0.6957211" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/newdawn/ardor3d/loader/max/TDSFile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="469" column="0" selection-start="20231" selection-end="20231" vertical-scroll-proportion="0.0" />
@@ -658,13 +666,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/House.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="260" column="32" selection-start="13304" selection-end="13304" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/TreeController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="35" column="30" selection-start="961" selection-end="965" vertical-scroll-proportion="-11.0">
@@ -672,16 +673,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/PlayerControl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="40" column="30" selection-start="1542" selection-end="1542" vertical-scroll-proportion="0.31630972">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/House.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="361" column="39" selection-start="17028" selection-end="17028" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/Region.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="723" column="66" selection-start="35314" selection-end="35314" vertical-scroll-proportion="0.0">
+        <state line="703" column="26" selection-start="34312" selection-end="34312" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="505" column="0" selection-start="18104" selection-end="18104" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/DoorController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/InAndOutController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="51" selection-start="718" selection-end="718" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/scourge/terrain/ShowHideController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="0" selection-start="854" selection-end="854" vertical-scroll-proportion="0.543554">
+        <state line="38" column="12" selection-start="1101" selection-end="1101" vertical-scroll-proportion="0.8042328">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

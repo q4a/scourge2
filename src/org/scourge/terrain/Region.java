@@ -721,7 +721,7 @@ public class Region implements NodeGenerator {
 			for(Spatial level : house.getNode().getChildren()) {
 				final boolean hide = !visible && level.getTranslation().getY() > Main.getMain().getPlayer().getCreatureModel().getNode().getTranslation().getY();
 				System.err.println("\tlevel=" + level.getName() + " y=" + level.getTranslation().getY() + " vs player=" + Main.getMain().getPlayer().getCreatureModel().getNode().getTranslation().getY() + " hide=" + hide);
-				((ShowHideController)level.getController(0)).setHiding(hide);
+				((ShowHideController)level.getController(0)).setIn(hide);
 			}
 		}
     }

@@ -30,6 +30,7 @@ import com.ardor3d.util.resource.ResourceLocatorTool;
 import org.scourge.editor.MapSymbol;
 import org.scourge.io.BlockData;
 import org.scourge.model.Creature;
+import org.scourge.terrain.DoorController;
 import org.scourge.terrain.Model;
 import org.scourge.terrain.Region;
 import org.scourge.terrain.Terrain;
@@ -500,21 +501,8 @@ public class Main extends ExampleBase implements Scourge {
 	// todo: animate door, stop at collision
 	private boolean doorClicked(Spatial spatial, BlockData blockData) {
 		boolean isOpen = "true".equals(blockData.getData().get("open"));
-		Quaternion p = new Quaternion().fromRotationMatrix(spatial.getRotation());
-		Quaternion q;
-		Vector3 v = new Vector3(spatial.getTranslation());
-		if(isOpen) {
-			q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * -125, Vector3.UNIT_Y);
-			v.addLocal(-2, 0, -4);
-			blockData.getData().put("open", "false");
-		} else {
-			q = new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 125, Vector3.UNIT_Y);
-			v.addLocal(2, 0, 4);
-			blockData.getData().put("open", "true");
-		}
-		p.multiplyLocal(q);
-		spatial.setTranslation(v);
-		spatial.setRotation(p);
+		blockData.getData().put("open", isOpen ? "false" : "true");
+		((DoorController)spatial.getController(0)).setIn(!isOpen);
 		return true;
 	}
 

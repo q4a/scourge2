@@ -359,6 +359,7 @@ public class House implements NodeGenerator {
 		map.put(Tile.BLOCK_DATA, blockData);
 		Spatial door = Model.door.createSpatial();
 		door.setUserData(map);
+		door.addController(new DoorController());
 		return door;
     }
 }
