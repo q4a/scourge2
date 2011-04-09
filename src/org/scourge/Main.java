@@ -87,6 +87,7 @@ public class Main extends ExampleBase implements Scourge {
     private boolean updateHouseRoof;
     private boolean inUpDown;
 	public static boolean SKIP_MENU;
+	private int houseLevel;
 
 	public Main() {
         main = this;
@@ -741,8 +742,10 @@ public class Main extends ExampleBase implements Scourge {
                 updateRoof();
             }
 			boolean inHouse = tile.getC() == MapSymbol.house.getC();
-			if(inHouse != this.inHouse) {
+			int level = (int)(getPlayer().getCreatureModel().getNode().getTranslation().getY() / ShapeUtil.WALL_WIDTH);
+			if(inHouse != this.inHouse || level != this.houseLevel) {
 				this.inHouse = inHouse;
+				this.houseLevel = level;
 				updateHouseRoof();
 			}
             boolean inUpDown = (tile.getC() == MapSymbol.up.getC() || tile.getC() == MapSymbol.down.getC());

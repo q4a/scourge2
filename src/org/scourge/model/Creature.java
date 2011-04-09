@@ -2,6 +2,7 @@ package org.scourge.model;
 
 import com.ardor3d.math.Vector3;
 import org.scourge.Main;
+import org.scourge.ScourgeConstants;
 import org.scourge.config.CreatureModelTemplate;
 import org.scourge.config.PlayerTemplate;
 import org.scourge.terrain.CreatureModel;
@@ -70,7 +71,8 @@ public class Creature implements ItemList, HasModel {
         //389, 9, 349);
         //498, 9, 489);
         //c.position = new float[] { 651, 9, 413 };
-        c.position = new float[] { 644, 9, 433 };
+//        c.position = new float[] { 644, 9, 433 };
+        c.position = new float[] { ScourgeConstants.START_X, 9, ScourgeConstants.START_Z };
         c.name = "zorro";
         c.model = "";
         c.skin = "";

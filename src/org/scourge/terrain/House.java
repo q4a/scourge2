@@ -22,6 +22,8 @@ import com.ardor3d.util.TextureManager;
 import com.ardor3d.util.geom.BufferUtils;
 import org.scourge.Main;
 import org.scourge.io.BlockData;
+import org.scourge.ui.component.GText;
+import org.scourge.ui.component.WinUtil;
 import org.scourge.util.ShapeUtil;
 
 import java.nio.FloatBuffer;
@@ -48,7 +50,7 @@ public class House implements NodeGenerator {
         this.random = random;
         house = new Node(ShapeUtil.newShapeName("house_"));
         for(int i = 0; i < levels; i++) {
-            drawLevel(house, 0, i, 0, w, h, i == 0);
+            drawLevel(house, 0, i, 0, w, h, i == 0, (int)levels);
         }
         drawRoof(house, 0, 0 + levels, 0, w, h);
 		Vector3 v = new Vector3(x * ShapeUtil.WALL_WIDTH, y * ShapeUtil.WALL_HEIGHT + Region.MIN_HEIGHT, z * ShapeUtil.WALL_WIDTH);
@@ -249,7 +251,7 @@ public class House implements NodeGenerator {
         house.attachChild(roofNode);
     }
 
-    private void drawLevel(Node house, double x, double y, double z, double w, double h, boolean has_door) {
+    private void drawLevel(Node house, double x, double y, double z, double w, double h, boolean has_door, int levels) {
 		Node level = new Node(ShapeUtil.newShapeName("level_" + y));
 		level.setTranslation(0, y * ShapeUtil.WALL_WIDTH, 0);
         Direction door = Direction.values()[(int)((float)Direction.values().length * random.nextFloat())];
@@ -258,12 +260,14 @@ public class House implements NodeGenerator {
         drawWall(house, x - (w / 2),     0, z - (h / 2), Direction.SOUTH, h, 0, door == Direction.SOUTH && has_door, level);
         drawWall(house, x + (w / 2),     0, z - (h / 2 + 1), Direction.NORTH, h, h - 1, door == Direction.NORTH && has_door, level);
         drawFloor(house, x, 0.25, z, w, h, level);
+		if(y < levels - 1) {
+			drawStairs(house, x, 0, z, w, h, door, level);
+		}
 		level.addController(new ShowHideController());
 		house.attachChild(level);
     }
 
-
-    private void drawFloor(Node house, double x, double y, double z, double w, double h, Node parent) {
+	private void drawFloor(Node house, double x, double y, double z, double w, double h, Node parent) {
         Quad floor = new Quad(ShapeUtil.newShapeName("floor_"), w * ShapeUtil.WALL_WIDTH, h * ShapeUtil.WALL_WIDTH);
 		Vector3 v = new Vector3(x * ShapeUtil.WALL_WIDTH,
 				0.25,
@@ -293,6 +297,40 @@ public class House implements NodeGenerator {
 
     }
 
+	// put the stairs in the farthest corner from the door
+	private void drawStairs(Node house, double x, int y, double z, double w, double h, Direction door, Node level) {
+		Node nn = new Node(ShapeUtil.newShapeName("stairs"));
+		Spatial stairs = getStairs();
+		nn.attachChild(stairs);
+		GText label = null;
+
+		System.err.println("h=" + h + " /2=" + (h/2));
+
+		switch(door) {
+			case EAST:
+				label = WinUtil.createLabel(0, 0, "east", new ColorRGBA(1, 0.90f, 0.75f, 1), WinUtil.ScourgeFont.regular, false);
+				nn.setTranslation((w / 2) * ShapeUtil.WALL_WIDTH, 0, (h / 2 - 1.5) * ShapeUtil.WALL_WIDTH);
+				nn.setRotation(new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * -90, Vector3.UNIT_Y));
+				break;
+			case WEST:
+				label = WinUtil.createLabel(0, 0, "west", new ColorRGBA(1, 0.90f, 0.75f, 1), WinUtil.ScourgeFont.regular, false);
+				nn.setTranslation((w / 2 - 0.5) * ShapeUtil.WALL_WIDTH, 0, -(h / 2 + 1) * ShapeUtil.WALL_WIDTH);
+				break;
+			case SOUTH:
+				label = WinUtil.createLabel(0, 0, "south", new ColorRGBA(1, 0.90f, 0.75f, 1), WinUtil.ScourgeFont.regular, false);
+				nn.setTranslation((w / 2) * ShapeUtil.WALL_WIDTH, 0, (h/2 - 1.5) * ShapeUtil.WALL_WIDTH);
+				nn.setRotation(new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * -90, Vector3.UNIT_Y));
+				break;
+			case NORTH:
+				label = WinUtil.createLabel(0, 0, "north", new ColorRGBA(1, 0.90f, 0.75f, 1), WinUtil.ScourgeFont.regular, false);
+				nn.setTranslation((0.5 - (w / 2)) * ShapeUtil.WALL_WIDTH, 0, (h / 2 - 1) * ShapeUtil.WALL_WIDTH);
+				nn.setRotation(new Quaternion().fromAngleAxis(MathUtils.DEG_TO_RAD * 180, Vector3.UNIT_Y));
+				break;
+		}
+		label.getSceneHints().setAllPickingHints(false);
+		nn.attachChild(label);
+		level.attachChild(nn);
+	}
 
     private void drawWall(Node house, double x, double y, double z, Direction dir, double length, double finalPos, boolean has_door, Node parent) {
         int door_pos = has_door ? 1 + (int)((float)(length - 2) * random.nextFloat()) : -1;
@@ -361,5 +399,9 @@ public class House implements NodeGenerator {
 		door.setUserData(map);
 		door.addController(new DoorController());
 		return door;
+    }
+
+	protected Spatial getStairs() {
+        return Model.houseStairs.createSpatial();
     }
 }

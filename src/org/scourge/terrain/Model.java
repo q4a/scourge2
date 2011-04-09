@@ -580,6 +580,12 @@ public enum Model implements Savable {
 		public Spatial createSpatial() {
 			return getAlphaSpatial(1, 0, 0, 0);
 		}
+	},
+	houseStairs("./data/3ds/h-stairs.3ds") {
+		@Override
+		public Spatial createSpatial() {
+			return getAlphaSpatial(1, 0, 0, 0);
+		}
 	}
 
 
